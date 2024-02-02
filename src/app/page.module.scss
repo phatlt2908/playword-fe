@@ -38,6 +38,7 @@
   align-items: center;
   position: relative;
   padding: 4rem 0;
+  width: 100%;
 }
 
 .center::before {
@@ -62,43 +63,6 @@
   position: absolute;
   filter: blur(45px);
   transform: translateZ(0);
-}
-
-.game-list {
-  display: grid;
-  grid-auto-columns: var(--game-size);
-  grid-template-rows: var(--game-size);
-  grid-auto-flow: column;
-  list-style-type: none;
-  justify-items: center;
-  align-items: center;
-  padding: 0 calc(var(--spacing) * 16);
-
-  > li {
-    scroll-margin: calc(var(--spacing) * 16);
-    height: var(--game-size);
-    width: calc(var(--game-size));
-    pointer-events: none;
-
-    > a {
-      height: 100%;
-      width: 100%;
-      display: block;
-      margin: auto;
-      pointer-events: all;
-      border: calc(var(--spacing) / 2) solid transparent;
-      padding: calc(var(--spacing) / 2);
-
-      > img {
-        height: 100%;
-        width: 100%;
-      }
-    }
-
-    &:target > a {
-      animation: game-active 0.5s linear alternate infinite;
-    }
-  }
 }
 
 /* Enable hover only on non-touch devices */
