@@ -1,28 +1,13 @@
-import Image from "next/image";
 import styles from "./base-header.module.css";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 
 const BaseHeader = () => {
   return (
-    <div className={styles.description}>
-      <p>
-        <button className="button">Login</button>
-      </p>
-      <div>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          By{" "}
-          <Image
-            src="/vercel.svg"
-            alt="Vercel Logo"
-            className={styles.vercelLogo}
-            width={100}
-            height={24}
-            priority
-          />
-        </a>
+    <div className={styles.header}>
+      <div className="icon is-medium circle-border">
+        <FontAwesomeIcon icon={faUser} />
       </div>
     </div>
   );
