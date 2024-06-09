@@ -6,6 +6,8 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 const BaseHeader = () => {
   return (
     <div className={styles.header}>
+      <div>LOGO</div>
+      <div>Noi tu</div>
       <div className="icon is-medium circle-border">
         <FontAwesomeIcon icon={faUser} />
       </div>

@@ -1,3 +1,16 @@
 .w-100 {
   width: 100% !important;
 }
+
+// The hand drawing border style
+.control>* {
+  border-width: 4px !important;
+  border-top-left-radius: 255px 15px !important;
+  border-top-right-radius: 15px 225px !important;
+  border-bottom-right-radius: 225px 15px !important;
+  border-bottom-left-radius: 15px 255px !important;
+}
+
+.field.has-addons .control:not(:last-child) {
+  margin-right: -4px;
+}

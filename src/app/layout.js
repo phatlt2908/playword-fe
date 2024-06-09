@@ -6,6 +6,7 @@ import { config } from "@fortawesome/fontawesome-svg-core";
 config.autoAddCss = false;
 
 import BaseHeader from "@/components/base-header";
+import BaseFooter from "@/components/base-footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +21,10 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         <main>
           <BaseHeader />
-          {children}
+          <div className="main-center">
+            {children}
+          </div>
+          <BaseFooter />
         </main>
       </body>
     </html>
