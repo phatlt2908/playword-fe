@@ -8,6 +8,8 @@ const nextConfig = {
       { hostname: "publish.one37pm.net" },
     ],
   },
+
+  reactStrictMode: false,
 };
 
 export default nextConfig;

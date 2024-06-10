@@ -9,16 +9,20 @@ import swal from "sweetalert2";
 import wordLinkApi from "@/services/wordLinkApi";
 
 import SpinnerLoading from "@/components/spinner-loading";
+import BaseTimer from "@/components/base-timer";
 
 import styles from "./page.module.scss";
+
+const turnTime = 15;
 
 export default function WordLink() {
   const [responseWord, setResponseWord] = useState("");
   const [responseWordDescription, setResponseWordDescription] = useState("");
   const [answerWord, setAnswerWord] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const [isFinished, setIsFinished] = useState(false);
-  const [turn, setTurn] = useState(3);
+  const [isFinished, setIsFinished] = useState(false); // The server can not find any word
+  const [turn, setTurn] = useState(3); // Number of turns to answer (answer wrong 3 times => game over)
+  const [point, setPoint] = useState(0);
 
   const preResponseWord = useMemo(() => {
     return responseWord.split(" ").pop();
@@ -58,7 +62,7 @@ export default function WordLink() {
           swal.fire({
             toast: true,
             position: "top-end",
-            text: 'Không tồn tại từ [' + answer + '] 😣',
+            text: "Không tồn tại từ [" + answer + "] 😣",
             icon: "error",
             timer: 5000,
             confirmButtonText: "Yêu cầu thêm",
@@ -66,9 +70,12 @@ export default function WordLink() {
 
           if (turn > 1) {
             setTurn(turn - 1);
+          } else {
+            onOver();
           }
         } else {
           setTurn(3);
+          setPoint(point + 1);
 
           if (response.data.isFinished) {
             setIsFinished(true);
@@ -92,15 +99,27 @@ export default function WordLink() {
     }
   };
 
+  const onOver = () => {
+    swal.fire({
+      title: "Hết giờ",
+      text: "Bạn đã không trả lời kịp thời",
+      icon: "error",
+      confirmButtonText: "Thử lại",
+    });
+  }
+
   return (
     <>
-      <div className="is-flex is-flex-direction-column is-align-items-center">
-        <div className="icon is-large circle-border mb-4">
-          <FontAwesomeIcon icon={faUser} />
+      <div className="is-flex is-flex-direction-column is-align-items-center w-100">
+        <div>
+          <span className="mr-2">User</span>
+          <span className="icon is-large circle-border mb-4">
+            <FontAwesomeIcon icon={faUser} />
+          </span>
+          <span className="ml-2">Điểm: {point}</span>
         </div>
-        <progress className="progress" value="15" max="100">
-          15%
-        </progress>
+
+        <BaseTimer key={point} maxTime={turnTime} onOver={onOver} />
       </div>
 
       {isLoading ? (

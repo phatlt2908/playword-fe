@@ -14,3 +14,7 @@
 .field.has-addons .control:not(:last-child) {
   margin-right: -4px;
 }
+
+.progress::-webkit-progress-value {
+  transition: width 1s linear;
+}
