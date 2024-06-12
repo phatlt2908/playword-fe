@@ -7,9 +7,12 @@ import { faUser, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import swal from "sweetalert2";
 
 import wordLinkApi from "@/services/wordLinkApi";
+import reportApi from "@/services/reportApi";
 
-import SpinnerLoading from "@/components/spinner-loading";
-import BaseTimer from "@/components/base-timer";
+import SpinnerLoading from "@/components/utils/spinner-loading";
+import BaseTimer from "@/components/utils/base-timer";
+import WordDetail from "@/components/contents/word-detail";
+import StandardModal from "@/components/contents/standard-modal";
 
 import styles from "./page.module.scss";
 
@@ -23,6 +26,7 @@ export default function WordLink() {
   const [isFinished, setIsFinished] = useState(false); // The server can not find any word
   const [turn, setTurn] = useState(3); // Number of turns to answer (answer wrong 3 times => game over)
   const [point, setPoint] = useState(0);
+  const [overType, setOverType] = useState();
 
   const preResponseWord = useMemo(() => {
     return responseWord.split(" ").pop();
@@ -59,19 +63,39 @@ export default function WordLink() {
       .answer(answer)
       .then((response) => {
         if (!response.data.isSuccessful) {
-          swal.fire({
-            toast: true,
-            position: "top-end",
-            text: "Không tồn tại từ [" + answer + "] 😣",
-            icon: "error",
-            timer: 5000,
-            confirmButtonText: "Yêu cầu thêm",
-          });
+          swal
+            .fire({
+              toast: true,
+              position: "top-end",
+              text: "Không tồn tại từ [" + answer + "] 😣",
+              icon: "error",
+              timer: 5000,
+              confirmButtonText: "Yêu cầu thêm",
+            })
+            .then((result) => {
+              if (result.isConfirmed) {
+                reportApi
+                  .create({
+                    word: answer,
+                    issueType: 1,
+                  })
+                  .then(() => {
+                    swal.fire({
+                      toast: true,
+                      position: "top-end",
+                      text: "Báo cáo thành công! 🤩",
+                      icon: "success",
+                      timer: 3000,
+                      showConfirmButton: false,
+                    });
+                  });
+              }
+            });
 
           if (turn > 1) {
             setTurn(turn - 1);
           } else {
-            onOver();
+            onOver(1);
           }
         } else {
           setTurn(3);
@@ -99,14 +123,15 @@ export default function WordLink() {
     }
   };
 
-  const onOver = () => {
-    swal.fire({
-      title: "Hết giờ",
-      text: "Bạn đã không trả lời kịp thời",
-      icon: "error",
-      confirmButtonText: "Thử lại",
-    });
-  }
+  /**
+   * type = 1: Over turn
+   * type = 2: Over time
+   * @param {int} type
+   */
+  const onOver = (type) => {
+    console.log("Over");
+    setOverType(type);
+  };
 
   return (
     <>
@@ -119,18 +144,27 @@ export default function WordLink() {
           <span className="ml-2">Điểm: {point}</span>
         </div>
 
-        <BaseTimer key={point} maxTime={turnTime} onOver={onOver} />
+        {!overType && (
+          <BaseTimer
+            key={point}
+            maxTime={turnTime}
+            onOver={() => {
+              onOver(2);
+            }}
+          />
+        )}
       </div>
 
       {isLoading ? (
         <SpinnerLoading />
       ) : (
         <div>
-          <p
-            className="has-text-centered is-size-1 mb-4"
-            title={responseWordDescription}
-          >
-            {responseWord}
+          <p className="mb-4">
+            <WordDetail
+              styleClass="has-text-centered is-size-1 is-inline-block w-100"
+              word={responseWord}
+              description={responseWordDescription}
+            />
           </p>
 
           <div className="field has-addons">
@@ -159,7 +193,7 @@ export default function WordLink() {
             </div>
           </div>
           {turn < 3 && (
-            <p className="help is-danger is-size-6 has-text-centered">
+            <p className="help is-warning is-size-6 has-text-centered has-text-weight-semibold">
               ⚠️ Bạn còn {turn} lượt nhập sai
             </p>
           )}
@@ -170,6 +204,31 @@ export default function WordLink() {
         <div>ABC</div>
         <div>DEF</div>
       </div>
+
+      {overType && (
+        <StandardModal
+          id="game-over"
+          uncloseable
+          onClose={() => console.log("Restart")}
+        >
+          <h1 className="title is-1 has-text-centered">GAME OVER</h1>
+          <p className="subtitle is-3 has-text-centered">
+            {overType == 1
+              ? "Hết lượt. Bạn đã trả lời sai 3 lần 😢"
+              : "Hết thời gian trả lời 😢"}
+          </p>
+          <p className="is-size-4">Điểm số: {point}</p>
+          <p className="is-size-4">Xếp hạng: 1450</p>
+          <div className="buttons">
+            <button className="button is-large is-primary is-outlined drawing-border">
+              Chơi lại 💪
+            </button>
+            <button className="button is-large is-outlined drawing-border">
+              Về trang chủ
+            </button>
+          </div>
+        </StandardModal>
+      )}
     </>
   );
 }
