@@ -5,7 +5,10 @@ import { Stomp } from "@stomp/stompjs";
 import * as SockJS from "sockjs-client";
 
 const ChatDemo = () => {
-  const [username, setUsername] = useState("Phat");
+  const [user, setUser] = useState({
+    id: Math.random().toString(36).substring(2, 10),
+    name: "Phat",
+  });
   const [messageList, setMessageList] = useState([]);
   const [stompClient, setStompClient] = useState();
 
@@ -28,7 +31,7 @@ const ChatDemo = () => {
     stompClient.send(
       "/app/chat.addUser/1234",
       {},
-      JSON.stringify({ sender: username, type: "JOIN" })
+      JSON.stringify({ sender: user, type: "JOIN" })
     );
   };
 
@@ -39,7 +42,7 @@ const ChatDemo = () => {
   const onMessageReceived = (payload) => {
     var res = JSON.parse(payload.body);
     console.log("Received message >>> : ", res);
-    let message = res.sender + ": " + res.message;
+    let message = res.sender.name + ": " + res.message;
     setMessageList((prev) => [...prev, message]);
   };
 
@@ -47,7 +50,7 @@ const ChatDemo = () => {
     console.log("Sending message...", stompClient);
     if (message && stompClient) {
       var chatMessage = {
-        sender: username,
+        sender: user,
         message: message,
         type: "CHAT",
       };

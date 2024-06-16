@@ -20,7 +20,6 @@ const WordDetail = ({ word, description, styleClass }) => {
   return (
     <>
       <a
-        href="javascript:void(0)"
         className={styleClass}
         onClick={() => setIsShowDescription(true)}
       >

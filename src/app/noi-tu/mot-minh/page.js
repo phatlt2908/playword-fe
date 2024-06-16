@@ -201,8 +201,6 @@ export default function WordLinkSingle() {
       )}
 
       <div>
-        <div>ABC</div>
-        <div>DEF</div>
       </div>
 
       {overType && (
