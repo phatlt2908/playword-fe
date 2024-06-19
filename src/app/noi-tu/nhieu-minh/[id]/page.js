@@ -23,12 +23,13 @@ const turnTime = 15;
 export default function WordLinkMulti({ params }) {
   const router = useRouter();
   const [stompClient, setStompClient] = useState();
-  const [messageList, setMessageList] = useState([]);
+  const [responseWord, setResponseWord] = useState("");
+  const [responseWordDescription, setResponseWordDescription] = useState("");
   const [answerWord, setAnswerWord] = useState("");
   const [turnNumber, setTurnNumber] = useState(1);
   const [overType, setOverType] = useState();
   const [turn, setTurn] = useState(3); // Number of turns to answer (answer wrong 3 times => game over)
-  const [user, setUser] = useState({
+  const [currentUser, setCurrentUser] = useState({
     id: Math.random().toString(36).substring(2, 10),
     name: Math.random().toString(36).substring(2, 10),
   });
@@ -37,7 +38,9 @@ export default function WordLinkMulti({ params }) {
 
   // Room info
   const [roomUserList, setRoomUserList] = useState([]);
+  const [answerUser, setAnswerUser] = useState();
   const [isRoomPreparing, setIsRoomPreparing] = useState(true);
+  const [wordList, setWordList] = useState([]);
 
   useEffect(() => {
     connect();
@@ -48,6 +51,27 @@ export default function WordLinkMulti({ params }) {
       stompClient.connect({}, onConnected, onError);
     }
   }, [stompClient]);
+
+  useEffect(() => {
+    if (isAnswering) {
+      setAnswerWord("");
+      setTurn(3);
+    }
+  }, [isAnswering]);
+
+  useEffect(() => {
+    if (overType) {
+      console.log("Over type >>> ", overType);
+    }
+  }, [overType]);
+
+  useEffect(() => {
+    setIsAnswering(answerUser && answerUser.id === currentUser.id);
+  }, [answerUser]);
+
+  const preResponseWord = useMemo(() => {
+    return responseWord.split(" ").pop();
+  });
 
   const connect = () => {
     console.log("Connecting websocket...");
@@ -60,7 +84,7 @@ export default function WordLinkMulti({ params }) {
     stompClient.send(
       `/app/addUser/${params.id}`,
       {},
-      JSON.stringify({ sender: user, roomId: params.id, type: "JOIN" })
+      JSON.stringify({ sender: currentUser, roomId: params.id, type: "JOIN" })
     );
   };
 
@@ -85,30 +109,9 @@ export default function WordLinkMulti({ params }) {
     console.log("Received message >>> : ", res);
 
     if (res.type === "ANSWER") {
-      let message = res.user.name + ": " + res.message;
-      setMessageList((prev) => [...prev, message]);
+      handleReceiveAnswer(res);
     } else {
       handleReceiveRoomInfo(res);
-    }
-  };
-
-  const onAnswer = () => {
-    if (!answerWord) {
-      return;
-    }
-
-    console.log("Sending message...", stompClient);
-    if (stompClient) {
-      var answerMessage = {
-        sender: user,
-        message: answerWord,
-        type: "CHAT",
-      };
-      stompClient.send(
-        `/app/sendMessage/${params.id}`,
-        {},
-        JSON.stringify(answerMessage)
-      );
     }
   };
 
@@ -124,7 +127,6 @@ export default function WordLinkMulti({ params }) {
    * @param {int} type
    */
   const onOver = (type) => {
-    console.log("Over");
     setOverType(type);
   };
 
@@ -133,13 +135,51 @@ export default function WordLinkMulti({ params }) {
     stompClient.send(
       `/app/ready/${params.id}`,
       {},
-      JSON.stringify({ sender: user, roomId: params.id, type: "READY" })
+      JSON.stringify({ sender: currentUser, roomId: params.id, type: "READY" })
+    );
+  };
+
+  const onAnswer = () => {
+    if (!answerWord) {
+      return;
+    }
+
+    const answer = preResponseWord + " " + answerWord;
+
+    // Check if answer is contained in word list
+    if (wordList.includes(answer)) {
+      swal.fire({
+        toast: true,
+        position: "top-end",
+        text: `Từ [${answer}] đã được trả lời 😣`,
+        icon: "error",
+        timer: 5000,
+        showConfirmButton: false,
+      });
+
+      // Game over if over turn
+      setTurn((prev) => prev - 1);
+      if (turn === 0) {
+        onOver(1);
+      }
+
+      return;
+    }
+
+    stompClient.send(
+      `/app/answer/${params.id}`,
+      {},
+      JSON.stringify({
+        sender: currentUser,
+        roomId: params.id,
+        message: answer,
+      })
     );
   };
 
   const handleReceiveRoomInfo = (message) => {
     if (message.type === "JOIN") {
-      if (message.user.id !== user.id) {
+      if (message.user.id !== currentUser.id) {
         swal.fire({
           toast: true,
           position: "top-end",
@@ -160,7 +200,10 @@ export default function WordLinkMulti({ params }) {
       });
     } else if (message.type === "READY") {
       // if all of user ready, start game
-      if (message.room.userList.every((user) => user.isReady)) {
+      if (
+        message.room.userList.every((user) => user.isReady) &&
+        message.room.status === "STARTED"
+      ) {
         swal
           .fire({
             title: "Bắt đầu game",
@@ -169,11 +212,108 @@ export default function WordLinkMulti({ params }) {
           })
           .then(() => {
             setIsRoomPreparing(false);
+            updateResponseWord(message.word);
           });
       }
+    } else if (message.type === "END") {
+      if (message.user.id === currentUser.id) {
+        swal.fire({
+          icon: "success",
+          text: `🎉🎉🎉 Chúc mừng! Bạn đã chiến thắng 🎉🎉🎉`,
+          timer: 3000,
+          showConfirmButton: false,
+        });
+      } else {
+        swal.fire({
+          icon: "info",
+          text: `😢😢😢 ${message.user.name} đã chiến thắng 😢😢😢`,
+          timer: 3000,
+          showConfirmButton: false,
+        });
+      }
+
+      resetGame();
     }
 
-    setRoomUserList(message.room.userList);
+    updateRoomInfo(message.room);
+  };
+
+  const handleReceiveAnswer = (message) => {
+    if (message.isAnswerCorrect) {
+      if (message.user.id === currentUser.id) {
+        swal.fire({
+          icon: "success",
+          text: `Tuyệt vời! Bạn đã trả lời đúng 🤩`,
+          timer: 3000,
+          showConfirmButton: false,
+        });
+
+        setTurn(3);
+      }
+
+      setWordList((prev) => [...prev, message.word]);
+      setTurnNumber((prev) => prev + 1);
+      updateRoomInfo(message.room);
+      updateResponseWord(message.word);
+    } else {
+      if (isAnswering) {
+        swal
+          .fire({
+            toast: true,
+            position: "top-end",
+            text:
+              "Không tồn tại từ [" +
+              preResponseWord +
+              " " +
+              answerWord +
+              "] 😣",
+            icon: "error",
+            timer: 5000,
+            confirmButtonText: "Yêu cầu thêm",
+          })
+          .then((result) => {
+            if (result.isConfirmed) {
+              reportApi
+                .create({
+                  word: preResponseWord + " " + answerWord,
+                  issueType: 1,
+                })
+                .then(() => {
+                  swal.fire({
+                    toast: true,
+                    position: "top-end",
+                    text: "Báo cáo thành công! 🤩",
+                    icon: "success",
+                    timer: 3000,
+                    showConfirmButton: false,
+                  });
+                });
+            }
+          });
+
+        // Game over if over turn
+        setTurn((prev) => prev - 1);
+        if (turn === 0) {
+          onOver(1);
+        }
+      }
+    }
+  };
+
+  const updateRoomInfo = (room) => {
+    setRoomUserList(room.userList);
+    setAnswerUser(room.userList.find((user) => user.isAnswering));
+  };
+
+  const updateResponseWord = (word) => {
+    setResponseWord(word.word);
+    setResponseWordDescription(word.description);
+  };
+
+  const resetGame = () => {
+    setIsRoomPreparing(true);
+    setIsReady(false);
+    setIsAnswering(false);
   };
 
   return (
@@ -186,7 +326,7 @@ export default function WordLinkMulti({ params }) {
           </span>
         </div>
 
-        {!overType && (
+        {!overType && isAnswering && (
           <BaseTimer
             key={turnNumber}
             maxTime={turnTime}
@@ -214,46 +354,45 @@ export default function WordLinkMulti({ params }) {
           <p className="mb-4">
             <WordDetail
               styleClass="has-text-centered is-size-1 is-inline-block w-100"
-              word="Test word"
-              description="Test word description"
+              word={responseWord}
+              description={responseWordDescription}
             />
           </p>
 
-          <div className="field has-addons">
-            <div className="control is-large">
-              <a className="button is-static is-large">Test</a>
+          {isAnswering ? (
+            <div className="field has-addons">
+              <div className="control is-large">
+                <a className="button is-static is-large">{preResponseWord}</a>
+              </div>
+              <div className="control is-large">
+                <input
+                  onKeyDown={handleKeyDown}
+                  className="input is-large"
+                  type="text"
+                  placeholder="..."
+                  value={answerWord}
+                  onChange={(e) => setAnswerWord(e.target.value)}
+                />
+              </div>
+              <div className="control">
+                <button
+                  className="button is-large transform-hover"
+                  onClick={onAnswer}
+                >
+                  <span>
+                    <FontAwesomeIcon icon={faArrowRight} />
+                  </span>
+                </button>
+              </div>
             </div>
-            <div className="control is-large">
-              <input
-                onKeyDown={handleKeyDown}
-                className="input is-large"
-                type="text"
-                placeholder="..."
-                value={answerWord}
-                onChange={(e) => setAnswerWord(e.target.value)}
-              />
-            </div>
-            <div className="control">
-              <button
-                className="button is-large transform-hover"
-                onClick={onAnswer}
-              >
-                <span>
-                  <FontAwesomeIcon icon={faArrowRight} />
-                </span>
-              </button>
-            </div>
-          </div>
+          ) : (
+            <div>{answerUser.name} đang trả lời</div>
+          )}
           {turn < 3 && (
             <p className="help is-warning is-size-6 has-text-centered has-text-weight-semibold">
               ⚠️ Bạn còn {turn} lượt nhập sai
             </p>
           )}
-          <div>
-            {messageList.map((message, index) => (
-              <div key={index}>{message}</div>
-            ))}
-          </div>
         </div>
       )}
 
