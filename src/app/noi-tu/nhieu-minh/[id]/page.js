@@ -13,10 +13,10 @@ import swal from "sweetalert2";
 import wordLinkApi from "@/services/wordLinkApi";
 import reportApi from "@/services/reportApi";
 
-import SpinnerLoading from "@/components/utils/spinner-loading";
+import BrandLoading from "@/components/utils/brand-loading";
 import BaseTimer from "@/components/utils/base-timer";
 import WordDetail from "@/components/contents/word-detail";
-import StandardModal from "@/components/contents/standard-modal";
+import UserIcon from "@/components/contents/user-icon";
 
 const turnTime = 15;
 
@@ -318,14 +318,7 @@ export default function WordLinkMulti({ params }) {
 
   return (
     <>
-      <div className="is-flex is-flex-direction-column is-align-items-center w-100">
-        <div>
-          <span className="mr-2">User</span>
-          <span className="icon is-large circle-border mb-4">
-            <FontAwesomeIcon icon={faUser} />
-          </span>
-        </div>
-
+      <div className="w-100">
         {!overType && isAnswering && (
           <BaseTimer
             key={turnNumber}
@@ -340,11 +333,17 @@ export default function WordLinkMulti({ params }) {
       {isRoomPreparing ? (
         <>
           {isReady ? (
-            <p className="has-text-centered is-size-5">
-              Đã sẵn sàng, chờ người chơi khác
-            </p>
+            <div className="is-flex is-flex-direction-column is-align-items-center">
+              <p className="has-text-centered is-size-4 mb-2">
+                Đã sẵn sàng, chờ người chơi khác
+              </p>
+              <BrandLoading />
+            </div>
           ) : (
-            <button className="button is-large" onClick={onReady}>
+            <button
+              className="button is-large drawing-border"
+              onClick={onReady}
+            >
               Sẵn sàng
             </button>
           )}
@@ -402,10 +401,12 @@ export default function WordLinkMulti({ params }) {
             key={index}
             className="column is-half-mobile is-one-third-widescreen is-one-quarter-fullhd is-flex is-flex-direction-column is-align-items-center"
           >
-            <span className="icon is-large circle-border">
-              <FontAwesomeIcon icon={faUser} />
-            </span>
-            <span className="is-size-7">{user.name}</span>
+            <UserIcon
+              username={user.name}
+              isSelf={currentUser.id == user.id}
+              isReady={isRoomPreparing && user.isReady}
+              isAnswer={user.isAnswering}
+            />
           </div>
         ))}
       </div>
