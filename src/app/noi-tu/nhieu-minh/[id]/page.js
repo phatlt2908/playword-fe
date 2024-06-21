@@ -68,7 +68,7 @@ export default function WordLinkMulti({ params }) {
 
   const connect = () => {
     console.log("Connecting websocket...");
-    var socket = new SockJS("http://localhost:8081/ws");
+    var socket = new SockJS(`${process.env.NEXT_PUBLIC_BASE_API_URL}/ws"`);
     setStompClient(Stomp.over(socket));
   };
 
