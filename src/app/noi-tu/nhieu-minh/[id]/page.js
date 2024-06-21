@@ -1,14 +1,15 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
 
 import { Stomp } from "@stomp/stompjs";
 import * as SockJS from "sockjs-client";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import swal from "sweetalert2";
+import styles from "./page.module.scss";
 
 import wordLinkApi from "@/services/wordLinkApi";
 import reportApi from "@/services/reportApi";
@@ -17,6 +18,7 @@ import BrandLoading from "@/components/utils/brand-loading";
 import BaseTimer from "@/components/utils/base-timer";
 import WordDetail from "@/components/contents/word-detail";
 import UserIcon from "@/components/contents/user-icon";
+import Link from "next/link";
 
 const turnTime = 15;
 
@@ -27,20 +29,32 @@ export default function WordLinkMulti({ params }) {
   const [responseWordDescription, setResponseWordDescription] = useState("");
   const [answerWord, setAnswerWord] = useState("");
   const [turnNumber, setTurnNumber] = useState(1);
-  const [overType, setOverType] = useState();
   const [turn, setTurn] = useState(3); // Number of turns to answer (answer wrong 3 times => game over)
   const [currentUser, setCurrentUser] = useState({
     id: Math.random().toString(36).substring(2, 10),
     name: Math.random().toString(36).substring(2, 10),
   });
   const [isReady, setIsReady] = useState(false);
-  const [isAnswering, setIsAnswering] = useState(false);
 
   // Room info
   const [roomUserList, setRoomUserList] = useState([]);
   const [answerUser, setAnswerUser] = useState();
   const [isRoomPreparing, setIsRoomPreparing] = useState(true);
   const [wordList, setWordList] = useState([]);
+
+  const isAnswering = useMemo(() => {
+    return answerUser && answerUser.id == currentUser.id;
+  });
+  const preResponseWord = useMemo(() => {
+    return responseWord.split(" ").pop();
+  });
+
+  const isAnsweringRef = useRef();
+  isAnsweringRef.current = isAnswering;
+  const answerRef = useRef();
+  answerRef.current = preResponseWord + " " + answerWord;
+  const turnRef = useRef();
+  turnRef.current = turn;
 
   useEffect(() => {
     connect();
@@ -51,27 +65,6 @@ export default function WordLinkMulti({ params }) {
       stompClient.connect({}, onConnected, onError);
     }
   }, [stompClient]);
-
-  useEffect(() => {
-    if (isAnswering) {
-      setAnswerWord("");
-      setTurn(3);
-    }
-  }, [isAnswering]);
-
-  useEffect(() => {
-    if (overType) {
-      console.log("Over type >>> ", overType);
-    }
-  }, [overType]);
-
-  useEffect(() => {
-    setIsAnswering(answerUser && answerUser.id === currentUser.id);
-  }, [answerUser]);
-
-  const preResponseWord = useMemo(() => {
-    return responseWord.split(" ").pop();
-  });
 
   const connect = () => {
     console.log("Connecting websocket...");
@@ -127,7 +120,23 @@ export default function WordLinkMulti({ params }) {
    * @param {int} type
    */
   const onOver = (type) => {
-    setOverType(type);
+    swal.fire({
+      icon: "error",
+      title: "Game Over",
+      text:
+        type == 1
+          ? "Hết lượt. Bạn đã trả lời sai 3 lần 😢"
+          : "Hết thời gian trả lời 😢",
+      timer: 3000,
+      showConfirmButton: false,
+    });
+
+    setIsReady(false);
+    stompClient.send(
+      `/app/over/${params.id}`,
+      {},
+      JSON.stringify({ sender: currentUser, roomId: params.id, type: "OVER" })
+    );
   };
 
   const onReady = () => {
@@ -215,18 +224,30 @@ export default function WordLinkMulti({ params }) {
             updateResponseWord(message.word);
           });
       }
+    } else if (message.type === "OVER") {
+      if (message.user.id !== currentUser.id) {
+        swal.fire({
+          icon: "info",
+          toast: true,
+          position: "top-end",
+          text: `${message.user.name} đã bị loại`,
+          timer: 3000,
+          showConfirmButton: false,
+        });
+      }
     } else if (message.type === "END") {
       if (message.user.id === currentUser.id) {
         swal.fire({
           icon: "success",
-          text: `🎉🎉🎉 Chúc mừng! Bạn đã chiến thắng 🎉🎉🎉`,
+          title: `Chúc mừng! Bạn đã chiến thắng 🎉`,
           timer: 3000,
           showConfirmButton: false,
         });
-      } else {
+      } else if (!isAnsweringRef.current) {
+        // Display winner message if curren user not playing
         swal.fire({
           icon: "info",
-          text: `😢😢😢 ${message.user.name} đã chiến thắng 😢😢😢`,
+          title: `${message.user.name} đã chiến thắng 🎉`,
           timer: 3000,
           showConfirmButton: false,
         });
@@ -249,6 +270,7 @@ export default function WordLinkMulti({ params }) {
         });
 
         setTurn(3);
+        setAnswerWord("");
       }
 
       setWordList((prev) => [...prev, message.word]);
@@ -256,17 +278,12 @@ export default function WordLinkMulti({ params }) {
       updateRoomInfo(message.room);
       updateResponseWord(message.word);
     } else {
-      if (isAnswering) {
+      if (isAnsweringRef.current) {
         swal
           .fire({
             toast: true,
             position: "top-end",
-            text:
-              "Không tồn tại từ [" +
-              preResponseWord +
-              " " +
-              answerWord +
-              "] 😣",
+            text: "Không tồn tại từ [" + answerRef.current + "] 😣",
             icon: "error",
             timer: 5000,
             confirmButtonText: "Yêu cầu thêm",
@@ -275,7 +292,7 @@ export default function WordLinkMulti({ params }) {
             if (result.isConfirmed) {
               reportApi
                 .create({
-                  word: preResponseWord + " " + answerWord,
+                  word: answerRef.current,
                   issueType: 1,
                 })
                 .then(() => {
@@ -293,7 +310,8 @@ export default function WordLinkMulti({ params }) {
 
         // Game over if over turn
         setTurn((prev) => prev - 1);
-        if (turn === 0) {
+        console.log("Turn >>> ", turnRef);
+        if (turnRef === 0) {
           onOver(1);
         }
       }
@@ -302,7 +320,14 @@ export default function WordLinkMulti({ params }) {
 
   const updateRoomInfo = (room) => {
     setRoomUserList(room.userList);
-    setAnswerUser(room.userList.find((user) => user.isAnswering));
+    let answerUser = room.userList.find((user) => user.isAnswering);
+    setAnswerUser(answerUser);
+    console.log("answerUser >>> ", answerUser);
+    console.log("currentUser >>> ", currentUser);
+    console.log(
+      "answerUser && answerUser.id === currentUser.id >>> ",
+      answerUser && answerUser.id === currentUser.id
+    );
   };
 
   const updateResponseWord = (word) => {
@@ -313,21 +338,30 @@ export default function WordLinkMulti({ params }) {
   const resetGame = () => {
     setIsRoomPreparing(true);
     setIsReady(false);
-    setIsAnswering(false);
+
+    console.log("Reset game >>> ");
   };
 
   return (
     <>
+      <a href="/noi-tu/nhieu-minh" className={`${styles.back} button is-text`}>
+        <span className="icon is-small">
+          <FontAwesomeIcon icon={faChevronLeft} size="sm" />
+        </span>
+        <span>Rời phòng</span>
+      </a>
       <div className="w-100">
-        {!overType && isAnswering && (
-          <BaseTimer
-            key={turnNumber}
-            maxTime={turnTime}
-            onOver={() => {
-              onOver(2);
-            }}
-          />
-        )}
+        <div>
+          {isReady && isAnswering && (
+            <BaseTimer
+              key={turnNumber}
+              maxTime={turnTime}
+              onOver={() => {
+                onOver(2);
+              }}
+            />
+          )}
+        </div>
       </div>
 
       {isRoomPreparing ? (
