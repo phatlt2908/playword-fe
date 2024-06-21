@@ -20,7 +20,7 @@ const UserIcon = ({ username, isSelf, isReady, isAnswer }) => {
           />
         </div>
         <span
-          className={`is-size-7 ${
+          className={`is-size-6 ${
             isSelf && "has-text-weight-bold has-text-success"
           }`}
         >

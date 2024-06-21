@@ -1,10 +1,21 @@
+:root {
+  --bulma-body-font-size: 1.3em;
+  --bulma-control-size: var(--bulma-size-large);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bulma-text: hsl(0deg 0% 100%);
+  }
+}
+
 .w-100 {
   width: 100% !important;
 }
 
 // The hand drawing border style
 .control>* {
-  border-width: 4px !important;
+  border-width: 2px !important;
   border-top-left-radius: 255px 15px !important;
   border-top-right-radius: 15px 225px !important;
   border-bottom-right-radius: 225px 15px !important;
@@ -17,4 +28,23 @@
 
 .progress::-webkit-progress-value {
   transition: width 1s linear;
+}
+
+.button {
+  background-color: rgba(var(--transparency-rgba)) !important;
+  border-color: white !important;
+  border-width: 2px !important;
+  border-top-left-radius: 255px 15px !important;
+  border-top-right-radius: 15px 225px !important;
+  border-bottom-right-radius: 225px 15px !important;
+  border-bottom-left-radius: 15px 255px !important;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+  }
+}
+
+.input {
+  background-color: rgba(var(--transparency-rgba)) !important;
+  border-color: white !important;
 }

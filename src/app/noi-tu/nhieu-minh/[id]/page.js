@@ -344,8 +344,8 @@ export default function WordLinkMulti({ params }) {
 
   return (
     <>
-      <a href="/noi-tu/nhieu-minh" className={`${styles.back} button is-text`}>
-        <span className="icon is-small">
+      <a href="/noi-tu/nhieu-minh" className={`${styles.back} icon-text`}>
+        <span className="icon">
           <FontAwesomeIcon icon={faChevronLeft} size="sm" />
         </span>
         <span>Rời phòng</span>
@@ -395,7 +395,7 @@ export default function WordLinkMulti({ params }) {
           {isAnswering ? (
             <div className="field has-addons">
               <div className="control is-large">
-                <a className="button is-static is-large">{preResponseWord}</a>
+                <a className="button is-large">{preResponseWord}</a>
               </div>
               <div className="control is-large">
                 <input

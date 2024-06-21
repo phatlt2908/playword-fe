@@ -13,10 +13,10 @@ const WordLinkMultiSelection = () => {
   return (
     <>
       <div className="button" onClick={() => onCreateRoom()}>
-        Tao phong
+        Tạo phòng
       </div>
       <hr />
-      <div>Vao phong</div>
+      <div>Vào phòng</div>
     </>
   );
 };

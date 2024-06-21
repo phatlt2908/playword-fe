@@ -1,4 +1,3 @@
-import { Inter } from "next/font/google";
 import "@/assets/styles/globals.scss";
 
 import "@fortawesome/fontawesome-svg-core/styles.css";
@@ -8,7 +7,7 @@ config.autoAddCss = false;
 import BaseHeader from "@/components/layouts/base-header";
 import BaseFooter from "@/components/layouts/base-footer";
 
-const inter = Inter({ subsets: ["latin"] });
+import { patrick_hand } from "@/utils/fonts";
 
 export const metadata = {
   title: "Create Next App",
@@ -17,8 +16,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="en" data-theme="dark">
+      <body className={patrick_hand.variable}>
         <main>
           <BaseHeader />
           <div className="main-center">
