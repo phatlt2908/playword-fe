@@ -2,7 +2,7 @@ import axios from "axios";
 import swal from "sweetalert2";
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BASE_API_URL,
+  baseURL: process.env.NEXT_PUBLIC_BASE_API_URL + "/api/v1",
   headers: {
     "Content-type": "application/json",
   },
