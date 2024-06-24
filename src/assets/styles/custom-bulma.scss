@@ -6,6 +6,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --bulma-text: hsl(0deg 0% 100%);
+    --bulma-button-static-color: var(--bulma-text-strong);
   }
 }
 
@@ -47,4 +48,12 @@
 .input {
   background-color: rgba(var(--transparency-rgba)) !important;
   border-color: white !important;
+}
+
+.table {
+  background-color: rgba(var(--transparency-rgba)) !important;
+}
+
+.table.is-hoverable tbody tr:not(.is-selected):hover {
+  background-color: rgba(var(--half-transparency-rgba)) !important;
 }

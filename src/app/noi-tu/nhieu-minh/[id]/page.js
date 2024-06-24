@@ -37,6 +37,7 @@ export default function WordLinkMulti({ params }) {
   const [isReady, setIsReady] = useState(false);
 
   // Room info
+  const [roomName, setRoomName] = useState();
   const [roomUserList, setRoomUserList] = useState([]);
   const [answerUser, setAnswerUser] = useState();
   const [isRoomPreparing, setIsRoomPreparing] = useState(true);
@@ -322,12 +323,7 @@ export default function WordLinkMulti({ params }) {
     setRoomUserList(room.userList);
     let answerUser = room.userList.find((user) => user.isAnswering);
     setAnswerUser(answerUser);
-    console.log("answerUser >>> ", answerUser);
-    console.log("currentUser >>> ", currentUser);
-    console.log(
-      "answerUser && answerUser.id === currentUser.id >>> ",
-      answerUser && answerUser.id === currentUser.id
-    );
+    setRoomName(room.name);
   };
 
   const updateResponseWord = (word) => {
@@ -344,12 +340,15 @@ export default function WordLinkMulti({ params }) {
 
   return (
     <>
-      <a href="/noi-tu/nhieu-minh" className={`${styles.back} icon-text`}>
-        <span className="icon">
-          <FontAwesomeIcon icon={faChevronLeft} size="sm" />
-        </span>
-        <span>Rời phòng</span>
-      </a>
+      <div>
+        <a href="/noi-tu/nhieu-minh" className={`${styles.back} icon-text`}>
+          <span className="icon">
+            <FontAwesomeIcon icon={faChevronLeft} size="sm" />
+          </span>
+          <span>Rời phòng</span>
+        </a>
+        <p>Phòng: {roomName}</p>
+      </div>
       <div className="w-100">
         <div>
           {isReady && isAnswering && (

@@ -169,7 +169,7 @@ export default function WordLinkSingle() {
 
           <div className="field has-addons">
             <div className="control is-large">
-              <a className="button is-static is-large">{preResponseWord}</a>
+              <a className="button is-large">{preResponseWord}</a>
             </div>
             <div className="control is-large">
               <input
