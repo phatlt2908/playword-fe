@@ -86,6 +86,7 @@ const WordLinkMultiSelection = () => {
               <tbody>
                 {roomList.map((room) => (
                   <tr
+                    key={room.id}
                     className="cursor-pointer"
                     onClick={() => onJoinRoom(room.id)}
                   >
