@@ -9,6 +9,17 @@ import { useRouter } from "next/navigation";
 import wordLinkApi from "@/services/wordLinkApi";
 import StandardModal from "@/components/contents/standard-modal";
 
+const roomNameExamples = [
+  "Độc cô cầu bại...",
+  "Cần một ván thua",
+  "Cần một trận thắng",
+  "Lêu Lêu FA 🤪",
+  "Nốt ván này thôi...",
+  "Không tên",
+  "Đừng vào! thua đấy...",
+  "Phòng này có quái vật",
+];
+
 const WordLinkMultiSelection = () => {
   const router = useRouter();
 
@@ -20,6 +31,12 @@ const WordLinkMultiSelection = () => {
   useEffect(() => {
     search();
   }, []);
+
+  useEffect(() => {
+    setRoomName(
+      roomNameExamples[Math.floor(Math.random() * roomNameExamples.length)]
+    );
+  }, [isOpenCreateRoomPopup]);
 
   const search = () => {
     wordLinkApi
@@ -42,6 +59,13 @@ const WordLinkMultiSelection = () => {
 
   const onJoinRoom = (roomId) => {
     router.push(`/noi-tu/nhieu-minh/${roomId}`);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      setIsOpenCreateRoomPopup(false);
+      onCreateRoom();
+    }
   };
 
   return (
@@ -114,7 +138,9 @@ const WordLinkMultiSelection = () => {
                 className="input"
                 type="text"
                 placeholder="Tên phòng..."
+                value={roomName}
                 onChange={(e) => setRoomName(e.target.value)}
+                onKeyDown={handleKeyDown}
               />
             </div>
             <div className="control">

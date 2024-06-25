@@ -347,7 +347,7 @@ export default function WordLinkMulti({ params }) {
           </span>
           <span>Rời phòng</span>
         </a>
-        <p>Phòng: {roomName}</p>
+        {roomName && <p>Phòng: {roomName}</p>}
       </div>
       <div className="w-100">
         <div>
@@ -404,6 +404,7 @@ export default function WordLinkMulti({ params }) {
                   placeholder="..."
                   value={answerWord}
                   onChange={(e) => setAnswerWord(e.target.value)}
+                  autoFocus
                 />
               </div>
               <div className="control">
