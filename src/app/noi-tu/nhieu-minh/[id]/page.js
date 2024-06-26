@@ -23,7 +23,7 @@ import UserIcon from "@/components/contents/user-icon";
 import BaseCountdown from "@/components/utils/base-countdown";
 import StandardModal from "@/components/contents/standard-modal";
 
-const turnTime = 15;
+const turnTime = 20;
 const waitingSecond = 20;
 
 export default function WordLinkMulti({ params }) {
@@ -62,9 +62,27 @@ export default function WordLinkMulti({ params }) {
   answerRef.current = preResponseWord + " " + answerWord;
   const turnRef = useRef();
   turnRef.current = turn;
+  const stompClientRef = useRef();
+  stompClientRef.current = stompClient;
 
   useEffect(() => {
     connect();
+
+    // On unmount
+    return () => {
+      if (stompClientRef.current) {
+        stompClientRef.current.send(
+          `/app/leave/${params.id}`,
+          {},
+          JSON.stringify({
+            sender: currentUser,
+            roomId: params.id,
+            type: "LEAVE",
+          })
+        );
+        stompClientRef.current.disconnect();
+      }
+    };
   }, []);
 
   useEffect(() => {

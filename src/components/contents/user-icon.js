@@ -17,13 +17,15 @@ const UserIcon = ({
       <div className={`${styles.icon} ${isBlur && styles.opacityImage}`}>
         {isReady && <div className={styles.ready}>Sẵn sàng</div>}
         <div className="image is-64x64">
-          <Image
-            src={avatarUrl}
-            alt="Avatar"
-            width={100}
-            height={100}
-            priority
-          />
+          {avatarUrl && (
+            <Image
+              src={avatarUrl}
+              alt="Avatar"
+              width={100}
+              height={100}
+              priority
+            />
+          )}
         </div>
         <span
           className={`is-size-6 ${
