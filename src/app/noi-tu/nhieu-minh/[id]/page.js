@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect, useMemo, useRef } from "react";
 
@@ -7,11 +8,14 @@ import { Stomp } from "@stomp/stompjs";
 import * as SockJS from "sockjs-client";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowRight,
+  faChevronLeft,
+  faLink,
+} from "@fortawesome/free-solid-svg-icons";
 import swal from "sweetalert2";
 import styles from "./page.module.scss";
 
-import wordLinkApi from "@/services/wordLinkApi";
 import reportApi from "@/services/reportApi";
 
 import avatarConst from "@/constants/avatarConst";
@@ -368,13 +372,32 @@ export default function WordLinkMulti({ params }) {
   return (
     <>
       <div>
-        <a href="/noi-tu/nhieu-minh" className={`${styles.back} icon-text`}>
+        <Link href="/noi-tu/nhieu-minh" className={`${styles.back} icon-text`}>
           <span className="icon">
             <FontAwesomeIcon icon={faChevronLeft} size="sm" />
           </span>
           <span>Rời phòng</span>
-        </a>
-        {roomName && <p>Phòng: {roomName}</p>}
+        </Link>
+        <p
+          className="icon-text"
+          onClick={() => {
+            navigator.clipboard.writeText(window.location.href);
+            swal.fire({
+              toast: true,
+              position: "top-end",
+              title: "Đã sao chép đường dẫn phòng chơi",
+              text: "Hãy gửi đường dẫn này cho bạn bè mà bạn muốn chơi cùng nhé! 🥰",
+              icon: "success",
+              timer: 5000,
+              showConfirmButton: false,
+            });
+          }}
+        >
+          {roomName && <span>Phòng: {roomName}</span>}
+          <span className="icon cursor-pointer has-text-link">
+            <FontAwesomeIcon icon={faLink} />
+          </span>
+        </p>
       </div>
       <div className="w-100">
         <div>
