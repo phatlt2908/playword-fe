@@ -1,18 +1,24 @@
 import Image from "next/image";
 
-import avatarConst from "@/constants/avatarConst";
 import DotLoading from "../utils/dot-loading";
 
 import styles from "./user-icon.module.css";
 
-const UserIcon = ({ username, isSelf, isReady, isAnswer }) => {
+const UserIcon = ({
+  username,
+  avatarUrl,
+  isSelf,
+  isReady,
+  isAnswer,
+  isBlur,
+}) => {
   return (
     <>
-      <div className={styles.icon}>
+      <div className={`${styles.icon} ${isBlur && styles.opacityImage}`}>
         {isReady && <div className={styles.ready}>Sẵn sàng</div>}
         <div className="image is-64x64">
           <Image
-            src={avatarConst.AVATAR_LIST[Math.floor(Math.random() * 5)]}
+            src={avatarUrl}
             alt="Avatar"
             width={100}
             height={100}

@@ -1,7 +1,7 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useEffect, useMemo, useRef } from "react";
-import { useRouter } from "next/navigation";
 
 import { Stomp } from "@stomp/stompjs";
 import * as SockJS from "sockjs-client";
@@ -14,16 +14,19 @@ import styles from "./page.module.scss";
 import wordLinkApi from "@/services/wordLinkApi";
 import reportApi from "@/services/reportApi";
 
+import avatarConst from "@/constants/avatarConst";
+
 import BrandLoading from "@/components/utils/brand-loading";
 import BaseTimer from "@/components/utils/base-timer";
 import WordDetail from "@/components/contents/word-detail";
 import UserIcon from "@/components/contents/user-icon";
-import Link from "next/link";
+import BaseCountdown from "@/components/utils/base-countdown";
+import StandardModal from "@/components/contents/standard-modal";
 
 const turnTime = 15;
+const waitingSecond = 20;
 
 export default function WordLinkMulti({ params }) {
-  const router = useRouter();
   const [stompClient, setStompClient] = useState();
   const [responseWord, setResponseWord] = useState("");
   const [responseWordDescription, setResponseWordDescription] = useState("");
@@ -33,8 +36,11 @@ export default function WordLinkMulti({ params }) {
   const [currentUser, setCurrentUser] = useState({
     id: Math.random().toString(36).substring(2, 10),
     name: Math.random().toString(36).substring(2, 10),
+    avatar: avatarConst.AVATAR_LIST[Math.floor(Math.random() * 5)],
   });
   const [isReady, setIsReady] = useState(false);
+  const [isSelectingAvatar, setIsSelectingAvatar] = useState(false);
+  const [isLoadingInit, setIsLoadingInit] = useState(true);
 
   // Room info
   const [roomName, setRoomName] = useState();
@@ -94,7 +100,7 @@ export default function WordLinkMulti({ params }) {
         showConfirmButton: false,
       })
       .then(() => {
-        router.push("noi-tu/nhieu-minh");
+        window.location.href = "/noi-tu/nhieu-minh";
       });
   };
 
@@ -169,7 +175,7 @@ export default function WordLinkMulti({ params }) {
 
       // Game over if over turn
       setTurn((prev) => prev - 1);
-      if (turn === 0) {
+      if (turn === 1) {
         onOver(1);
       }
 
@@ -258,6 +264,7 @@ export default function WordLinkMulti({ params }) {
     }
 
     updateRoomInfo(message.room);
+    setIsLoadingInit(false);
   };
 
   const handleReceiveAnswer = (message) => {
@@ -311,8 +318,7 @@ export default function WordLinkMulti({ params }) {
 
         // Game over if over turn
         setTurn((prev) => prev - 1);
-        console.log("Turn >>> ", turnRef);
-        if (turnRef === 0) {
+        if (turnRef.current === 1) {
           onOver(1);
         }
       }
@@ -334,8 +340,11 @@ export default function WordLinkMulti({ params }) {
   const resetGame = () => {
     setIsRoomPreparing(true);
     setIsReady(false);
+    setTurn(3);
+  };
 
-    console.log("Reset game >>> ");
+  const onWaitingTimeout = () => {
+    window.location.href = "/noi-tu/nhieu-minh";
   };
 
   return (
@@ -363,87 +372,166 @@ export default function WordLinkMulti({ params }) {
         </div>
       </div>
 
-      {isRoomPreparing ? (
+      {isLoadingInit ? (
+        <BrandLoading />
+      ) : (
         <>
-          {isReady ? (
-            <div className="is-flex is-flex-direction-column is-align-items-center">
-              <p className="has-text-centered is-size-4 mb-2">
-                Đã sẵn sàng, chờ người chơi khác
-              </p>
-              <BrandLoading />
-            </div>
+          {isRoomPreparing ? (
+            <>
+              {isReady ? (
+                <div className="is-flex is-flex-direction-column is-align-items-center">
+                  <p className="has-text-centered is-size-4 mb-2">
+                    Đã sẵn sàng, chờ người chơi khác
+                  </p>
+                  <BrandLoading />
+                </div>
+              ) : (
+                <div className="is-flex is-flex-direction-column is-align-items-center">
+                  <div className="columns is-mobile">
+                    <div
+                      className="column is-narrow cursor-pointer py-2"
+                      onClick={() => setIsSelectingAvatar(true)}
+                    >
+                      <div className="image is-32x32">
+                        <Image
+                          src={currentUser.avatar}
+                          alt="Avatar"
+                          width={100}
+                          height={100}
+                          priority
+                        />
+                      </div>
+                      <div className="is-size-7 has-text-centered">Đổi</div>
+                    </div>
+                    <input
+                      className="column input is-large drawing-border"
+                      type="text"
+                      value={currentUser.name}
+                      onChange={(e) =>
+                        setCurrentUser({ ...currentUser, name: e.target.value })
+                      }
+                      autoFocus
+                      maxLength={20}
+                    />
+                  </div>
+                  <button
+                    className="button is-large drawing-border is-flex is-flex-direction-column is-align-items-center"
+                    onClick={onReady}
+                  >
+                    <span>Sẵn sàng</span>
+                    {roomUserList.length}
+                    <BaseCountdown
+                      totalTime={
+                        roomUserList.length == 1
+                          ? waitingSecond * 10
+                          : waitingSecond
+                      }
+                      onTimeout={onWaitingTimeout}
+                    />
+                  </button>
+                </div>
+              )}
+            </>
           ) : (
-            <button
-              className="button is-large drawing-border"
-              onClick={onReady}
-            >
-              Sẵn sàng
-            </button>
+            <div>
+              <p className="mb-4">
+                <WordDetail
+                  styleClass="has-text-centered is-size-1 is-inline-block w-100"
+                  word={responseWord}
+                  description={responseWordDescription}
+                />
+              </p>
+
+              {isAnswering ? (
+                <>
+                  <div className="field has-addons">
+                    <div className="control is-large">
+                      <a className="button is-large">{preResponseWord}</a>
+                    </div>
+                    <div className="control is-large">
+                      <input
+                        onKeyDown={handleKeyDown}
+                        className="input is-large"
+                        type="text"
+                        placeholder="..."
+                        value={answerWord}
+                        onChange={(e) => setAnswerWord(e.target.value)}
+                        autoFocus
+                        maxLength={50}
+                      />
+                    </div>
+                    <div className="control">
+                      <button
+                        className="button is-large transform-hover"
+                        onClick={onAnswer}
+                      >
+                        <span>
+                          <FontAwesomeIcon icon={faArrowRight} />
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                  {turn < 3 && (
+                    <p className="help is-warning is-size-6 has-text-centered has-text-weight-semibold">
+                      ⚠️ Bạn còn {turn} lượt nhập sai
+                    </p>
+                  )}
+                </>
+              ) : (
+                <div>{answerUser.name} đang trả lời</div>
+              )}
+
+              {!isReady && <div>Vui lòng đợi đến khi ván đấu kết thúc...</div>}
+            </div>
           )}
         </>
-      ) : (
-        <div>
-          <p className="mb-4">
-            <WordDetail
-              styleClass="has-text-centered is-size-1 is-inline-block w-100"
-              word={responseWord}
-              description={responseWordDescription}
-            />
-          </p>
-
-          {isAnswering ? (
-            <div className="field has-addons">
-              <div className="control is-large">
-                <a className="button is-large">{preResponseWord}</a>
-              </div>
-              <div className="control is-large">
-                <input
-                  onKeyDown={handleKeyDown}
-                  className="input is-large"
-                  type="text"
-                  placeholder="..."
-                  value={answerWord}
-                  onChange={(e) => setAnswerWord(e.target.value)}
-                  autoFocus
-                />
-              </div>
-              <div className="control">
-                <button
-                  className="button is-large transform-hover"
-                  onClick={onAnswer}
-                >
-                  <span>
-                    <FontAwesomeIcon icon={faArrowRight} />
-                  </span>
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div>{answerUser.name} đang trả lời</div>
-          )}
-          {turn < 3 && (
-            <p className="help is-warning is-size-6 has-text-centered has-text-weight-semibold">
-              ⚠️ Bạn còn {turn} lượt nhập sai
-            </p>
-          )}
-        </div>
       )}
 
-      <div className="columns is-centered is-mobile w-100">
+      <div className="columns is-multiline is-centered is-mobile w-100">
         {roomUserList.map((user, index) => (
           <div
             key={index}
-            className="column is-half-mobile is-one-third-widescreen is-one-quarter-fullhd is-flex is-flex-direction-column is-align-items-center"
+            className="column is-flex is-flex-direction-column is-align-items-center"
           >
             <UserIcon
               username={user.name}
+              avatarUrl={user.avatar}
               isSelf={currentUser.id == user.id}
               isReady={isRoomPreparing && user.isReady}
               isAnswer={user.isAnswering}
+              isBlur={!isRoomPreparing && !user.isReady}
             />
           </div>
         ))}
       </div>
+
+      {isSelectingAvatar && (
+        <StandardModal onClose={() => setIsSelectingAvatar(false)}>
+          <h3 className="title is-3 has-text-centered mb-4">Chọn avatar</h3>
+          <div className="columns is-multiline is-centered is-mobile w-100">
+            {avatarConst.AVATAR_LIST.map((avatar, index) => (
+              <div
+                className="column is-flex is-justify-content-center"
+                key={index}
+                onClick={() => {
+                  setCurrentUser({ ...currentUser, avatar });
+                  setIsSelectingAvatar(false);
+                }}
+              >
+                <figure className="image is-128x128">
+                  <Image
+                    src={avatar}
+                    alt="Avatar"
+                    width={100}
+                    height={100}
+                    priority
+                  />
+                </figure>
+              </div>
+            ))}
+          </div>
+        </StandardModal>
+      )}
     </>
   );
 }

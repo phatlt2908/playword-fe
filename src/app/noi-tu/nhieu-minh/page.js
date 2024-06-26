@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 
 import wordLinkApi from "@/services/wordLinkApi";
 import StandardModal from "@/components/contents/standard-modal";
+import SpinnerLoading from "@/components/utils/spinner-loading";
 
 const roomNameExamples = [
   "Độc cô cầu bại...",
@@ -18,6 +19,21 @@ const roomNameExamples = [
   "Không tên",
   "Đừng vào! thua đấy...",
   "Phòng này có quái vật",
+  "Không ai thèm vào",
+  "Căn phòng của những kẻ lười biếng",
+  "Vùng đất cấm",
+  "Cổng thời gian",
+  "Nơi ẩn náu",
+  "Góc thiền định",
+  "Thiên đường",
+  "Địa ngục",
+  "Cửa hàng bí mật",
+  "Phòng truyền thống",
+  "Phòng cổ",
+  "Phòng hiện đại",
+  "Phòng học",
+  "Phòng ngủ",
+  "Phòng khách",
 ];
 
 const WordLinkMultiSelection = () => {
@@ -27,6 +43,7 @@ const WordLinkMultiSelection = () => {
   const [roomList, setRoomList] = useState([]);
   const [isOpenCreateRoomPopup, setIsOpenCreateRoomPopup] = useState(false);
   const [roomName, setRoomName] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     search();
@@ -39,15 +56,18 @@ const WordLinkMultiSelection = () => {
   }, [isOpenCreateRoomPopup]);
 
   const search = () => {
+    setIsLoading(true);
     wordLinkApi
       .getRoomList(keyword)
       .then((response) => {
         setRoomList(response.data);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log(error))
+      .finally(() => setIsLoading(false));
   };
 
   const onCreateRoom = () => {
+    setIsOpenCreateRoomPopup(false);
     const roomId = Math.random().toString(36).substring(2, 8);
     wordLinkApi
       .createRoom(roomId, roomName)
@@ -63,7 +83,6 @@ const WordLinkMultiSelection = () => {
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      setIsOpenCreateRoomPopup(false);
       onCreateRoom();
     }
   };
@@ -98,31 +117,39 @@ const WordLinkMultiSelection = () => {
             </div>
           </div>
 
-          {roomList && roomList.length ? (
-            <table className="table is-fullwidth is-narrow is-hoverable">
-              <thead>
-                <tr>
-                  <th>Mã phòng</th>
-                  <th>Tên phòng</th>
-                  <th>Người chơi</th>
-                </tr>
-              </thead>
-              <tbody>
-                {roomList.map((room) => (
-                  <tr
-                    key={room.id}
-                    className="cursor-pointer"
-                    onClick={() => onJoinRoom(room.id)}
-                  >
-                    <th>{room.id}</th>
-                    <th>{room.name}</th>
-                    <th>{room.userCount}</th>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          {isLoading ? (
+            <div className="mt-2">
+              <SpinnerLoading />
+            </div>
           ) : (
-            <p>Không tìm thấy phòng</p>
+            <div>
+              {roomList && roomList.length ? (
+                <table className="table is-fullwidth is-narrow is-hoverable">
+                  <thead>
+                    <tr>
+                      <th>Mã phòng</th>
+                      <th>Tên phòng</th>
+                      <th>Người chơi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {roomList.map((room) => (
+                      <tr
+                        key={room.id}
+                        className="cursor-pointer"
+                        onClick={() => onJoinRoom(room.id)}
+                      >
+                        <th>{room.id}</th>
+                        <th>{room.name}</th>
+                        <th>{room.userCount}</th>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <p>Không tìm thấy phòng</p>
+              )}
+            </div>
           )}
         </div>
       </div>
@@ -141,6 +168,7 @@ const WordLinkMultiSelection = () => {
                 value={roomName}
                 onChange={(e) => setRoomName(e.target.value)}
                 onKeyDown={handleKeyDown}
+                maxLength={50}
               />
             </div>
             <div className="control">
