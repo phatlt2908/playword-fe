@@ -4,14 +4,6 @@ const avatarConst = {
     "/avatar/dog-avatar.png",
     "/avatar/fox-avatar.png",
     "/avatar/penguin-avatar.png",
-    "/avatar/bear-avatar.png",
-    "/avatar/dog-avatar.png",
-    "/avatar/fox-avatar.png",
-    "/avatar/penguin-avatar.png",
-    "/avatar/bear-avatar.png",
-    "/avatar/dog-avatar.png",
-    "/avatar/fox-avatar.png",
-    "/avatar/penguin-avatar.png",
   ],
 };
 

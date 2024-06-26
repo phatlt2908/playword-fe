@@ -419,7 +419,6 @@ export default function WordLinkMulti({ params }) {
                     onClick={onReady}
                   >
                     <span>Sẵn sàng</span>
-                    {roomUserList.length}
                     <BaseCountdown
                       totalTime={
                         roomUserList.length == 1
