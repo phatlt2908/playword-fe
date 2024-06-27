@@ -16,6 +16,10 @@ class wordLinkApi {
   createRoom(id, name) {
     return axios.get(`/multi-word-link/create-room?id=${id}&name=${name}`);
   }
+
+  getResult(point) {
+    return axios.get(`/word-link/result?point=${point}`);
+  }
 }
 
 export default new wordLinkApi();

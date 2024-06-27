@@ -26,6 +26,7 @@ export default function WordLinkSingle() {
   const [turn, setTurn] = useState(3); // Number of turns to answer (answer wrong 3 times => game over)
   const [point, setPoint] = useState(0);
   const [overType, setOverType] = useState();
+  const [rank, setRank] = useState();
 
   const preResponseWord = useMemo(() => {
     return responseWord.split(" ").pop();
@@ -141,8 +142,16 @@ export default function WordLinkSingle() {
    * @param {int} type
    */
   const onOver = (type) => {
-    console.log("Over");
     setOverType(type);
+
+    wordLinkApi
+      .getResult(point)
+      .then((response) => {
+        setRank(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (
@@ -228,7 +237,9 @@ export default function WordLinkSingle() {
                 : "Hết thời gian trả lời 😢"}
             </h3>
             <p className="is-size-4">Điểm số: {point}</p>
-            <p className="is-size-4">Xếp hạng: 1450</p>
+            <p className="is-size-4">
+              Xếp hạng: {rank ? rank : "Không xếp hạng"}
+            </p>
             <div className="buttons is-justify-content-center mt-5">
               <button
                 className="button is-large drawing-border"
