@@ -372,7 +372,7 @@ export default function WordLinkMulti({ params }) {
   return (
     <>
       <div>
-        <Link href="/noi-tu/nhieu-minh" className={`${styles.back} icon-text`}>
+        <Link href="/noi-tu/nhieu-minh" className={`${styles.back} icon-text is-size-6`}>
           <span className="icon">
             <FontAwesomeIcon icon={faChevronLeft} size="sm" />
           </span>

@@ -18,12 +18,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" data-theme="dark">
       <body className={patrick_hand.variable}>
+        <BaseHeader />
         <main>
-          <BaseHeader />
-          <div className="main-center">
-            {children}
-          </div>
-          <BaseFooter />
+          <div className="main-center">{children}</div>
         </main>
       </body>
     </html>

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-import { faPlay, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faPlay, faRotate, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/navigation";
 
@@ -100,7 +100,7 @@ const WordLinkMultiSelection = () => {
         </div>
         <div className="column">
           <div className="field has-addons">
-            <div className="control">
+            <div className="control is-expanded">
               <input
                 className="input drawing-border"
                 type="text"
@@ -139,9 +139,9 @@ const WordLinkMultiSelection = () => {
                         className="cursor-pointer"
                         onClick={() => onJoinRoom(room.id)}
                       >
-                        <th>{room.id}</th>
-                        <th>{room.name}</th>
-                        <th>{room.userCount}</th>
+                        <td>{room.id}</td>
+                        <td>{room.name}</td>
+                        <td className="has-text-right">{room.userCount}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -160,9 +160,9 @@ const WordLinkMultiSelection = () => {
         >
           <label className="label">Tên phòng</label>
           <div className="field has-addons">
-            <div className="control">
+            <div className="control has-icons-right is-expanded">
               <input
-                className="input"
+                className="input is-large"
                 type="text"
                 placeholder="Tên phòng..."
                 value={roomName}
@@ -170,6 +170,18 @@ const WordLinkMultiSelection = () => {
                 onKeyDown={handleKeyDown}
                 maxLength={50}
               />
+              <span
+                class="icon is-large is-right cursor-pointer allow-all-pointer-event"
+                onClick={() =>
+                  setRoomName(
+                    roomNameExamples[
+                      Math.floor(Math.random() * roomNameExamples.length)
+                    ]
+                  )
+                }
+              >
+                <FontAwesomeIcon icon={faRotate} size="lg" />
+              </span>
             </div>
             <div className="control">
               <button className="button drawing-border" onClick={onCreateRoom}>

@@ -1,6 +1,7 @@
 :root {
   --bulma-body-font-size: 1.3em;
   --bulma-control-size: var(--bulma-size-large);
+  --bulma-border: white;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -8,6 +9,10 @@
     --bulma-text: hsl(0deg 0% 100%);
     --bulma-button-static-color: var(--bulma-text-strong);
   }
+}
+
+body, button, input, optgroup, select, textarea {
+  font-family: var(--font-patrick-hand);
 }
 
 .w-100 {
@@ -56,4 +61,8 @@
 
 .table.is-hoverable tbody tr:not(.is-selected):hover {
   background-color: rgba(var(--half-transparency-rgba)) !important;
+}
+
+.breadcrumb a {
+  color: var(--bulma-text-strong) !important;
 }

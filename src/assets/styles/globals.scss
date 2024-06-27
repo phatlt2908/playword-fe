@@ -45,24 +45,19 @@ main {
   .main-center {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     position: relative;
-    padding: 4rem 0;
+    margin-top: 2rem;
     width: 100%;
     flex: 1;
     max-width: 1000px;
   }
 
   /* Mobile */
-  @media (max-width: 700px) {
+  @media (max-width: 768px) {
     .main-center {
-      padding: 8rem 0 6rem;
-    }
-
-    .main-center::before {
-      transform: none;
-      height: 300px;
+      margin-top: 1rem;
     }
   }
 }
@@ -106,4 +101,8 @@ a {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.allow-all-pointer-event {
+  pointer-events: all !important;
 }
