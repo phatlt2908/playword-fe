@@ -10,8 +10,8 @@ import BaseFooter from "@/components/layouts/base-footer";
 import { patrick_hand } from "@/utils/fonts";
 
 export const metadata = {
-  title: "Chơi chữ",
-  description: "Chơi chữ - vì nét đẹp của Tiếng Việt",
+  title: "Nối từ",
+  description: "Chơi nối từ theo nhóm nhiều người hoặc chơi một mình. Kho từ vựng phong phú, được cập nhật liên tục. Giao diện dễ sử dụng",
 };
 
 export default function RootLayout({ children }) {
