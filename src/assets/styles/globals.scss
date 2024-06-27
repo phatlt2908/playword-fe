@@ -106,3 +106,9 @@ a {
 .allow-all-pointer-event {
   pointer-events: all !important;
 }
+
+.base-background {
+  background: linear-gradient(to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+}

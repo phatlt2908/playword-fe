@@ -1,9 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useEffect, useMemo } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faHouse } from "@fortawesome/free-solid-svg-icons";
 import swal from "sweetalert2";
 
 import wordLinkApi from "@/services/wordLinkApi";
@@ -13,8 +14,6 @@ import SpinnerLoading from "@/components/utils/spinner-loading";
 import BaseTimer from "@/components/utils/base-timer";
 import WordDetail from "@/components/contents/word-detail";
 import StandardModal from "@/components/contents/standard-modal";
-
-import styles from "./page.module.scss";
 
 const turnTime = 15;
 
@@ -34,6 +33,25 @@ export default function WordLinkSingle() {
 
   useEffect(() => {
     setIsLoading(true);
+    init();
+  }, []);
+
+  useEffect(() => {
+    if (isFinished) {
+      swal
+        .fire({
+          title: "Bí rồi...",
+          icon: "info",
+          timer: 500,
+          showConfirmButton: false,
+        })
+        .then(() => {
+          init();
+        });
+    }
+  }, [isFinished]);
+
+  const init = () => {
     wordLinkApi
       .init()
       .then((response) => {
@@ -44,13 +62,7 @@ export default function WordLinkSingle() {
       .catch((error) => {
         console.error(error);
       });
-  }, []);
-
-  useEffect(() => {
-    if (isFinished) {
-      console.log("Finished");
-    }
-  }, [isFinished]);
+  };
 
   const onAnswer = () => {
     if (answerWord === "") {
@@ -137,10 +149,10 @@ export default function WordLinkSingle() {
     <>
       <div className="is-flex is-flex-direction-column is-align-items-center w-100">
         <div>
-          <span className="mr-2">User</span>
+          {/* <span className="mr-2">User</span>
           <span className="icon is-large circle-border mb-4">
             <FontAwesomeIcon icon={faUser} />
-          </span>
+          </span> */}
           <span className="ml-2">Điểm: {point}</span>
         </div>
 
@@ -200,8 +212,7 @@ export default function WordLinkSingle() {
         </div>
       )}
 
-      <div>
-      </div>
+      <div></div>
 
       {overType && (
         <StandardModal
@@ -209,21 +220,29 @@ export default function WordLinkSingle() {
           uncloseable
           onClose={() => console.log("Restart")}
         >
-          <h1 className="title is-1 has-text-centered">GAME OVER</h1>
-          <p className="subtitle is-3 has-text-centered">
-            {overType == 1
-              ? "Hết lượt. Bạn đã trả lời sai 3 lần 😢"
-              : "Hết thời gian trả lời 😢"}
-          </p>
-          <p className="is-size-4">Điểm số: {point}</p>
-          <p className="is-size-4">Xếp hạng: 1450</p>
-          <div className="buttons">
-            <button className="button is-large is-primary is-outlined drawing-border">
-              Chơi lại 💪
-            </button>
-            <button className="button is-large is-outlined drawing-border">
-              Về trang chủ
-            </button>
+          <div className="has-text-centered">
+            <h1 className="title is-1 base-background">GAME OVER</h1>
+            <h3 className="subtitle is-3 mb-5">
+              {overType == 1
+                ? "Hết lượt. Bạn đã trả lời sai 3 lần 😢"
+                : "Hết thời gian trả lời 😢"}
+            </h3>
+            <p className="is-size-4">Điểm số: {point}</p>
+            <p className="is-size-4">Xếp hạng: 1450</p>
+            <div className="buttons is-justify-content-center mt-5">
+              <button
+                className="button is-large drawing-border"
+                onClick={() => location.reload()}
+              >
+                Chơi lại 💪
+              </button>
+              <Link href="/" className="button is-large drawing-border">
+                <span class="icon">
+                  <FontAwesomeIcon icon={faHouse} />
+                </span>
+                <span>Về trang chủ</span>
+              </Link>
+            </div>
           </div>
         </StandardModal>
       )}
