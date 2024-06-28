@@ -122,7 +122,7 @@ export default function WordLinkMulti({ params }) {
         showConfirmButton: false,
       })
       .then(() => {
-        window.location.href = "/noi-tu/nhieu-minh";
+        window.location.href = "/nhieu-minh";
       });
   };
 
@@ -366,13 +366,13 @@ export default function WordLinkMulti({ params }) {
   };
 
   const onWaitingTimeout = () => {
-    window.location.href = "/noi-tu/nhieu-minh";
+    window.location.href = "/nhieu-minh";
   };
 
   return (
     <>
       <div>
-        <Link href="/noi-tu/nhieu-minh" className={`${styles.back} icon-text is-size-6`}>
+        <Link href="/nhieu-minh" className={`${styles.back} icon-text is-size-6`}>
           <span className="icon">
             <FontAwesomeIcon icon={faChevronLeft} size="sm" />
           </span>
@@ -427,8 +427,8 @@ export default function WordLinkMulti({ params }) {
                   <BrandLoading />
                 </div>
               ) : (
-                <div className="is-flex is-flex-direction-column is-align-items-center">
-                  <div className="columns is-mobile">
+                <div className="is-flex is-flex-direction-column is-align-items-center w-100">
+                  <div className="columns is-mobile w-100">
                     <div
                       className="column is-narrow cursor-pointer py-2"
                       onClick={() => setIsSelectingAvatar(true)}

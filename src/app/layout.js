@@ -5,7 +5,6 @@ import { config } from "@fortawesome/fontawesome-svg-core";
 config.autoAddCss = false;
 
 import BaseHeader from "@/components/layouts/base-header";
-import BaseFooter from "@/components/layouts/base-footer";
 
 import { patrick_hand } from "@/utils/fonts";
 

@@ -8,7 +8,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const routeLabelMap = new Map([
-  ["noi-tu", "Nối từ"],
   ["mot-minh", "Một mình"],
   ["nhieu-minh", "Nhiều mình"],
 ]);
@@ -23,7 +22,7 @@ const BaseHeader = () => {
     >
       <div className="column is-narrow is-hidden-mobile">
         <Link className="navbar-item" href="/">
-          Chơi chữ
+          Nối từ
         </Link>
       </div>
 
@@ -34,7 +33,7 @@ const BaseHeader = () => {
               <span className="icon">
                 <FontAwesomeIcon icon={faHouse} />
               </span>
-              <Link href="/">Chơi chữ</Link>
+              <Link href="/">Nối từ</Link>
             </li>
             {pathArray.map((path, index) => {
               const href = `/${pathArray.slice(0, index + 1).join("/")}`;
