@@ -17,6 +17,11 @@ import StandardModal from "@/components/contents/standard-modal";
 
 const turnTime = 15;
 
+// export const metadata = {
+//   title: 'Một mình',
+//   description: "Chơi nối từ một mình, solo với máy để đạt điểm số cao nhất có thể 🚀",
+// };
+
 export default function WordLinkSingle() {
   const [responseWord, setResponseWord] = useState("");
   const [responseWordDescription, setResponseWordDescription] = useState("");

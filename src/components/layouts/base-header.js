@@ -2,6 +2,7 @@
 
 import styles from "./base-header.module.css";
 
+import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse, faUser } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
@@ -22,7 +23,16 @@ const BaseHeader = () => {
     >
       <div className="column is-narrow is-hidden-mobile">
         <Link className="navbar-item" href="/">
-          Nối từ
+          <figure className="image is-3by2 p-4">
+            <Image
+              className={styles.logo}
+              src="/logo.png"
+              alt="Logo"
+              width={100}
+              height={100}
+              priority
+            />
+          </figure>
         </Link>
       </div>
 

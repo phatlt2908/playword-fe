@@ -37,6 +37,11 @@ const roomNameExamples = [
   "Phòng khách",
 ];
 
+// export const metadata = {
+//   title: 'Nhiều mình',
+//   description: "Chơi nối từ cùng nhau, theo cặp hoặc theo nhóm nhiều người. Đánh bại các đối thủ và trở thành người chơi còn lại cuối cùng để giành chiến thắng 🚀",
+// };
+
 const WordLinkMultiSelection = () => {
   const router = useRouter();
 

@@ -75,15 +75,6 @@ export default function WordLinkMulti({ params }) {
     // On unmount
     return () => {
       if (stompClientRef.current) {
-        stompClientRef.current.send(
-          `/app/leave/${params.id}`,
-          {},
-          JSON.stringify({
-            sender: currentUser,
-            roomId: params.id,
-            type: "LEAVE",
-          })
-        );
         stompClientRef.current.disconnect();
       }
     };
@@ -372,7 +363,10 @@ export default function WordLinkMulti({ params }) {
   return (
     <>
       <div>
-        <Link href="/nhieu-minh" className={`${styles.back} icon-text is-size-6`}>
+        <Link
+          href="/nhieu-minh"
+          className={`${styles.back} icon-text is-size-6`}
+        >
           <span className="icon">
             <FontAwesomeIcon icon={faChevronLeft} size="sm" />
           </span>

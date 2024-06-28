@@ -5,3 +5,8 @@
   right: 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
 }
+
+.logo {
+  -webkit-filter: drop-shadow(5px 5px 5px #222222);
+  filter: drop-shadow(5px 5px 5px #222222);
+}
