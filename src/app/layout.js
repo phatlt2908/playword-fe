@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
           <div className="main-center">{children}</div>
         </main>
       </body>
-      <GoogleTagManager gaId="G-S4VQ7FRKS1" />
+      <GoogleTagManager gtmId="G-S4VQ7FRKS1" />
     </html>
   );
 }
