@@ -185,7 +185,7 @@ const WordLinkMultiSelection = () => {
                 maxLength={50}
               />
               <span
-                class="icon is-large is-right cursor-pointer allow-all-pointer-event"
+                className="icon is-large is-right cursor-pointer allow-all-pointer-event"
                 onClick={() =>
                   setRoomName(
                     roomNameExamples[

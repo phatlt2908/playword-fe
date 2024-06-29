@@ -253,7 +253,7 @@ export default function WordLinkSingle() {
                 Chơi lại 💪
               </button>
               <Link href="/" className="button is-large drawing-border">
-                <span class="icon">
+                <span className="icon">
                   <FontAwesomeIcon icon={faHouse} />
                 </span>
                 <span>Về trang chủ</span>
