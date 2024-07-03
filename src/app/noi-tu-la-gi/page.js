@@ -6,7 +6,7 @@ export const metadata = {
     "Nối từ là gì? Nối từ là một trò chơi trí tuệ đơn giản nhưng thú vị dành cho mọi lứa tuổi. Mục tiêu của trò chơi là nối các từ với nhau bằng cách sử dụng chữ cái cuối cùng của từ trước để tạo thành một từ mới hợp lệ.",
 };
 
-export default function () {
+export default function Manual() {
   return (
     <div className="content">
       <h1>Nối từ là gì? Hướng dẫn cách chơi nối từ</h1>
