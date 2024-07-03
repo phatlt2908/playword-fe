@@ -32,6 +32,7 @@ export default function WordLinkSingle() {
   const [point, setPoint] = useState(0);
   const [overType, setOverType] = useState();
   const [rank, setRank] = useState();
+  const [answeredList, setAnsweredList] = useState([]);
 
   const preResponseWord = useMemo(() => {
     return responseWord.split(" ").pop();
@@ -62,6 +63,7 @@ export default function WordLinkSingle() {
       .init()
       .then((response) => {
         setResponseWord(response.data.word);
+        setAnsweredList((prev) => [...prev, response.data.word]);
         setResponseWordDescription(response.data.description);
         setIsLoading(false);
       })
@@ -77,8 +79,26 @@ export default function WordLinkSingle() {
 
     const answer = preResponseWord + " " + answerWord;
 
+    if (answeredList.includes(answer)) {
+      swal.fire({
+        toast: true,
+        position: "top-end",
+        text: `Từ [${answer}] đã được trả lời 😣`,
+        icon: "error",
+        timer: 3000,
+        showConfirmButton: false,
+      });
+
+      if (turn > 1) {
+        setTurn(turn - 1);
+      } else {
+        onOver(1);
+      }
+      return;
+    }
+
     wordLinkApi
-      .answer(answer)
+      .answer({ answer: answer, answeredList: answeredList })
       .then((response) => {
         if (!response.data.isSuccessful) {
           swal
@@ -124,6 +144,10 @@ export default function WordLinkSingle() {
             return;
           }
           setResponseWord(response.data.wordDescription.word);
+          setAnsweredList((prev) => [
+            ...prev,
+            response.data.wordDescription.word,
+          ]);
           setResponseWordDescription(response.data.wordDescription.description);
         }
       })

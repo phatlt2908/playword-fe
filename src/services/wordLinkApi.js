@@ -5,8 +5,8 @@ class wordLinkApi {
     return axios.get("/word-link/init");
   }
 
-  answer(answer) {
-    return axios.get(`/word-link/answer?word=${answer}`);
+  answer(data) {
+    return axios.post("/word-link/answer", data);
   }
 
   getRoomList(keyword) {
