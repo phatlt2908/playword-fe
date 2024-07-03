@@ -1,7 +1,12 @@
 import Link from "next/link";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShare, faUser, faUsers } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBook,
+  faShare,
+  faUser,
+  faUsers,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Home = () => {
   return (
@@ -24,16 +29,24 @@ const Home = () => {
           </div>
         </Link>
       </div>
-      <a
-        className="icon-text"
-        target="_blank"
-        href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fnoitu.fun%2F&amp;src=sdkpreparse"
-      >
-        <span>Chia sẻ</span>
-        <span className="icon">
-          <FontAwesomeIcon icon={faShare} />
-        </span>
-      </a>
+      <div className="is-flex is-flex-direction-column is-align-items-center">
+        <a className="icon-text p-2" href="/noi-tu-la-gi">
+          <span>Hướng dẫn</span>
+          <span className="icon">
+            <FontAwesomeIcon icon={faBook} />
+          </span>
+        </a>
+        <a
+          className="icon-text p-2"
+          target="_blank"
+          href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fnoitu.fun%2F&amp;src=sdkpreparse"
+        >
+          <span>Chia sẻ</span>
+          <span className="icon">
+            <FontAwesomeIcon icon={faShare} />
+          </span>
+        </a>
+      </div>
     </>
   );
 };

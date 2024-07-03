@@ -11,6 +11,7 @@ import { usePathname } from "next/navigation";
 const routeLabelMap = new Map([
   ["mot-minh", "Một mình"],
   ["nhieu-minh", "Nhiều mình"],
+  ["noi-tu-la-gi", "Nối từ là gì?"],
 ]);
 
 const BaseHeader = () => {

@@ -95,6 +95,12 @@ const WordLinkMultiSelection = () => {
     }
   };
 
+  const handleSearchKeyDown = (e) => {
+    if (e.key === "Enter") {
+      search();
+    }
+  };
+
   return (
     <>
       {isCreatingRoom ? (
@@ -117,6 +123,7 @@ const WordLinkMultiSelection = () => {
                   type="text"
                   placeholder="Nhập mã/tên phòng"
                   onChange={(e) => setKeyword(e.target.value)}
+                  onKeyDown={handleSearchKeyDown}
                 />
               </div>
               <div className="control">
@@ -154,7 +161,11 @@ const WordLinkMultiSelection = () => {
                           <td>{room.id}</td>
                           <td>{room.name}</td>
                           <td>{room.userCount}</td>
-                          <td>{room.status == "PREPARING" ? "Đang chờ" : "Đang chơi"}</td>
+                          <td>
+                            {room.status == "PREPARING"
+                              ? "Đang chờ"
+                              : "Đang chơi"}
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -185,7 +196,7 @@ const WordLinkMultiSelection = () => {
                 maxLength={50}
               />
               <span
-                class="icon is-large is-right cursor-pointer allow-all-pointer-event"
+                className="icon is-large is-right cursor-pointer allow-all-pointer-event"
                 onClick={() =>
                   setRoomName(
                     roomNameExamples[

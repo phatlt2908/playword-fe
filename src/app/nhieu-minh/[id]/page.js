@@ -10,11 +10,12 @@ import * as SockJS from "sockjs-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRight,
+  faBars,
   faChevronLeft,
+  faEllipsis,
   faLink,
 } from "@fortawesome/free-solid-svg-icons";
 import swal from "sweetalert2";
-import styles from "./page.module.scss";
 
 import reportApi from "@/services/reportApi";
 
@@ -45,6 +46,7 @@ export default function WordLinkMulti({ params }) {
   const [isReady, setIsReady] = useState(false);
   const [isSelectingAvatar, setIsSelectingAvatar] = useState(false);
   const [isLoadingInit, setIsLoadingInit] = useState(true);
+  const [isDisplayDropdown, setIsDisplayDropdown] = useState(false);
 
   // Room info
   const [roomName, setRoomName] = useState();
@@ -254,6 +256,8 @@ export default function WordLinkMulti({ params }) {
           timer: 3000,
           showConfirmButton: false,
         });
+
+        updateResponseWord(message.word);
       }
     } else if (message.type === "END") {
       if (message.user.id === currentUser.id) {
@@ -362,18 +366,9 @@ export default function WordLinkMulti({ params }) {
 
   return (
     <>
-      <div>
-        <Link
-          href="/nhieu-minh"
-          className={`${styles.back} icon-text is-size-6`}
-        >
-          <span className="icon">
-            <FontAwesomeIcon icon={faChevronLeft} size="sm" />
-          </span>
-          <span>Rời phòng</span>
-        </Link>
+      <div className="is-flex is-flex-direction-column is-align-items-center">
         <p
-          className="icon-text"
+          className="icon-text cursor-pointer"
           onClick={() => {
             navigator.clipboard.writeText(window.location.href);
             swal.fire({
@@ -388,10 +383,36 @@ export default function WordLinkMulti({ params }) {
           }}
         >
           {roomName && <span>Phòng: {roomName}</span>}
-          <span className="icon cursor-pointer has-text-link">
-            <FontAwesomeIcon icon={faLink} />
+          <span className="icon">
+            <FontAwesomeIcon icon={faLink} size="sm" />
           </span>
         </p>
+
+        <div
+          className={`dropdown ${isDisplayDropdown && "is-active"}`}
+        >
+          <div className="dropdown-trigger">
+            <button
+              className="button is-text"
+              aria-controls="dropdown-menu3"
+              onClick={() => {
+                setIsDisplayDropdown(!isDisplayDropdown);
+              }}
+            >
+              <FontAwesomeIcon icon={faEllipsis} />
+            </button>
+          </div>
+          <div className="dropdown-menu" id="dropdown-menu" role="menu">
+            <div className="dropdown-content">
+              <Link href="/nhieu-minh" className="dropdown-item icon-text">
+                <span className="icon">
+                  <FontAwesomeIcon icon={faChevronLeft} size="sm" />
+                </span>
+                <span>Rời phòng</span>
+              </Link>
+            </div>
+          </div>
+        </div>
       </div>
       <div className="w-100">
         <div>

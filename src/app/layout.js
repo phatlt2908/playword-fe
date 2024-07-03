@@ -22,9 +22,9 @@ export default function RootLayout({ children }) {
     <html lang="vi" data-theme="dark">
       <body className={patrick_hand.variable}>
         <BaseHeader />
-        <main>
+        <div className="main">
           <div className="main-center">{children}</div>
-        </main>
+        </div>
       </body>
       <GoogleTagManager gtmId="G-S4VQ7FRKS1" />
       <GoogleAnalytics gaId="G-S4VQ7FRKS1" />

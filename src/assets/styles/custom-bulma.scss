@@ -11,7 +11,12 @@
   }
 }
 
-body, button, input, optgroup, select, textarea {
+body,
+button,
+input,
+optgroup,
+select,
+textarea {
   font-family: var(--font-patrick-hand);
 }
 
@@ -38,12 +43,12 @@ body, button, input, optgroup, select, textarea {
 
 .button {
   background-color: rgba(var(--transparency-rgba)) !important;
-  border-color: white !important;
-  border-width: 2px !important;
-  border-top-left-radius: 255px 15px !important;
-  border-top-right-radius: 15px 225px !important;
-  border-bottom-right-radius: 225px 15px !important;
-  border-bottom-left-radius: 15px 255px !important;
+  border-color: white;
+  border-width: 2px;
+  border-top-left-radius: 255px 15px;
+  border-top-right-radius: 15px 225px;
+  border-bottom-right-radius: 225px 15px;
+  border-bottom-left-radius: 15px 255px;
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.1) !important;

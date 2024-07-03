@@ -35,7 +35,7 @@ body {
   font-family: var(--font-patrick-hand);
 }
 
-main {
+.main {
   display: flex;
   flex-direction: column;
   padding: 2rem;
@@ -47,7 +47,6 @@ main {
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    position: relative;
     margin-top: 2rem;
     width: 100%;
     flex: 1;
@@ -68,6 +67,10 @@ a {
 
   &:hover {
     color: inherit;
+  }
+
+  &.text-underlined {
+    text-decoration: underline;
   }
 }
 
@@ -111,4 +114,8 @@ a {
   background: linear-gradient(to bottom,
       transparent,
       rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+}
+
+.p-static {
+  position: static !important;
 }
