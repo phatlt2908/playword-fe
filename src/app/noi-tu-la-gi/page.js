@@ -1,9 +1,9 @@
 import Image from "next/image";
 
 export const metadata = {
-  title: "Nối từ là gì | Cùng nối từ nhé",
+  title: "Nối từ là gì | Chơi nối từ online",
   description:
-    "Nối từ là gì? Nối từ là một trò chơi trí tuệ đơn giản nhưng thú vị dành cho mọi lứa tuổi. Mục tiêu của trò chơi là nối các từ với nhau bằng cách sử dụng chữ cái cuối cùng của từ trước để tạo thành một từ mới hợp lệ.",
+    "Nối từ là gì? Nối từ là trò chơi nối các từ với nhau bằng cách sử dụng chữ cái cuối cùng của từ trước để tạo thành một từ mới hợp lệ. Chơi nối từ rất đơn giản nhưng thú vị dành cho mọi lứa tuổi.",
 };
 
 export default function Manual() {
