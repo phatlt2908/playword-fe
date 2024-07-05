@@ -2,7 +2,7 @@ import { useEffect, useState, forwardRef, useImperativeHandle } from "react";
 
 import styles from "./base-timer.module.scss";
 
-const BaseTimer = forwardRef((props, ref) => {
+const BaseTimer = forwardRef(function BaseTimer(props, ref) {
   const [time, setTime] = useState(props.maxTime);
   const [isOver, setIsOver] = useState(false);
   const [isUpTime, setIsUpTime] = useState(false);
