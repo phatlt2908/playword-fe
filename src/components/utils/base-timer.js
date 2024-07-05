@@ -1,7 +1,12 @@
-import { useEffect, useState } from "react";
-const BaseTimer = ({ maxTime, onOver }) => {
-  const [time, setTime] = useState(maxTime);
+import { useEffect, useState, forwardRef, useImperativeHandle } from "react";
+
+import styles from "./base-timer.module.scss";
+
+const BaseTimer = forwardRef((props, ref) => {
+  const [time, setTime] = useState(props.maxTime);
   const [isOver, setIsOver] = useState(false);
+  const [isUpTime, setIsUpTime] = useState(false);
+  const [upValue, setUpValue] = useState(0);
 
   useEffect(() => {
     countdown();
@@ -9,16 +14,33 @@ const BaseTimer = ({ maxTime, onOver }) => {
 
   useEffect(() => {
     if (isOver) {
-      onOver();
+      props.onOver();
     }
   }, [isOver]);
+
+  useEffect(() => {
+    if (time <= -1) {
+      setIsOver(true);
+    }
+  }, [time]);
+
+  useImperativeHandle(ref, () => ({
+    update(second) {
+      setTime((time) => time + second);
+
+      setUpValue(second);
+      setIsUpTime(true);
+      setTimeout(() => {
+        setIsUpTime(false);
+      }, 1000);
+    },
+  }));
 
   const countdown = () => {
     const interval = setInterval(() => {
       setTime((time) => {
-        if (time === -1) {
+        if (time < 0) {
           clearInterval(interval);
-          setIsOver(true);
           return;
         }
         return time - 1;
@@ -29,10 +51,21 @@ const BaseTimer = ({ maxTime, onOver }) => {
   return (
     <>
       {time > -1 && (
-        <progress className="progress" value={time} max={maxTime} />
+        <div className={styles.timer}>
+          <progress className="progress" value={time} max={props.maxTime} />
+
+          {isUpTime && (
+            <div className={`${styles.upTime} trans-bounce`}>
+              <span className={upValue < 0 ? "has-text-danger-light" : ""}>
+                {upValue > 0 && "+"}
+                {upValue}s
+              </span>
+            </div>
+          )}
+        </div>
       )}
     </>
   );
-};
+});
 
 export default BaseTimer;

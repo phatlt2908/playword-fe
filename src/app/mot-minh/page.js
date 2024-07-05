@@ -1,10 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
+import Image from "next/image";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faHouse } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowRight,
+  faBook,
+  faForward,
+  faHouse,
+} from "@fortawesome/free-solid-svg-icons";
 import swal from "sweetalert2";
 
 import wordLinkApi from "@/services/wordLinkApi";
@@ -15,7 +21,7 @@ import BaseTimer from "@/components/utils/base-timer";
 import WordDetail from "@/components/contents/word-detail";
 import StandardModal from "@/components/contents/standard-modal";
 
-const turnTime = 15;
+const turnTime = 60;
 
 // export const metadata = {
 //   title: 'Một mình',
@@ -23,16 +29,18 @@ const turnTime = 15;
 // };
 
 export default function WordLinkSingle() {
+  const [isShowManual, setIsShowManual] = useState(false);
   const [responseWord, setResponseWord] = useState("");
   const [responseWordDescription, setResponseWordDescription] = useState("");
   const [answerWord, setAnswerWord] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isFinished, setIsFinished] = useState(false); // The server can not find any word
-  const [turn, setTurn] = useState(3); // Number of turns to answer (answer wrong 3 times => game over)
   const [point, setPoint] = useState(0);
-  const [overType, setOverType] = useState();
+  const [isOver, setIsOver] = useState(false);
   const [rank, setRank] = useState();
   const [answeredList, setAnsweredList] = useState([]);
+
+  const timerRef = useRef();
 
   const preResponseWord = useMemo(() => {
     return responseWord.split(" ").pop();
@@ -44,9 +52,27 @@ export default function WordLinkSingle() {
   }, []);
 
   useEffect(() => {
+    if (isOver) {
+      wordLinkApi
+        .getResult(point)
+        .then((response) => {
+          setRank(response.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [isOver]);
+
+  useEffect(() => {
     if (isFinished) {
+      timerRef.current.update(5);
+      setPoint(point + 5);
+
       swal
         .fire({
+          toast: true,
+          position: "bottom",
           title: "Bí rồi...",
           icon: "info",
           timer: 500,
@@ -82,18 +108,13 @@ export default function WordLinkSingle() {
     if (answeredList.includes(answer)) {
       swal.fire({
         toast: true,
-        position: "top-end",
+        position: "bottom",
         text: `Từ [${answer}] đã được trả lời 😣`,
         icon: "error",
         timer: 3000,
         showConfirmButton: false,
       });
 
-      if (turn > 1) {
-        setTurn(turn - 1);
-      } else {
-        onOver(1);
-      }
       return;
     }
 
@@ -104,7 +125,7 @@ export default function WordLinkSingle() {
           swal
             .fire({
               toast: true,
-              position: "top-end",
+              position: "bottom",
               text: "Không tồn tại từ [" + answer + "] 😣",
               icon: "error",
               timer: 5000,
@@ -120,7 +141,7 @@ export default function WordLinkSingle() {
                   .then(() => {
                     swal.fire({
                       toast: true,
-                      position: "top-end",
+                      position: "bottom",
                       text: "Báo cáo thành công! 🤩",
                       icon: "success",
                       timer: 3000,
@@ -130,13 +151,9 @@ export default function WordLinkSingle() {
               }
             });
 
-          if (turn > 1) {
-            setTurn(turn - 1);
-          } else {
-            onOver(1);
-          }
+          timerRef.current.update(-5);
         } else {
-          setTurn(3);
+          timerRef.current.update(1);
           setPoint(point + 1);
 
           if (response.data.isFinished) {
@@ -146,6 +163,7 @@ export default function WordLinkSingle() {
           setResponseWord(response.data.wordDescription.word);
           setAnsweredList((prev) => [
             ...prev,
+            answer,
             response.data.wordDescription.word,
           ]);
           setResponseWordDescription(response.data.wordDescription.description);
@@ -159,47 +177,36 @@ export default function WordLinkSingle() {
       });
   };
 
+  const onSkip = () => {
+    timerRef.current.update(-5);
+    init();
+  };
+
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       onAnswer();
     }
+    if (e.key === "Escape") {
+      onSkip();
+    }
   };
-
-  /**
-   * type = 1: Over turn
-   * type = 2: Over time
-   * @param {int} type
-   */
-  const onOver = (type) => {
-    setOverType(type);
-
-    wordLinkApi
-      .getResult(point)
-      .then((response) => {
-        setRank(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
   return (
     <>
       <div className="is-flex is-flex-direction-column is-align-items-center w-100">
         <div>
           {/* <span className="mr-2">User</span>
-          <span className="icon is-large circle-border mb-4">
-            <FontAwesomeIcon icon={faUser} />
-          </span> */}
-          <span className="ml-2">Điểm: {point}</span>
+              <span className="icon is-large circle-border mb-4">
+                <FontAwesomeIcon icon={faUser} />
+              </span> */}
+          <span className="is-size-4">Điểm: {point}</span>
         </div>
 
-        {!overType && (
+        {!isOver && (
           <BaseTimer
-            key={point}
+            ref={timerRef}
             maxTime={turnTime}
             onOver={() => {
-              onOver(2);
+              setIsOver(true);
             }}
           />
         )}
@@ -242,17 +249,30 @@ export default function WordLinkSingle() {
               </button>
             </div>
           </div>
-          {turn < 3 && (
-            <p className="help is-warning is-size-6 has-text-centered has-text-weight-semibold">
-              ⚠️ Bạn còn {turn} lượt nhập sai
-            </p>
-          )}
+          <div className="w-100 has-text-centered" onClick={onSkip}>
+            <button className="button is-text is-medium">
+              <span>Bỏ qua</span>
+              <span className="icon">
+                <FontAwesomeIcon icon={faForward} />
+              </span>
+            </button>
+          </div>
         </div>
       )}
 
-      <div></div>
+      <div
+        className="icon-text p-2 cursor-pointer hover-underlined"
+        onClick={() => {
+          setIsShowManual(true);
+        }}
+      >
+        <span>Hướng dẫn</span>
+        <span className="icon">
+          <FontAwesomeIcon icon={faBook} />
+        </span>
+      </div>
 
-      {overType && (
+      {isOver && (
         <StandardModal
           id="game-over"
           uncloseable
@@ -260,11 +280,6 @@ export default function WordLinkSingle() {
         >
           <div className="has-text-centered">
             <h1 className="title is-1 base-background">GAME OVER</h1>
-            <h3 className="subtitle is-3 mb-5">
-              {overType == 1
-                ? "Hết lượt. Bạn đã trả lời sai 3 lần 😢"
-                : "Hết thời gian trả lời 😢"}
-            </h3>
             <p className="is-size-4">Điểm số: {point}</p>
             <p className="is-size-4">
               Xếp hạng: {rank ? rank : "Không xếp hạng"}
@@ -282,6 +297,48 @@ export default function WordLinkSingle() {
                 </span>
                 <span>Về trang chủ</span>
               </Link>
+            </div>
+          </div>
+        </StandardModal>
+      )}
+
+      {isShowManual && (
+        <StandardModal id="game-over" onClose={() => setIsShowManual(false)}>
+          <div className="content">
+            <p>
+              Đây là chế độ chơi nối từ giữa người với máy. Bạn hãy cố gắng đạt
+              được nhiều điểm nhất có thể.
+            </p>
+            <div className="has-text-centered">
+              <Image
+                src="/try.jpg"
+                alt="luat choi noi tu solo"
+                width={300}
+                height={300}
+              />
+            </div>
+            <h2>Luật chơi nối từ solo:</h2>
+            <ul>
+              <li>Bạn có 1 phút</li>
+              <li>
+                Máy sẽ đưa ra 1 từ và bạn sẽ bắt đầu nối từ lần lượt với máy
+              </li>
+              <li>Nối thành công sẽ được +1 điểm</li>
+              <li>
+                Nếu từ bạn trả lời không có từ nào để nối (máy bó tay): bạn được
+                +5 điểm và +5 giây thời gian
+              </li>
+              <li>Trả lời sai bị -5 giây</li>
+              <li>
+                Bạn có thể bỏ qua nếu từ quá khó, mỗi lần bỏ qua bạn bị -5s
+              </li>
+            </ul>
+
+            <div
+              className="w-100 has-text-centered mt-4"
+              onClick={() => setIsShowManual(false)}
+            >
+              <button className="button has-text-centered">Đóng</button>
             </div>
           </div>
         </StandardModal>

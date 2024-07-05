@@ -10,7 +10,6 @@ import * as SockJS from "sockjs-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRight,
-  faBars,
   faChevronLeft,
   faEllipsis,
   faLink,
@@ -108,7 +107,7 @@ export default function WordLinkMulti({ params }) {
     swal
       .fire({
         toast: true,
-        position: "top-end",
+        position: "bottom",
         icon: "error",
         text: "Lỗi không thể vào phòng 😣",
         timer: 3000,
@@ -181,7 +180,7 @@ export default function WordLinkMulti({ params }) {
     if (wordList.includes(answer)) {
       swal.fire({
         toast: true,
-        position: "top-end",
+        position: "bottom",
         text: `Từ [${answer}] đã được trả lời 😣`,
         icon: "error",
         timer: 5000,
@@ -213,7 +212,7 @@ export default function WordLinkMulti({ params }) {
       if (message.user.id !== currentUser.id) {
         swal.fire({
           toast: true,
-          position: "top-end",
+          position: "bottom",
           icon: "info",
           text: `${message.user.name} đã vào phòng`,
           timer: 3000,
@@ -223,7 +222,7 @@ export default function WordLinkMulti({ params }) {
     } else if (message.type === "LEAVE") {
       swal.fire({
         toast: true,
-        position: "top-end",
+        position: "bottom",
         icon: "info",
         text: `${message.user.name} đã rời phòng`,
         timer: 3000,
@@ -251,7 +250,7 @@ export default function WordLinkMulti({ params }) {
         swal.fire({
           icon: "info",
           toast: true,
-          position: "top-end",
+          position: "bottom",
           text: `${message.user.name} đã bị loại`,
           timer: 3000,
           showConfirmButton: false,
@@ -307,7 +306,7 @@ export default function WordLinkMulti({ params }) {
         swal
           .fire({
             toast: true,
-            position: "top-end",
+            position: "bottom",
             text: "Không tồn tại từ [" + answerRef.current + "] 😣",
             icon: "error",
             timer: 5000,
@@ -323,7 +322,7 @@ export default function WordLinkMulti({ params }) {
                 .then(() => {
                   swal.fire({
                     toast: true,
-                    position: "top-end",
+                    position: "bottom",
                     text: "Báo cáo thành công! 🤩",
                     icon: "success",
                     timer: 3000,
@@ -373,7 +372,7 @@ export default function WordLinkMulti({ params }) {
             navigator.clipboard.writeText(window.location.href);
             swal.fire({
               toast: true,
-              position: "top-end",
+              position: "bottom",
               title: "Đã sao chép đường dẫn phòng chơi",
               text: "Hãy gửi đường dẫn này cho bạn bè mà bạn muốn chơi cùng nhé! 🥰",
               icon: "success",

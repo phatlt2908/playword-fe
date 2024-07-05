@@ -1,0 +1,11 @@
+.timer {
+  width: 100%;
+  position: relative;
+
+  .upTime {
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center;
+  }
+}

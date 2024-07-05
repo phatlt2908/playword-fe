@@ -119,3 +119,33 @@ a {
 .p-static {
   position: static !important;
 }
+
+.hover-underlined {
+  &:hover {
+    text-decoration: underline;
+  }
+
+}
+
+// Transition
+.trans-bounce {
+  animation-name: bounce;
+  animation-duration: 1s;
+}
+
+@keyframes bounce {
+  0% {
+    opacity: 0;
+    transform: translateY(10%);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-10%);
+  }
+}
