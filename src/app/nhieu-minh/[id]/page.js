@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect, useMemo, useRef } from "react";
+import { useUserStore } from "@/stores/user-store";
 
 import { Stomp } from "@stomp/stompjs";
 import * as SockJS from "sockjs-client";
@@ -25,7 +26,7 @@ import BaseTimer from "@/components/utils/base-timer";
 import WordDetail from "@/components/contents/word-detail";
 import UserIcon from "@/components/contents/user-icon";
 import BaseCountdown from "@/components/utils/base-countdown";
-import StandardModal from "@/components/contents/standard-modal";
+import UserInput from "@/components/contents/user-input";
 
 const turnTime = 20;
 const waitingSecond = 20;
@@ -37,15 +38,12 @@ export default function WordLinkMulti({ params }) {
   const [answerWord, setAnswerWord] = useState("");
   const [turnNumber, setTurnNumber] = useState(1);
   const [turn, setTurn] = useState(3); // Number of turns to answer (answer wrong 3 times => game over)
-  const [currentUser, setCurrentUser] = useState({
-    id: Math.random().toString(36).substring(2, 10),
-    name: Math.random().toString(36).substring(2, 10),
-    avatar: avatarConst.AVATAR_LIST[Math.floor(Math.random() * 5)],
-  });
   const [isReady, setIsReady] = useState(false);
-  const [isSelectingAvatar, setIsSelectingAvatar] = useState(false);
   const [isLoadingInit, setIsLoadingInit] = useState(true);
   const [isDisplayDropdown, setIsDisplayDropdown] = useState(false);
+
+  // User state
+  const { user, setUser } = useUserStore();
 
   // Room info
   const [roomName, setRoomName] = useState();
@@ -55,7 +53,7 @@ export default function WordLinkMulti({ params }) {
   const [wordList, setWordList] = useState([]);
 
   const isAnswering = useMemo(() => {
-    return answerUser && answerUser.id == currentUser.id;
+    return answerUser && answerUser.code == user.code;
   });
   const preResponseWord = useMemo(() => {
     return responseWord.split(" ").pop();
@@ -98,7 +96,7 @@ export default function WordLinkMulti({ params }) {
     stompClient.send(
       `/app/addUser/${params.id}`,
       {},
-      JSON.stringify({ sender: currentUser, roomId: params.id, type: "JOIN" })
+      JSON.stringify({ sender: user, roomId: params.id, type: "JOIN" })
     );
   };
 
@@ -156,7 +154,7 @@ export default function WordLinkMulti({ params }) {
     stompClient.send(
       `/app/over/${params.id}`,
       {},
-      JSON.stringify({ sender: currentUser, roomId: params.id, type: "OVER" })
+      JSON.stringify({ sender: user, roomId: params.id, type: "OVER" })
     );
   };
 
@@ -165,7 +163,7 @@ export default function WordLinkMulti({ params }) {
     stompClient.send(
       `/app/ready/${params.id}`,
       {},
-      JSON.stringify({ sender: currentUser, roomId: params.id, type: "READY" })
+      JSON.stringify({ sender: user, roomId: params.id, type: "READY" })
     );
   };
 
@@ -200,7 +198,7 @@ export default function WordLinkMulti({ params }) {
       `/app/answer/${params.id}`,
       {},
       JSON.stringify({
-        sender: currentUser,
+        sender: user,
         roomId: params.id,
         message: answer,
       })
@@ -209,7 +207,7 @@ export default function WordLinkMulti({ params }) {
 
   const handleReceiveRoomInfo = (message) => {
     if (message.type === "JOIN") {
-      if (message.user.id !== currentUser.id) {
+      if (message.user.code !== user.code) {
         swal.fire({
           toast: true,
           position: "bottom",
@@ -246,7 +244,7 @@ export default function WordLinkMulti({ params }) {
           });
       }
     } else if (message.type === "OVER") {
-      if (message.user.id !== currentUser.id) {
+      if (message.user.code !== user.code) {
         swal.fire({
           icon: "info",
           toast: true,
@@ -259,7 +257,7 @@ export default function WordLinkMulti({ params }) {
         updateResponseWord(message.word);
       }
     } else if (message.type === "END") {
-      if (message.user.id === currentUser.id) {
+      if (message.user.code === user.code) {
         swal.fire({
           icon: "success",
           title: `Chúc mừng! Bạn đã chiến thắng 🎉`,
@@ -285,11 +283,11 @@ export default function WordLinkMulti({ params }) {
 
   const handleReceiveAnswer = (message) => {
     if (message.isAnswerCorrect) {
-      if (message.user.id === currentUser.id) {
+      if (message.user.code === user.code) {
         swal.fire({
           icon: "success",
           text: `Tuyệt vời! Bạn đã trả lời đúng 🤩`,
-          timer: 3000,
+          timer: 2000,
           showConfirmButton: false,
         });
 
@@ -387,9 +385,7 @@ export default function WordLinkMulti({ params }) {
           </span>
         </p>
 
-        <div
-          className={`dropdown ${isDisplayDropdown && "is-active"}`}
-        >
+        <div className={`dropdown ${isDisplayDropdown && "is-active"}`}>
           <div className="dropdown-trigger">
             <button
               className="button is-text"
@@ -442,33 +438,7 @@ export default function WordLinkMulti({ params }) {
                 </div>
               ) : (
                 <div className="is-flex is-flex-direction-column is-align-items-center w-100">
-                  <div className="columns is-mobile w-100">
-                    <div
-                      className="column is-narrow cursor-pointer py-2"
-                      onClick={() => setIsSelectingAvatar(true)}
-                    >
-                      <div className="image is-32x32">
-                        <Image
-                          src={currentUser.avatar}
-                          alt="Avatar"
-                          width={100}
-                          height={100}
-                          priority
-                        />
-                      </div>
-                      <div className="is-size-7 has-text-centered">Đổi</div>
-                    </div>
-                    <input
-                      className="column input is-large drawing-border"
-                      type="text"
-                      value={currentUser.name}
-                      onChange={(e) =>
-                        setCurrentUser({ ...currentUser, name: e.target.value })
-                      }
-                      autoFocus
-                      maxLength={20}
-                    />
-                  </div>
+                  <UserInput />
                   <button
                     className="button is-large drawing-border is-flex is-flex-direction-column is-align-items-center"
                     onClick={onReady}
@@ -550,7 +520,7 @@ export default function WordLinkMulti({ params }) {
             <UserIcon
               username={user.name}
               avatarUrl={user.avatar}
-              isSelf={currentUser.id == user.id}
+              isSelf={user.code == user.code}
               isReady={isRoomPreparing && user.isReady}
               isAnswer={user.isAnswering}
               isBlur={!isRoomPreparing && !user.isReady}
@@ -558,34 +528,6 @@ export default function WordLinkMulti({ params }) {
           </div>
         ))}
       </div>
-
-      {isSelectingAvatar && (
-        <StandardModal onClose={() => setIsSelectingAvatar(false)}>
-          <h3 className="title is-3 has-text-centered mb-4">Chọn avatar</h3>
-          <div className="columns is-multiline is-centered is-mobile w-100">
-            {avatarConst.AVATAR_LIST.map((avatar, index) => (
-              <div
-                className="column is-flex is-justify-content-center"
-                key={index}
-                onClick={() => {
-                  setCurrentUser({ ...currentUser, avatar });
-                  setIsSelectingAvatar(false);
-                }}
-              >
-                <figure className="image is-128x128">
-                  <Image
-                    src={avatar}
-                    alt="Avatar"
-                    width={100}
-                    height={100}
-                    priority
-                  />
-                </figure>
-              </div>
-            ))}
-          </div>
-        </StandardModal>
-      )}
     </>
   );
 }

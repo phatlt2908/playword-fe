@@ -17,8 +17,16 @@ class wordLinkApi {
     return axios.get(`/multi-word-link/create-room?id=${id}&name=${name}`);
   }
 
-  getResult(point) {
-    return axios.get(`/word-link/result?point=${point}`);
+  findRoom() {
+    return axios.get(`/multi-word-link/find-room`);
+  }
+
+  getResult(point, userCode) {
+    return axios.get(`/word-link/result?point=${point}&userCode=${userCode}`);
+  }
+
+  getRankingChart() {
+    return axios.get("/word-link/ranking-chart");
   }
 }
 

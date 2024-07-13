@@ -55,10 +55,10 @@ const BaseTimer = forwardRef(function BaseTimer(props, ref) {
           <progress className="progress" value={time} max={props.maxTime} />
 
           {isUpTime && (
-            <div className={`${styles.upTime} trans-bounce`}>
+            <div className={`${styles.upTime} trans-bounce is-size-4`}>
               <span className={upValue < 0 ? "has-text-danger-light" : ""}>
                 {upValue > 0 && "+"}
-                {upValue}s
+                {upValue} giây
               </span>
             </div>
           )}

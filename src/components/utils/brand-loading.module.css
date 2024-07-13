@@ -1,14 +1,13 @@
 .loader {
   width: fit-content;
   font-weight: bold;
-  font-family: monospace;
   font-size: 30px;
   color: #0000;
   overflow: hidden;
   animation: l9 5s infinite cubic-bezier(0.3, 1, 0, 1);
 }
 .loader:before {
-  content: "Chơi chữ...";
+  content: "Nối từ...";
 }
 @keyframes l9 {
   0% {

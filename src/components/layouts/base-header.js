@@ -4,7 +4,7 @@ import styles from "./base-header.module.css";
 
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHouse, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faHouse } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -12,6 +12,7 @@ const routeLabelMap = new Map([
   ["mot-minh", "Một mình"],
   ["nhieu-minh", "Nhiều mình"],
   ["noi-tu-la-gi", "Nối từ là gì?"],
+  ["xep-hang", "Bảng xếp hạng"],
 ]);
 
 const BaseHeader = () => {
@@ -40,11 +41,13 @@ const BaseHeader = () => {
       <div className="column has-text-centered">
         <nav className="breadcrumb is-inline-block" aria-label="breadcrumbs">
           <ul>
-            <li className="icon-text">
-              <span className="icon">
-                <FontAwesomeIcon icon={faHouse} />
-              </span>
-              <Link href="/">Nối từ</Link>
+            <li>
+              <Link className="icon-text" href="/">
+                <span className="icon">
+                  <FontAwesomeIcon icon={faHouse} />
+                </span>
+                <span>Nối từ</span>
+              </Link>
             </li>
             {pathArray.map((path, index) => {
               const href = `/${pathArray.slice(0, index + 1).join("/")}`;

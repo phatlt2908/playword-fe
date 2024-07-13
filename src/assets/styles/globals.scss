@@ -149,3 +149,35 @@ a {
     transform: translateY(-10%);
   }
 }
+
+.trans-float-left {
+  animation-name: floatLeft;
+  animation-duration: 0.5s;
+}
+
+@keyframes floatLeft {
+  0% {
+      opacity: 0;
+      transform: translateX(-10%);
+  }
+  100% {
+      opacity: 1;
+      transform: translateX(0px);
+  }
+}
+
+.trans-float-top {
+  animation-name: floatTop;
+  animation-duration: 0.5s;
+}
+
+@keyframes floatTop {
+  0% {
+      opacity: 0;
+      transform: translateY(-10%);
+  }
+  100% {
+      opacity: 1;
+      transform: translateY(0px);
+  }
+}

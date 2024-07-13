@@ -3,6 +3,7 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBook,
+  faRankingStar,
   faShare,
   faUser,
   faUsers,
@@ -12,23 +13,32 @@ const Home = () => {
   return (
     <>
       <div>
-        <h1 className="title is-1">Cùng nối từ nhé!</h1>
-        <p className="subtitle is-3 has-text-centered">Chọn chế độ chơi...</p>
+        <h1 className="title is-1">Chơi nối từ online</h1>
       </div>
-      <div className="columns">
-        <Link className="column" href="/mot-minh">
-          <div className="button is-flex is-justify-content-space-between is-flex-direction-column">
-            <FontAwesomeIcon icon={faUser} size="2x" />
-            <h2>Một mình</h2>
+
+      <div className="is-flex is-flex-direction-column is-align-items-center">
+        <div className="columns">
+          <Link className="column" href="/mot-minh">
+            <div className="button is-flex is-justify-content-space-between is-flex-direction-column">
+              <FontAwesomeIcon icon={faUser} size="2x" />
+              <h2>Một mình</h2>
+            </div>
+          </Link>
+          <Link className="column" href="/nhieu-minh">
+            <div className="button is-flex is-justify-content-space-between is-flex-direction-column">
+              <FontAwesomeIcon icon={faUsers} size="2x" />
+              <h2>Nhiều mình</h2>
+            </div>
+          </Link>
+        </div>
+        <Link className="mt-5" href="/xep-hang">
+          <div className="cursor-pointer hover-underlined is-flex is-justify-content-space-between is-flex-direction-column">
+            <FontAwesomeIcon icon={faRankingStar} size="2x" />
+            <div>Bảng xếp hạng</div>
           </div>
         </Link>
-        <Link className="column" href="/nhieu-minh">
-          <div className="button is-flex is-justify-content-space-between is-flex-direction-column">
-            <FontAwesomeIcon icon={faUsers} size="2x" />
-            <h2>Nhiều mình</h2>
-          </div>
-        </Link>
       </div>
+
       <div className="is-flex is-flex-direction-column is-align-items-center">
         <a className="icon-text p-2" href="/noi-tu-la-gi">
           <span>Hướng dẫn</span>
