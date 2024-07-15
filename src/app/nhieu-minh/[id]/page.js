@@ -175,6 +175,7 @@ export default function WordLinkMulti({ params }) {
     const answer = preResponseWord + " " + answerWord;
 
     // Check if answer is contained in word list
+    console.log("wordList >>> ", wordList);
     if (wordList.includes(answer)) {
       swal.fire({
         toast: true,
@@ -295,7 +296,6 @@ export default function WordLinkMulti({ params }) {
         setAnswerWord("");
       }
 
-      setWordList((prev) => [...prev, message.word]);
       setTurnNumber((prev) => prev + 1);
       updateRoomInfo(message.room);
       updateResponseWord(message.word);
@@ -347,6 +347,7 @@ export default function WordLinkMulti({ params }) {
   };
 
   const updateResponseWord = (word) => {
+    setWordList((prev) => [...prev, word.word]);
     setResponseWord(word.word);
     setResponseWordDescription(word.description);
   };

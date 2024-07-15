@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <>
       <div>
-        <h1 className="title is-1">Chơi nối từ online</h1>
+        <h1 className="title is-1">Nối từ vui</h1>
       </div>
 
       <div className="is-flex is-flex-direction-column is-align-items-center">

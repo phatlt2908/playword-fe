@@ -28,6 +28,10 @@ class wordLinkApi {
   getRankingChart() {
     return axios.get("/word-link/ranking-chart");
   }
+
+  getCurrentUserRanking(userCode) {
+    return axios.get(`/word-link/user-ranking?userCode=${userCode}`);
+  }
 }
 
 export default new wordLinkApi();

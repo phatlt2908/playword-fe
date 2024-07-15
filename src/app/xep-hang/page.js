@@ -1,7 +1,7 @@
 import RankingChart from "@/components/contents/chart";
 
 export const metadata = {
-  title: "Bảng xếp hạng | Chơi nối từ online",
+  title: "Bảng xếp hạng | Nối từ vui",
   description:
     "Bảng xếp hạng, xếp hạng chơi đơn đạt được điểm cao nhất và xếp hạng tổng điểm theo tháng",
 };

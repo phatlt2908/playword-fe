@@ -12,10 +12,12 @@ import BaseHeader from "@/components/layouts/base-header";
 import { patrick_hand } from "@/utils/fonts";
 
 export const metadata = {
-  title: "Chơi nối từ online",
+  title: "Nối từ vui",
   description:
-    "Chơi nối từ không? Nối từ theo nhóm nhiều người hoặc chơi một mình. Chơi nối từ vừa giải trí, vừa đau đầu, lại còn nâng cao vốn từ vựng. Kho từ vựng phong phú, được cập nhật liên tục, giao diện dễ sử dụng",
+    "Chơi nối từ không? Nối từ theo nhóm nhiều người hoặc chơi một mình. Chơi nối từ vừa vui, vừa giải trí, vừa đau đầu, lại còn nâng cao vốn từ vựng. Kho từ vựng phong phú, được cập nhật liên tục, giao diện dễ sử dụng",
   keywords: [
+    "Nối từ vui",
+    "Noi tu vui",
     "Chơi nối từ không",
     "Nối từ",
     "Nối từ cùng nhau",
