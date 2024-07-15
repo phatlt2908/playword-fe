@@ -14,7 +14,7 @@ import { patrick_hand } from "@/utils/fonts";
 export const metadata = {
   title: "Nối từ vui",
   description:
-    "Nối từ không? Chơi nối từ online. Nối từ theo nhóm nhiều người hoặc chơi một mình. Chơi nối từ vừa vui, vừa giải trí, vừa đau đầu, lại còn nâng cao vốn từ vựng. Kho từ vựng phong phú, được cập nhật liên tục, giao diện dễ sử dụng",
+    "Nối từ không? Chơi nối từ online theo nhóm nhiều người hoặc chơi một mình. Chơi nối từ vừa vui, vừa giải trí, vừa đau đầu, lại còn nâng cao vốn từ vựng. Kho từ vựng phong phú, được cập nhật liên tục, giao diện dễ sử dụng",
   keywords: [
     "Nối từ online",
     "Nối từ vui",
