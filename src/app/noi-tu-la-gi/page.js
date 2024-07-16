@@ -26,7 +26,7 @@ export default function Manual() {
         <Image
           className="has-text-centered"
           src="/what-is-noi-tu.jpg"
-          alt="banner"
+          alt="noi-tu-la-gi-banner"
           width={300}
           height={300}
         />
@@ -67,7 +67,7 @@ export default function Manual() {
         😌
       </p>
       <div className="has-text-centered">
-        <Image src="/banner.png" alt="banner" width={300} height={300} />
+        <Image src="/banner.png" alt="noi-tu-banner" width={300} height={300} />
       </div>
 
       <h2>Luật chơi</h2>

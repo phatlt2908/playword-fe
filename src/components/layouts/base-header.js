@@ -29,7 +29,7 @@ const BaseHeader = () => {
             <Image
               className={styles.logo}
               src="/logo.png"
-              alt="Logo"
+              alt="Logo-noi-tu-vui"
               width={100}
               height={100}
               priority

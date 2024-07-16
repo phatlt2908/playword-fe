@@ -20,7 +20,7 @@ const UserIcon = ({
           {avatarUrl && (
             <Image
               src={avatarUrl}
-              alt="Avatar"
+              alt="avatar-noi-tu"
               width={100}
               height={100}
               priority

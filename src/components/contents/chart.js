@@ -66,7 +66,7 @@ export default function RankingChart() {
                 <figure className="image is-48x48">
                   <Image
                     src={item.avatar}
-                    alt="Avatar"
+                    alt="avatar-noi-tu"
                     width={300}
                     height={300}
                   />
@@ -105,7 +105,7 @@ export default function RankingChart() {
                   <figure className="image is-48x48">
                     <Image
                       src={currentRank.avatar}
-                      alt="Avatar"
+                      alt="avatar-noi-tu"
                       width={300}
                       height={300}
                     />

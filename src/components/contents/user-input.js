@@ -23,7 +23,7 @@ export default function UserInput() {
           <div className="image is-32x32">
             <Image
               src={user.avatar}
-              alt="Avatar"
+              alt="avatar-noi-tu"
               width={100}
               height={100}
               priority
@@ -62,7 +62,7 @@ export default function UserInput() {
                 <figure className="image is-128x128">
                   <Image
                     src={avatar}
-                    alt="Avatar"
+                    alt="avatar-noi-tu"
                     width={100}
                     height={100}
                     priority
