@@ -87,19 +87,17 @@ export default function WordLinkSingle() {
     if (isFinished) {
       timerRef.current.update(5);
       setPoint(point + 5);
+      setIsFinished(false);
+      init();
 
-      swal
-        .fire({
-          toast: true,
-          position: "bottom",
-          title: "Bí rồi...",
-          icon: "info",
-          timer: 500,
-          showConfirmButton: false,
-        })
-        .then(() => {
-          init();
-        });
+      swal.fire({
+        toast: true,
+        position: "bottom",
+        title: "Bí rồi...",
+        icon: "info",
+        timer: 500,
+        showConfirmButton: false,
+      });
     }
   }, [isFinished]);
 
