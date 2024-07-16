@@ -257,7 +257,9 @@ export default function WordLinkSingle() {
           </div>
           <div className="w-100 has-text-centered" onClick={onSkip}>
             <button className="button is-text is-medium">
-              <span>Bỏ qua</span>
+              <span>
+                Bỏ qua <span className="is-size-7">(esc)</span>
+              </span>
               <span className="icon">
                 <FontAwesomeIcon icon={faForward} />
               </span>
