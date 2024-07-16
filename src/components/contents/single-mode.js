@@ -33,7 +33,7 @@ const turnTime = 60;
 
 export default function WordLinkSingle() {
   const router = useRouter();
-  const [isShowManual, setIsShowManual] = useState(false);
+  const [isShowManual, setIsShowManual] = useState(true);
   const [responseWord, setResponseWord] = useState("");
   const [responseWordDescription, setResponseWordDescription] = useState("");
   const [answerWord, setAnswerWord] = useState("");
@@ -44,7 +44,7 @@ export default function WordLinkSingle() {
   const [rank, setRank] = useState();
   const [answeredList, setAnsweredList] = useState([]);
 
-  const { user } = useUserStore();
+  const { user, setIsFirstTime } = useUserStore();
 
   const timerRef = useRef();
 
@@ -53,9 +53,22 @@ export default function WordLinkSingle() {
   });
 
   useEffect(() => {
-    setIsLoading(true);
     init();
+
+    const storage = localStorage.getItem("user-store");
+    const storageData = JSON.parse(storage);
+
+    if (!(storageData && storageData.state && storageData.state.isFirstTime)) {
+      setIsShowManual(false);
+    }
   }, []);
+
+  useEffect(() => {
+    if (!isShowManual) {
+      setIsFirstTime(false);
+      setIsLoading(false);
+    }
+  }, [isShowManual]);
 
   useEffect(() => {
     if (isOver) {
@@ -97,7 +110,6 @@ export default function WordLinkSingle() {
         setResponseWord(response.data.word);
         setAnsweredList((prev) => [...prev, response.data.word]);
         setResponseWordDescription(response.data.description);
-        setIsLoading(false);
       })
       .catch((error) => {
         console.error(error);
@@ -198,74 +210,76 @@ export default function WordLinkSingle() {
   };
   return (
     <>
-      <div className="is-flex is-flex-direction-column is-align-items-center w-100">
-        <div>
-          {/* <span className="mr-2">User</span>
-              <span className="icon is-large circle-border mb-4">
-                <FontAwesomeIcon icon={faUser} />
-              </span> */}
-          <span className="is-size-4">Điểm: {point}</span>
-        </div>
-
-        {!isOver && (
-          <BaseTimer
-            ref={timerRef}
-            maxTime={turnTime}
-            onOver={() => {
-              setIsOver(true);
-            }}
-          />
-        )}
-      </div>
-
       {isLoading ? (
         <SpinnerLoading />
       ) : (
-        <div>
-          <p className="mb-4">
-            <WordDetail
-              styleClass="has-text-centered is-size-1 is-inline-block w-100"
-              word={responseWord}
-              description={responseWordDescription}
-            />
-          </p>
+        <>
+          <div className="is-flex is-flex-direction-column is-align-items-center w-100">
+            <div>
+              {/* <span className="mr-2">User</span>
+              <span className="icon is-large circle-border mb-4">
+                <FontAwesomeIcon icon={faUser} />
+              </span> */}
+              <span className="is-size-4">Điểm: {point}</span>
+            </div>
 
-          <div className="field has-addons">
-            <div className="control is-large">
-              <a className="button is-large">{preResponseWord}</a>
-            </div>
-            <div className="control is-large">
-              <input
-                onKeyDown={handleKeyDown}
-                className="input is-large"
-                type="text"
-                placeholder="..."
-                value={answerWord}
-                onChange={(e) => setAnswerWord(e.target.value)}
+            {!isOver && (
+              <BaseTimer
+                ref={timerRef}
+                maxTime={turnTime}
+                onOver={() => {
+                  setIsOver(true);
+                }}
               />
+            )}
+          </div>
+
+          <div>
+            <p className="mb-4">
+              <WordDetail
+                styleClass="has-text-centered is-size-1 is-inline-block w-100"
+                word={responseWord}
+                description={responseWordDescription}
+              />
+            </p>
+
+            <div className="field has-addons">
+              <div className="control is-large">
+                <a className="button is-large">{preResponseWord}</a>
+              </div>
+              <div className="control is-large">
+                <input
+                  onKeyDown={handleKeyDown}
+                  className="input is-large"
+                  type="text"
+                  placeholder="..."
+                  value={answerWord}
+                  onChange={(e) => setAnswerWord(e.target.value)}
+                />
+              </div>
+              <div className="control">
+                <button
+                  className="button is-large transform-hover"
+                  onClick={onAnswer}
+                >
+                  <span>
+                    <FontAwesomeIcon icon={faArrowRight} />
+                  </span>
+                </button>
+              </div>
             </div>
-            <div className="control">
-              <button
-                className="button is-large transform-hover"
-                onClick={onAnswer}
-              >
+            <div className="w-100 has-text-centered" onClick={onSkip}>
+              <button className="button is-text is-medium">
                 <span>
-                  <FontAwesomeIcon icon={faArrowRight} />
+                  Bỏ qua <span className="is-size-7">(esc)</span>
+                </span>
+                <span className="icon">
+                  <FontAwesomeIcon icon={faForward} />
                 </span>
               </button>
             </div>
           </div>
-          <div className="w-100 has-text-centered" onClick={onSkip}>
-            <button className="button is-text is-medium">
-              <span>
-                Bỏ qua <span className="is-size-7">(esc)</span>
-              </span>
-              <span className="icon">
-                <FontAwesomeIcon icon={faForward} />
-              </span>
-            </button>
-          </div>
-        </div>
+        </>
       )}
 
       <div
@@ -303,7 +317,7 @@ export default function WordLinkSingle() {
           </div>
           <div>
             <p className="is-size-6 mt-3 mb-4 has-text-centered">
-              Nhập tên để được lưu danh sử sách 😜
+              Nhập tên để lưu danh sử sách 😜
             </p>
             <UserInput />
             <div className="buttons is-justify-content-center mt-5">
@@ -325,11 +339,11 @@ export default function WordLinkSingle() {
       )}
 
       {isShowManual && (
-        <StandardModal id="game-over" onClose={() => setIsShowManual(false)}>
+        <StandardModal id="manual" onClose={() => setIsShowManual(false)}>
           <div className="content">
             <p>
-              Đây là chế độ chơi nối từ giữa người với máy. Bạn hãy cố gắng đạt
-              được nhiều điểm nhất có thể.
+              Đây là chế độ chơi game nối từ giữa người với máy. Bạn hãy cố gắng
+              đạt được nhiều điểm nhất có thể.
             </p>
             <div className="has-text-centered">
               <Image
@@ -339,7 +353,7 @@ export default function WordLinkSingle() {
                 height={300}
               />
             </div>
-            <h2>Luật chơi nối từ solo:</h2>
+            <h2>Luật chơi game nối từ online với máy:</h2>
             <ul>
               <li>Bạn có 1 phút</li>
               <li>

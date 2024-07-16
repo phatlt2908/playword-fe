@@ -71,3 +71,29 @@ textarea {
 .breadcrumb a {
   color: var(--bulma-text-strong) !important;
 }
+
+.modal-close:before {
+  height: 2px;
+  width: 50%;
+}
+
+.modal-close:after {
+  height: 50%;
+  width: 2px;
+}
+
+.modal-close:after,
+.modal-close:before {
+  background-color: var(--bulma-delete-color);
+  content: "";
+  display: block;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%) rotate(45deg);
+  transform-origin: center center;
+}
+
+.is-large.modal-close {
+  --bulma-delete-dimensions: 2rem;
+}

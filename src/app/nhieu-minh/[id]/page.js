@@ -19,8 +19,6 @@ import swal from "sweetalert2";
 
 import reportApi from "@/services/reportApi";
 
-import avatarConst from "@/constants/avatarConst";
-
 import BrandLoading from "@/components/utils/brand-loading";
 import BaseTimer from "@/components/utils/base-timer";
 import WordDetail from "@/components/contents/word-detail";

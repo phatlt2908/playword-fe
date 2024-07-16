@@ -21,6 +21,8 @@ export const useUserStore = create(
       setUser: (user) => set({ user }),
       logout: () =>
         set({ user: { id: null, code: null, name: null, avatar: null } }),
+      isFirstTime: true,
+      setIsFirstTime: (isFirstTime) => set({ isFirstTime }),
     }),
     {
       name: "user-store",
