@@ -55,7 +55,7 @@ textarea {
   }
 }
 
-.input {
+.input, textarea {
   background-color: rgba(var(--transparency-rgba)) !important;
   border-color: white !important;
 }

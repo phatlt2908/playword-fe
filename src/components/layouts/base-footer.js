@@ -1,24 +1,21 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "./base-footer.module.css";
 import { faCommentDots, faMessage } from "@fortawesome/free-solid-svg-icons";
 import swal from "sweetalert2";
 
 const BaseFooter = () => {
+  const router = useRouter();
+
   return (
     <>
       <button
         className={`${styles.feedback} button is-small`}
         onClick={() => {
-          swal.fire({
-            title: "Tính năng đang được phát triển...",
-            toast: true,
-            icon: "info",
-            position: "bottom",
-            showConfirmButton: false,
-            timer: 3000,
-          });
+          router.push(`/gop-y`);
         }}
       >
         <span>Góp ý</span>
