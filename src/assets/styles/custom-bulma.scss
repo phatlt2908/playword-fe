@@ -55,7 +55,8 @@ textarea {
   }
 }
 
-.input, textarea {
+.input,
+textarea {
   background-color: rgba(var(--transparency-rgba)) !important;
   border-color: white !important;
 }
@@ -96,4 +97,10 @@ textarea {
 
 .is-large.modal-close {
   --bulma-delete-dimensions: 2rem;
+}
+
+.box {
+  background: linear-gradient(to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
 }

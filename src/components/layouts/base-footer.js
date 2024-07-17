@@ -1,21 +1,23 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "./base-footer.module.css";
 import { faCommentDots, faMessage } from "@fortawesome/free-solid-svg-icons";
 import swal from "sweetalert2";
+import StandardModal from "../contents/standard-modal";
+import Feedback from "../contents/feedback";
 
 const BaseFooter = () => {
-  const router = useRouter();
+  const [isOpenFeedback, setIsOpenFeedback] = useState(false);
 
   return (
     <>
       <button
         className={`${styles.feedback} button is-small`}
         onClick={() => {
-          router.push(`/gop-y`);
+          setIsOpenFeedback(true);
         }}
       >
         <span>Góp ý</span>
@@ -38,6 +40,12 @@ const BaseFooter = () => {
       >
         <FontAwesomeIcon icon={faCommentDots} />
       </button>
+
+      {isOpenFeedback && (
+        <StandardModal id="feedback" onClose={() => setIsOpenFeedback(false)}>
+          <Feedback />
+        </StandardModal>
+      )}
     </>
   );
 };
