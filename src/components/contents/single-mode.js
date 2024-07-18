@@ -23,6 +23,7 @@ import WordDetail from "@/components/contents/word-detail";
 import StandardModal from "@/components/contents/standard-modal";
 import UserInput from "@/components/contents/user-input";
 import { useUserStore } from "@/stores/user-store";
+import AnswerInput from "./answer-input";
 
 const turnTime = 60;
 
@@ -36,7 +37,6 @@ export default function WordLinkSingle() {
   const [isShowManual, setIsShowManual] = useState(true);
   const [responseWord, setResponseWord] = useState("");
   const [responseWordDescription, setResponseWordDescription] = useState("");
-  const [answerWord, setAnswerWord] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isFinished, setIsFinished] = useState(false); // The server can not find any word
   const [point, setPoint] = useState(0);
@@ -114,7 +114,7 @@ export default function WordLinkSingle() {
       });
   };
 
-  const onAnswer = () => {
+  const onAnswer = (answerWord) => {
     if (answerWord === "") {
       return;
     }
@@ -187,9 +187,6 @@ export default function WordLinkSingle() {
       })
       .catch((error) => {
         console.error(error);
-      })
-      .finally(() => {
-        setAnswerWord("");
       });
   };
 
@@ -198,14 +195,6 @@ export default function WordLinkSingle() {
     init();
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      onAnswer();
-    }
-    if (e.key === "Escape") {
-      onSkip();
-    }
-  };
   return (
     <>
       {isLoading ? (
@@ -241,41 +230,11 @@ export default function WordLinkSingle() {
               />
             </p>
 
-            <div className="field has-addons">
-              <div className="control is-large">
-                <a className="button is-large">{preResponseWord}</a>
-              </div>
-              <div className="control is-large">
-                <input
-                  onKeyDown={handleKeyDown}
-                  className="input is-large"
-                  type="text"
-                  placeholder="..."
-                  value={answerWord}
-                  onChange={(e) => setAnswerWord(e.target.value)}
-                />
-              </div>
-              <div className="control">
-                <button
-                  className="button is-large transform-hover"
-                  onClick={onAnswer}
-                >
-                  <span>
-                    <FontAwesomeIcon icon={faArrowRight} />
-                  </span>
-                </button>
-              </div>
-            </div>
-            <div className="w-100 has-text-centered" onClick={onSkip}>
-              <button className="button is-text is-medium">
-                <span>
-                  Bỏ qua <span className="is-size-7">(esc)</span>
-                </span>
-                <span className="icon">
-                  <FontAwesomeIcon icon={faForward} />
-                </span>
-              </button>
-            </div>
+            <AnswerInput
+              preResponseWord={preResponseWord}
+              onAnswer={onAnswer}
+              onSkip={onSkip}
+            />
           </div>
         </>
       )}

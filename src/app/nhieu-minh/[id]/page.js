@@ -25,6 +25,7 @@ import WordDetail from "@/components/contents/word-detail";
 import UserIcon from "@/components/contents/user-icon";
 import BaseCountdown from "@/components/utils/base-countdown";
 import UserInput from "@/components/contents/user-input";
+import AnswerInput from "@/components/contents/answer-input";
 
 const turnTime = 20;
 const waitingSecond = 20;
@@ -33,7 +34,6 @@ export default function WordLinkMulti({ params }) {
   const [stompClient, setStompClient] = useState();
   const [responseWord, setResponseWord] = useState("");
   const [responseWordDescription, setResponseWordDescription] = useState("");
-  const [answerWord, setAnswerWord] = useState("");
   const [turnNumber, setTurnNumber] = useState(1);
   const [turn, setTurn] = useState(3); // Number of turns to answer (answer wrong 3 times => game over)
   const [isReady, setIsReady] = useState(false);
@@ -60,7 +60,6 @@ export default function WordLinkMulti({ params }) {
   const isAnsweringRef = useRef();
   isAnsweringRef.current = isAnswering;
   const answerRef = useRef();
-  answerRef.current = preResponseWord + " " + answerWord;
   const turnRef = useRef();
   turnRef.current = turn;
   const stompClientRef = useRef();
@@ -125,12 +124,6 @@ export default function WordLinkMulti({ params }) {
     }
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      onAnswer();
-    }
-  };
-
   /**
    * type = 1: Over turn
    * type = 2: Over time
@@ -165,20 +158,20 @@ export default function WordLinkMulti({ params }) {
     );
   };
 
-  const onAnswer = () => {
+  const onAnswer = (answerWord) => {
     if (!answerWord) {
       return;
     }
 
-    const answer = preResponseWord + " " + answerWord;
+    answerRef.current = preResponseWord + " " + answerWord;
 
     // Check if answer is contained in word list
     console.log("wordList >>> ", wordList);
-    if (wordList.includes(answer)) {
+    if (wordList.includes(answerRef.current)) {
       swal.fire({
         toast: true,
         position: "bottom",
-        text: `Từ [${answer}] đã được trả lời 😣`,
+        text: `Từ [${answerRef.current}] đã được trả lời 😣`,
         icon: "error",
         timer: 5000,
         showConfirmButton: false,
@@ -199,7 +192,7 @@ export default function WordLinkMulti({ params }) {
       JSON.stringify({
         sender: user,
         roomId: params.id,
-        message: answer,
+        message: answerRef.current,
       })
     );
   };
@@ -291,7 +284,6 @@ export default function WordLinkMulti({ params }) {
         });
 
         setTurn(3);
-        setAnswerWord("");
       }
 
       setTurnNumber((prev) => prev + 1);
@@ -467,33 +459,10 @@ export default function WordLinkMulti({ params }) {
 
               {isAnswering ? (
                 <>
-                  <div className="field has-addons">
-                    <div className="control is-large">
-                      <a className="button is-large">{preResponseWord}</a>
-                    </div>
-                    <div className="control is-large">
-                      <input
-                        onKeyDown={handleKeyDown}
-                        className="input is-large"
-                        type="text"
-                        placeholder="..."
-                        value={answerWord}
-                        onChange={(e) => setAnswerWord(e.target.value)}
-                        autoFocus
-                        maxLength={50}
-                      />
-                    </div>
-                    <div className="control">
-                      <button
-                        className="button is-large transform-hover"
-                        onClick={onAnswer}
-                      >
-                        <span>
-                          <FontAwesomeIcon icon={faArrowRight} />
-                        </span>
-                      </button>
-                    </div>
-                  </div>
+                  <AnswerInput
+                    preResponseWord={preResponseWord}
+                    onAnswer={onAnswer}
+                  />
                   {turn < 3 && (
                     <p className="help is-warning is-size-6 has-text-centered has-text-weight-semibold">
                       ⚠️ Bạn còn {turn} lượt nhập sai
