@@ -114,7 +114,7 @@ export default function WordLinkSingle() {
       return;
     }
 
-    const answer = preResponseWord + " " + answerWord;
+    const answer = preResponseWord + answerWord;
 
     if (answeredList.includes(answer)) {
       swal.fire({

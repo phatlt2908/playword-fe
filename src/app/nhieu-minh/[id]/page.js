@@ -116,8 +116,6 @@ export default function WordLinkMulti({ params }) {
 
   const onMessageReceived = (payload) => {
     var res = JSON.parse(payload.body);
-    console.log("Received message >>> : ", res);
-
     if (res.type === "ANSWER") {
       handleReceiveAnswer(res);
     } else {
@@ -164,10 +162,9 @@ export default function WordLinkMulti({ params }) {
       return;
     }
 
-    answerRef.current = preResponseWord + " " + answerWord;
+    answerRef.current = preResponseWord + answerWord;
 
     // Check if answer is contained in word list
-    console.log("wordList >>> ", wordList);
     if (wordList.includes(answerRef.current)) {
       swal.fire({
         toast: true,
