@@ -5,9 +5,18 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faForward } from "@fortawesome/free-solid-svg-icons";
 
+import styles from "./answer-input.module.css";
+
 const AnswerInput = ({ preResponseWord, onAnswer, onSkip }) => {
   const [answerWord, setAnswerWord] = useState("");
+  const [inputValue, setInputValue] = useState("");
   const hasSkip = !!onSkip;
+
+  useState(() => {
+    if (preResponseWord) {
+      setInputValue(preResponseWord);
+    }
+  }, [preResponseWord]);
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
@@ -20,6 +29,8 @@ const AnswerInput = ({ preResponseWord, onAnswer, onSkip }) => {
 
   const answer = () => {
     onAnswer(answerWord);
+    
+    setInputValue(preResponseWord);
     setAnswerWord("");
   };
 
@@ -27,16 +38,20 @@ const AnswerInput = ({ preResponseWord, onAnswer, onSkip }) => {
     <>
       <div className="field has-addons">
         <div className="control is-large">
-          <a className="button is-large">{preResponseWord}</a>
-        </div>
-        <div className="control is-large">
           <input
             onKeyDown={handleKeyDown}
             className="input is-large"
             type="text"
             placeholder="..."
-            value={answerWord}
-            onChange={(e) => setAnswerWord(e.target.value)}
+            value={inputValue}
+            onChange={(e) => {
+              setInputValue(
+                preResponseWord +
+                  e.target.value.substring(preResponseWord.length)
+              );
+              setAnswerWord(e.target.value.substring(preResponseWord.length));
+            }}
+            autoFocus
           />
         </div>
         <div className="control">
@@ -52,8 +67,8 @@ const AnswerInput = ({ preResponseWord, onAnswer, onSkip }) => {
       </div>
 
       {hasSkip && (
-        <div className="w-100 has-text-centered" onClick={onSkip}>
-          <button className="button is-text is-medium">
+        <div className="w-100 has-text-centered">
+          <button className="button is-text is-medium" onClick={onSkip}>
             <span>
               Bỏ qua <span className="is-size-7">(esc)</span>
             </span>

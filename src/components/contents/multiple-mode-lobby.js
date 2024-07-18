@@ -9,7 +9,7 @@ import {
   faWandMagicSparkles,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import wordLinkApi from "@/services/wordLinkApi";
 import StandardModal from "@/components/contents/standard-modal";
@@ -17,6 +17,8 @@ import SpinnerLoading from "@/components/utils/spinner-loading";
 import BrandLoading from "@/components/utils/brand-loading";
 
 import swal from "sweetalert2";
+
+import commonConst from "@/constants/commonConst";
 
 const roomNameExamples = [
   "Độc cô cầu bại...",
@@ -51,6 +53,7 @@ const roomNameExamples = [
 
 const WordLinkMultiLobby = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [keyword, setKeyword] = useState("");
   const [roomList, setRoomList] = useState([]);
@@ -60,7 +63,12 @@ const WordLinkMultiLobby = () => {
   const [isCreatingRoom, setIsCreatingRoom] = useState(false);
 
   useEffect(() => {
-    search();
+    const isSolo = searchParams.get("isSolo");
+    if (isSolo) {
+      solo();
+    } else {
+      search();
+    }
   }, []);
 
   useEffect(() => {
@@ -92,6 +100,18 @@ const WordLinkMultiLobby = () => {
       .catch((error) => console.log("Can not create a new room ", error));
   };
 
+  const onCreateSoloRoom = () => {
+    setIsCreatingRoom(true);
+    setIsOpenCreateRoomPopup(false);
+    const roomId = Math.random().toString(36).substring(2, 8);
+    wordLinkApi
+      .createRoom(roomId, commonConst.SOLO_ROOM_NAME)
+      .then(() => {
+        router.push(`/nhieu-minh/${roomId}`);
+      })
+      .catch((error) => console.log("Can not create a new solo room ", error));
+  };
+
   const onJoinRoom = (roomId) => {
     router.push(`/nhieu-minh/${roomId}`);
   };
@@ -108,14 +128,14 @@ const WordLinkMultiLobby = () => {
     }
   };
 
-  const fastJoin = () => {
+  const solo = () => {
     wordLinkApi.findRoom().then((response) => {
       if (response.data) {
         router.push(`/nhieu-minh/${response.data}`);
       } else {
-        setIsOpenCreateRoomPopup(true);
+        onCreateSoloRoom();
         swal.fire({
-          text: "Không tìm thấy phòng",
+          text: "Đang tìm đối thủ...",
           toast: true,
           position: "bottom",
           icon: "info",
@@ -134,8 +154,8 @@ const WordLinkMultiLobby = () => {
         <div className="w-100">
           <div className="w-100 columns is-vcentered">
             <div className="column has-text-centered">
-              <button className="button" onClick={fastJoin}>
-                <span>Chơi nhanh</span>
+              <button className="button" onClick={solo}>
+                <span>Solo 1 vs 1</span>
                 <span className="icon">
                   <FontAwesomeIcon icon={faPlay} />
                 </span>

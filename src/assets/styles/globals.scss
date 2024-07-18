@@ -126,6 +126,10 @@ a {
   }
 }
 
+.half-transparency-background {
+  background-color: rgba(var(--half-transparency-rgba));
+}
+
 // Transition
 .trans-bounce {
   animation-name: bounce;

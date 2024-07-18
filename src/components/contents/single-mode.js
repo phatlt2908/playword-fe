@@ -6,12 +6,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowRight,
-  faBook,
-  faForward,
-  faHouse,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBook, faHouse } from "@fortawesome/free-solid-svg-icons";
 import swal from "sweetalert2";
 
 import wordLinkApi from "@/services/wordLinkApi";
@@ -49,7 +44,7 @@ export default function WordLinkSingle() {
   const timerRef = useRef();
 
   const preResponseWord = useMemo(() => {
-    return responseWord.split(" ").pop();
+    return responseWord.split(" ").pop() + " ";
   });
 
   useEffect(() => {
@@ -231,6 +226,7 @@ export default function WordLinkSingle() {
             </p>
 
             <AnswerInput
+              key={responseWord}
               preResponseWord={preResponseWord}
               onAnswer={onAnswer}
               onSkip={onSkip}

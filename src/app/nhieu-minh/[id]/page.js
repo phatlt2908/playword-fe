@@ -1,16 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useState, useEffect, useMemo, useRef } from "react";
 import { useUserStore } from "@/stores/user-store";
+import { useRouter } from "next/navigation";
 
 import { Stomp } from "@stomp/stompjs";
 import * as SockJS from "sockjs-client";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faArrowRight,
   faChevronLeft,
   faEllipsis,
   faLink,
@@ -26,11 +25,13 @@ import UserIcon from "@/components/contents/user-icon";
 import BaseCountdown from "@/components/utils/base-countdown";
 import UserInput from "@/components/contents/user-input";
 import AnswerInput from "@/components/contents/answer-input";
+import DotLoading from "@/components/utils/dot-loading";
 
 const turnTime = 20;
 const waitingSecond = 20;
 
 export default function WordLinkMulti({ params }) {
+  const router = useRouter();
   const [stompClient, setStompClient] = useState();
   const [responseWord, setResponseWord] = useState("");
   const [responseWordDescription, setResponseWordDescription] = useState("");
@@ -54,7 +55,7 @@ export default function WordLinkMulti({ params }) {
     return answerUser && answerUser.code == user.code;
   });
   const preResponseWord = useMemo(() => {
-    return responseWord.split(" ").pop();
+    return responseWord.split(" ").pop() + " ";
   });
 
   const isAnsweringRef = useRef();
@@ -208,6 +209,26 @@ export default function WordLinkMulti({ params }) {
           timer: 3000,
           showConfirmButton: false,
         });
+      }
+    } else if (message.type === "JOIN_DUPLICATE") {
+      if (message.user.code === user.code) {
+        swal.fire({
+          icon: "error",
+          text: `Có lỗi khi vào phòng. Vui lòng thử lại 😣`,
+          timer: 3000,
+          showConfirmButton: false,
+        });
+        router.push("/nhieu-minh");
+      }
+    } else if (message.type === "JOIN_FULL") {
+      if (message.user.code === user.code) {
+        swal.fire({
+          icon: "error",
+          text: `Không thể vào phòng! Vượt giới hạn số lượng người chơi 😣`,
+          timer: 3000,
+          showConfirmButton: false,
+        });
+        router.push("/nhieu-minh");
       }
     } else if (message.type === "LEAVE") {
       swal.fire({
@@ -460,6 +481,7 @@ export default function WordLinkMulti({ params }) {
               {isAnswering ? (
                 <>
                   <AnswerInput
+                    key={responseWord}
                     preResponseWord={preResponseWord}
                     onAnswer={onAnswer}
                   />
@@ -479,7 +501,7 @@ export default function WordLinkMulti({ params }) {
         </>
       )}
 
-      <div className="columns is-multiline is-centered is-mobile w-100">
+      <div className="columns is-multiline is-centered is-vcentered is-mobile w-100">
         {roomUserList.map((user, index) => (
           <div
             key={index}
@@ -495,6 +517,13 @@ export default function WordLinkMulti({ params }) {
             />
           </div>
         ))}
+
+        {roomUserList.length <= 1 && (
+          <div className="column is-flex is-flex-direction-column is-align-items-center">
+            <div>Đợi đối thủ</div>
+            <DotLoading />
+          </div>
+        )}
       </div>
     </>
   );

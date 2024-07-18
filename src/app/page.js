@@ -3,6 +3,7 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBook,
+  faPeoplePulling,
   faRankingStar,
   faShare,
   faUser,
@@ -17,26 +18,37 @@ const Home = () => {
       </div>
 
       <div className="is-flex is-flex-direction-column is-align-items-center">
-        <div className="columns">
-          <Link className="column" href="/mot-minh">
-            <div className="button is-flex is-justify-content-space-between is-flex-direction-column">
-              <FontAwesomeIcon icon={faUser} size="2x" />
-              <h2>Một mình</h2>
+        <div className="half-transparency-background p-5 drawing-border">
+          <div className="columns is-mobile is-vcentered">
+            <Link className="column" href="/mot-minh">
+              <div className="button is-text is-flex is-justify-content-space-between is-flex-direction-column">
+                <FontAwesomeIcon icon={faUser} size="2x" />
+                <h2>Nối đơn</h2>
+              </div>
+            </Link>
+            <Link className="column" href="/xep-hang">
+              <div className="button is-text is-justify-content-space-between is-flex-direction-column">
+                <FontAwesomeIcon icon={faRankingStar} />
+                <div className="is-size-6">Bảng xếp hạng</div>
+              </div>
+            </Link>
+          </div>
+        </div>
+
+        <div className="columns is-mobile mt-5">
+          <Link className="column" href="/nhieu-minh?isSolo=true">
+            <div className="button is-text is-flex is-justify-content-space-between is-flex-direction-column">
+              <FontAwesomeIcon icon={faPeoplePulling} size="2x" />
+              <h2>Solo 1 vs 1</h2>
             </div>
           </Link>
           <Link className="column" href="/nhieu-minh">
-            <div className="button is-flex is-justify-content-space-between is-flex-direction-column">
+            <div className="button is-text is-flex is-justify-content-space-between is-flex-direction-column">
               <FontAwesomeIcon icon={faUsers} size="2x" />
-              <h2>Nhiều mình</h2>
+              <h2>Nối nhóm</h2>
             </div>
           </Link>
         </div>
-        <Link className="mt-5" href="/xep-hang">
-          <div className="cursor-pointer hover-underlined is-flex is-justify-content-space-between is-flex-direction-column">
-            <FontAwesomeIcon icon={faRankingStar} size="2x" />
-            <div>Bảng xếp hạng</div>
-          </div>
-        </Link>
       </div>
 
       <div className="is-flex is-flex-direction-column is-align-items-center">
