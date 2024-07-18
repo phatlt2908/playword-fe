@@ -1,4 +1,5 @@
 import WordLinkMultiLobby from "@/components/contents/multiple-mode-lobby";
+import { Suspense } from "react";
 
 export const metadata = {
   title: "Chơi game nối từ solo - Nối từ nhóm | Nối từ vui",
@@ -15,5 +16,9 @@ export const metadata = {
 };
 
 export default function MultipleModeLobbyPage() {
-  return <WordLinkMultiLobby />;
+  return (
+    <Suspense>
+      <WordLinkMultiLobby />
+    </Suspense>
+  );
 }
