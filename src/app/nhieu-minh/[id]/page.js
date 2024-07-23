@@ -207,21 +207,11 @@ export default function WordLinkMulti({ params }) {
           showConfirmButton: false,
         });
       }
-    } else if (message.type === "JOIN_DUPLICATE") {
+    } else if (message.type === "JOIN_FAIL") {
       if (message.user.code === user.code) {
         swal.fire({
           icon: "error",
-          text: `Có lỗi khi vào phòng. Vui lòng thử lại 😣`,
-          timer: 3000,
-          showConfirmButton: false,
-        });
-        router.push("/nhieu-minh");
-      }
-    } else if (message.type === "JOIN_FULL") {
-      if (message.user.code === user.code) {
-        swal.fire({
-          icon: "error",
-          text: `Không thể vào phòng! Vượt giới hạn số lượng người chơi 😣`,
+          text: `Có lỗi khi vào phòng hoặc vượt giới hạn số lượng người chơi Vui lòng thử lại 😣`,
           timer: 3000,
           showConfirmButton: false,
         });
