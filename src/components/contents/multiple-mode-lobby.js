@@ -10,6 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useUserStore } from "@/stores/user-store";
 
 import wordLinkApi from "@/services/wordLinkApi";
 import StandardModal from "@/components/contents/standard-modal";
@@ -62,6 +63,8 @@ const WordLinkMultiLobby = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isCreatingRoom, setIsCreatingRoom] = useState(false);
 
+  const { user } = useUserStore();
+
   useEffect(() => {
     const isSolo = searchParams.get("isSolo");
     if (isSolo) {
@@ -93,7 +96,7 @@ const WordLinkMultiLobby = () => {
     setIsOpenCreateRoomPopup(false);
     const roomId = Math.random().toString(36).substring(2, 8);
     wordLinkApi
-      .createRoom(roomId, roomName)
+      .createRoom(roomId, roomName, user.code)
       .then(() => {
         router.push(`/nhieu-minh/${roomId}`);
       })
@@ -105,7 +108,7 @@ const WordLinkMultiLobby = () => {
     setIsOpenCreateRoomPopup(false);
     const roomId = Math.random().toString(36).substring(2, 8);
     wordLinkApi
-      .createRoom(roomId, commonConst.SOLO_ROOM_NAME)
+      .createRoom(roomId, commonConst.SOLO_ROOM_NAME, user.code)
       .then(() => {
         router.push(`/nhieu-minh/${roomId}`);
       })

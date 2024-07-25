@@ -13,8 +13,8 @@ class wordLinkApi {
     return axios.get(`/multi-word-link/room-list?keyword=${keyword}`);
   }
 
-  createRoom(id, name) {
-    return axios.get(`/multi-word-link/create-room?id=${id}&name=${name}`);
+  createRoom(id, name, userCode) {
+    return axios.get(`/multi-word-link/create-room?id=${id}&name=${name}&userCode=${userCode}`);
   }
 
   findRoom() {
