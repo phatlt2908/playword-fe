@@ -294,6 +294,7 @@ export default function WordLinkSingle() {
       {isShowManual && (
         <StandardModal id="manual" onClose={() => setIsShowManual(false)}>
           <div className="content">
+            <button className="button has-text-centered mb-3">Bắt đầu chơi</button>
             <p>
               Đây là chế độ chơi game nối từ giữa người với máy. Bạn hãy cố gắng
               đạt được nhiều điểm nhất có thể.
@@ -327,7 +328,7 @@ export default function WordLinkSingle() {
               className="w-100 has-text-centered mt-4"
               onClick={() => setIsShowManual(false)}
             >
-              <button className="button has-text-centered">Đóng</button>
+              <button className="button has-text-centered">Bắt đầu chơi</button>
             </div>
           </div>
         </StandardModal>
