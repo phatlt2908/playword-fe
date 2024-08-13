@@ -295,7 +295,7 @@ export default function WordLinkSingle() {
         <StandardModal id="manual" onClose={() => setIsShowManual(false)}>
           <div className="content">
             <div
-              className="w-100 has-text-centered mt-4"
+              className="w-100 has-text-centered mb-4"
               onClick={() => setIsShowManual(false)}
             >
               <button className="button has-text-centered">Bắt đầu chơi</button>
