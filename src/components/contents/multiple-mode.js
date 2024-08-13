@@ -26,6 +26,8 @@ import BaseCountdown from "@/components/utils/base-countdown";
 import UserInput from "@/components/contents/user-input";
 import AnswerInput from "@/components/contents/answer-input";
 import DotLoading from "@/components/utils/dot-loading";
+import WordLinkSingle from "./single-mode";
+import StandardModal from "./standard-modal";
 
 const turnTime = 20;
 const waitingSecond = 20;
@@ -40,6 +42,7 @@ export default function WordLinkMulti({ roomId }) {
   const [isReady, setIsReady] = useState(false);
   const [isLoadingInit, setIsLoadingInit] = useState(true);
   const [isDisplayDropdown, setIsDisplayDropdown] = useState(false);
+  const [isSingleModeWaiting, setIsSingleModeWaiting] = useState(false);
 
   // User state
   const { user } = useUserStore();
@@ -207,6 +210,8 @@ export default function WordLinkMulti({ roomId }) {
           timer: 3000,
           showConfirmButton: false,
         });
+
+        setIsSingleModeWaiting(false);
       }
     } else if (message.type === "JOIN_FAIL") {
       if (message.user.code === user.code) {
@@ -361,24 +366,28 @@ export default function WordLinkMulti({ roomId }) {
     window.location.href = "/nhieu-minh";
   };
 
+  const onCopyLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    swal.fire({
+      toast: true,
+      position: "bottom",
+      title: "Đã sao chép đường dẫn phòng chơi",
+      text: "Hãy gửi đường dẫn này cho bạn bè mà bạn muốn chơi cùng nhé! 🥰",
+      icon: "success",
+      timer: 5000,
+      showConfirmButton: false,
+    });
+  };
+
+  const onSingleModeWaiting = () => {
+    setIsSingleModeWaiting(true);
+    onReady();
+  };
+
   return (
     <>
       <div className="is-flex is-flex-direction-column is-align-items-center">
-        <p
-          className="icon-text cursor-pointer"
-          onClick={() => {
-            navigator.clipboard.writeText(window.location.href);
-            swal.fire({
-              toast: true,
-              position: "bottom",
-              title: "Đã sao chép đường dẫn phòng chơi",
-              text: "Hãy gửi đường dẫn này cho bạn bè mà bạn muốn chơi cùng nhé! 🥰",
-              icon: "success",
-              timer: 5000,
-              showConfirmButton: false,
-            });
-          }}
-        >
+        <p className="icon-text cursor-pointer" onClick={onCopyLink}>
           {roomName && <span>Phòng: {roomName}</span>}
           <span className="icon">
             <FontAwesomeIcon icon={faLink} size="sm" />
@@ -429,6 +438,33 @@ export default function WordLinkMulti({ roomId }) {
         <>
           {isRoomPreparing ? (
             <>
+              {roomUserList.length <= 1 && (
+                <div className="content is-flex is-flex-direction-column is-align-items-center">
+                  <div className="is-size-6 mb-2">
+                    <p className="has-text-centered">
+                      Xin lỗi vì đã để bạn đợi lâu 😟
+                    </p>
+                    <ul>
+                      <li>
+                        <a className="text-underlined" onClick={onCopyLink}>
+                          Sao chép link
+                        </a>{" "}
+                        để mời bạn bè chơi cùng
+                      </li>
+                      <li>
+                        Hoặc thử{" "}
+                        <a
+                          className="text-underlined is-size-6"
+                          onClick={onSingleModeWaiting}
+                        >
+                          chơi đơn
+                        </a>{" "}
+                        trong lúc đợi nhé
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              )}
               {isReady ? (
                 <div className="is-flex is-flex-direction-column is-align-items-center">
                   <p className="has-text-centered is-size-4 mb-2">
@@ -513,6 +549,21 @@ export default function WordLinkMulti({ roomId }) {
           </div>
         )}
       </div>
+
+      {isSingleModeWaiting && roomUserList.length <= 1 && (
+        <StandardModal
+          id="single-waiting"
+          onClose={() => setIsSingleModeWaiting(false)}
+        >
+          <div className="is-flex is-flex-direction-column is-align-items-center mb-4">
+            <h1 className="title is-4 has-text-centered">
+              Chơi đơn trong lúc tìm đối thủ
+            </h1>
+            <BrandLoading />
+          </div>
+          <WordLinkSingle isLiteMode={true} />
+        </StandardModal>
+      )}
     </>
   );
 }

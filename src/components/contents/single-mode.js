@@ -27,9 +27,9 @@ const turnTime = 60;
 //   description: "Chơi nối từ một mình, solo với máy để đạt điểm số cao nhất có thể 🚀",
 // };
 
-export default function WordLinkSingle() {
+export default function WordLinkSingle({ isLiteMode }) {
   const router = useRouter();
-  const [isShowManual, setIsShowManual] = useState(true);
+  const [isShowManual, setIsShowManual] = useState(!isLiteMode);
   const [responseWord, setResponseWord] = useState("");
   const [responseWordDescription, setResponseWordDescription] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -192,69 +192,10 @@ export default function WordLinkSingle() {
 
   return (
     <>
-      {isLoading ? (
-        <SpinnerLoading />
-      ) : (
+      {isOver ? (
         <>
-          <div className="is-flex is-flex-direction-column is-align-items-center w-100">
-            <div>
-              {/* <span className="mr-2">User</span>
-              <span className="icon is-large circle-border mb-4">
-                <FontAwesomeIcon icon={faUser} />
-              </span> */}
-              <span className="is-size-4">Điểm: {point}</span>
-            </div>
-
-            {!isOver && (
-              <BaseTimer
-                ref={timerRef}
-                maxTime={turnTime}
-                onOver={() => {
-                  setIsOver(true);
-                }}
-              />
-            )}
-          </div>
-
-          <div>
-            <p className="mb-4">
-              <WordDetail
-                styleClass="has-text-centered is-size-1 is-inline-block w-100"
-                word={responseWord}
-                description={responseWordDescription}
-              />
-            </p>
-
-            <AnswerInput
-              key={responseWord}
-              preResponseWord={preResponseWord}
-              onAnswer={onAnswer}
-              onSkip={onSkip}
-            />
-          </div>
-        </>
-      )}
-
-      <div
-        className="icon-text p-2 cursor-pointer hover-underlined"
-        onClick={() => {
-          setIsShowManual(true);
-        }}
-      >
-        <span>Hướng dẫn</span>
-        <span className="icon">
-          <FontAwesomeIcon icon={faBook} />
-        </span>
-      </div>
-
-      {isOver && (
-        <StandardModal
-          id="game-over"
-          uncloseable
-          onClose={() => console.log("Restart")}
-        >
-          <div className="has-text-centered">
-            <h1 className="title is-1 base-background">GAME OVER</h1>
+          <div className="has-text-centered w-100">
+            <h1 className="title is-1 base-background w-100">GAME OVER</h1>
           </div>
           <div className="has-text-centered mt-5 mb-5">
             <p className="is-size-4">Điểm số: {point}</p>
@@ -273,22 +214,83 @@ export default function WordLinkSingle() {
               Nhập tên để lưu danh sử sách 😜
             </p>
             <UserInput />
-            <div className="buttons is-justify-content-center mt-5">
-              <button
-                className="button is-large drawing-border"
-                onClick={() => location.reload()}
-              >
-                Chơi lại 💪
-              </button>
-              <Link href="/" className="button is-large drawing-border">
-                <span className="icon">
-                  <FontAwesomeIcon icon={faHouse} />
-                </span>
-                <span>Về trang chủ</span>
-              </Link>
-            </div>
+            {!isLiteMode && (
+              <div className="buttons is-justify-content-center mt-5">
+                <button
+                  className="button is-large drawing-border"
+                  onClick={() => location.reload()}
+                >
+                  Chơi lại 💪
+                </button>
+                <Link href="/" className="button is-large drawing-border">
+                  <span className="icon">
+                    <FontAwesomeIcon icon={faHouse} />
+                  </span>
+                  <span>Về trang chủ</span>
+                </Link>
+              </div>
+            )}
           </div>
-        </StandardModal>
+        </>
+      ) : (
+        <>
+          {isLoading ? (
+            <SpinnerLoading />
+          ) : (
+            <>
+              <div className="is-flex is-flex-direction-column is-align-items-center w-100">
+                <div>
+                  {/* <span className="mr-2">User</span>
+              <span className="icon is-large circle-border mb-4">
+                <FontAwesomeIcon icon={faUser} />
+              </span> */}
+                  <span className="is-size-4">Điểm: {point}</span>
+                </div>
+
+                {!isOver && (
+                  <BaseTimer
+                    ref={timerRef}
+                    maxTime={turnTime}
+                    onOver={() => {
+                      setIsOver(true);
+                    }}
+                  />
+                )}
+              </div>
+
+              <div>
+                <p className="mb-4">
+                  <WordDetail
+                    styleClass="has-text-centered is-size-1 is-inline-block w-100"
+                    word={responseWord}
+                    description={responseWordDescription}
+                  />
+                </p>
+
+                <AnswerInput
+                  key={responseWord}
+                  preResponseWord={preResponseWord}
+                  onAnswer={onAnswer}
+                  onSkip={onSkip}
+                />
+              </div>
+            </>
+          )}
+
+          {!isLiteMode && (
+            <div
+              className="icon-text p-2 cursor-pointer hover-underlined"
+              onClick={() => {
+                setIsShowManual(true);
+              }}
+            >
+              <span>Hướng dẫn</span>
+              <span className="icon">
+                <FontAwesomeIcon icon={faBook} />
+              </span>
+            </div>
+          )}
+        </>
       )}
 
       {isShowManual && (
