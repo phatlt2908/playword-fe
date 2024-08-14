@@ -61,7 +61,7 @@ export default function Manual() {
       <p>
         Chơi cùng bạn bè sẽ vui hơn. Tuy nhiên, nếu bạn đang FA thì cũng không
         sao, hãy thử với chế độ chơi{" "}
-        <a className="text-underlined" href="/trum-noi-tu">
+        <a className="text-underlined" href="/mot-minh">
           trùm nối từ
         </a>{" "}
         😌

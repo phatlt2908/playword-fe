@@ -23,7 +23,7 @@ const Home = () => {
         <div
           className={`columns is-multiline is-mobile is-vcentered w-100 ${styles.maxContentWidth}`}
         >
-          <Link className="column is-narrow" href="/trum-noi-tu">
+          <Link className="column is-narrow" href="/mot-minh">
             <div className="button is-text non-underlined is-flex is-justify-content-space-between is-flex-direction-column p-1">
               <FontAwesomeIcon icon={faCrown} size="2x" />
               <h2>Trùm nối từ</h2>
