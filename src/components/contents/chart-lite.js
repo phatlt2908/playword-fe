@@ -67,7 +67,7 @@ export default function RankingChartLite() {
                   <div>
                     #{item.rank}. {item.userName}
                   </div>
-                  <div className="icon-text">
+                  <div className="icon-text" style={{ gap: "unset" }}>
                     <span>{item.point}</span>
                     <span className="icon">
                       <FontAwesomeIcon icon={faStar} size="xs" />
