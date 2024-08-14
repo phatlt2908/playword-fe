@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRankingStar } from "@fortawesome/free-solid-svg-icons";
 
 export default function HomeChart() {
-  const [isDisplayRanking, setIsDisplayRanking] = useState(false);
+  const [isDisplayRanking, setIsDisplayRanking] = useState(true);
 
   setInterval(() => {
     setIsDisplayRanking(!isDisplayRanking);
