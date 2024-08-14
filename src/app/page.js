@@ -5,13 +5,12 @@ import {
   faBook,
   faCrown,
   faPeoplePulling,
-  faRankingStar,
   faShare,
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
-import RankingChartLite from "@/components/contents/chart-lite";
 
 import styles from "./page.module.scss";
+import HomeChart from "@/components/contents/home-chart";
 
 const Home = () => {
   return (
@@ -22,7 +21,7 @@ const Home = () => {
 
       <div className="is-flex is-flex-direction-column is-align-items-center w-100">
         <div
-          className={`columns is-mobile is-vcentered w-100 ${styles.maxContentWidth}`}
+          className={`columns is-multiline is-mobile is-vcentered w-100 ${styles.maxContentWidth}`}
         >
           <Link className="column is-narrow" href="/trum-noi-tu">
             <div className="button is-text non-underlined is-flex is-justify-content-space-between is-flex-direction-column p-1">
@@ -31,16 +30,8 @@ const Home = () => {
               <div className="is-size-7">(Chế độ chơi đơn)</div>
             </div>
           </Link>
-          <Link className={`column ${styles.rank}`} href="/xep-hang">
-            <div className={styles.chart}>
-              <RankingChartLite />
-            </div>
-            <div
-              className={`button trans-float-left is-text non-underlined is-justify-content-space-between is-flex-direction-column ${styles.icon}`}
-            >
-              <FontAwesomeIcon icon={faRankingStar} />
-              <div className="is-size-6">Bảng xếp hạng</div>
-            </div>
+          <Link className="column" href="/xep-hang">
+            <HomeChart />
           </Link>
         </div>
 

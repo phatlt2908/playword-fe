@@ -7,6 +7,7 @@
   --background-end-rgb: 53, 84, 74;
   --transparency-rgba: 0, 0, 0, 0;
   --half-transparency-rgba: 0, 0, 0, 0.3;
+  --near-transparency-rgba: 0, 0, 0, 0.15;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -127,7 +128,11 @@ a {
 }
 
 .half-transparency-background {
-  background-color: rgba(var(--half-transparency-rgba));
+  background-color: rgba(var(--half-transparency-rgba)) !important;
+}
+
+.near-transparency-background {
+  background-color: rgba(var(--near-transparency-rgba)) !important;
 }
 
 // Transition
@@ -162,6 +167,22 @@ a {
   0% {
       opacity: 0;
       transform: translateX(-10%);
+  }
+  100% {
+      opacity: 1;
+      transform: translateX(0px);
+  }
+}
+
+.trans-float-right {
+  animation-name: floatRight;
+  animation-duration: 0.5s;
+}
+
+@keyframes floatRight {
+  0% {
+      opacity: 0;
+      transform: translateX(10%);
   }
   100% {
       opacity: 1;
