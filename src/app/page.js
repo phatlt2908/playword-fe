@@ -3,12 +3,15 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBook,
+  faCrown,
   faPeoplePulling,
   faRankingStar,
   faShare,
-  faUser,
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
+import RankingChartLite from "@/components/contents/chart-lite";
+
+import styles from "./page.module.scss";
 
 const Home = () => {
   return (
@@ -17,33 +20,39 @@ const Home = () => {
         <h1 className="title is-1">Nối từ vui</h1>
       </div>
 
-      <div className="is-flex is-flex-direction-column is-align-items-center">
-        <div className="half-transparency-background p-5 drawing-border">
-          <div className="columns is-mobile is-vcentered">
-            <Link className="column" href="/mot-minh">
-              <div className="button is-text is-flex is-justify-content-space-between is-flex-direction-column">
-                <FontAwesomeIcon icon={faUser} size="2x" />
-                <h2>Nối đơn</h2>
-              </div>
-            </Link>
-            <Link className="column" href="/xep-hang">
-              <div className="button is-text is-justify-content-space-between is-flex-direction-column">
-                <FontAwesomeIcon icon={faRankingStar} />
-                <div className="is-size-6">Bảng xếp hạng</div>
-              </div>
-            </Link>
-          </div>
+      <div className="is-flex is-flex-direction-column is-align-items-center w-100">
+        <div
+          className={`columns is-mobile is-vcentered w-100 ${styles.maxContentWidth}`}
+        >
+          <Link className="column is-narrow" href="/trum-noi-tu">
+            <div className="button is-text non-underlined is-flex is-justify-content-space-between is-flex-direction-column p-1">
+              <FontAwesomeIcon icon={faCrown} size="2x" />
+              <h2>Trùm nối từ</h2>
+              <div className="is-size-7">(Chế độ chơi đơn)</div>
+            </div>
+          </Link>
+          <Link className={`column ${styles.rank}`} href="/xep-hang">
+            <div className={styles.chart}>
+              <RankingChartLite />
+            </div>
+            <div
+              className={`button trans-float-left is-text non-underlined is-justify-content-space-between is-flex-direction-column ${styles.icon}`}
+            >
+              <FontAwesomeIcon icon={faRankingStar} />
+              <div className="is-size-6">Bảng xếp hạng</div>
+            </div>
+          </Link>
         </div>
 
         <div className="columns is-mobile mt-5">
           <Link className="column" href="/nhieu-minh?isSolo=true">
-            <div className="button is-text is-flex is-justify-content-space-between is-flex-direction-column">
+            <div className="button is-text non-underlined is-flex is-justify-content-space-between is-flex-direction-column">
               <FontAwesomeIcon icon={faPeoplePulling} size="2x" />
               <h2>Solo 1 vs 1</h2>
             </div>
           </Link>
           <Link className="column" href="/nhieu-minh">
-            <div className="button is-text is-flex is-justify-content-space-between is-flex-direction-column">
+            <div className="button is-text non-underlined is-flex is-justify-content-space-between is-flex-direction-column">
               <FontAwesomeIcon icon={faUsers} size="2x" />
               <h2>Nối nhóm</h2>
             </div>

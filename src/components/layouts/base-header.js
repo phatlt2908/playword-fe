@@ -9,7 +9,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const routeLabelMap = new Map([
-  ["mot-minh", "Một mình"],
+  ["trum-noi-tu", "Trùm nối từ"],
   ["nhieu-minh", "Nhiều mình"],
   ["noi-tu-la-gi", "Nối từ là gì?"],
   ["xep-hang", "Bảng xếp hạng"],

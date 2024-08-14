@@ -25,8 +25,8 @@ class wordLinkApi {
     return axios.get(`/word-link/result?point=${point}&userCode=${userCode}`);
   }
 
-  getRankingChart() {
-    return axios.get("/word-link/ranking-chart");
+  getRankingChart(top) {
+    return axios.get(`/word-link/ranking-chart?top=${top}`);
   }
 
   getCurrentUserRanking(userCode) {

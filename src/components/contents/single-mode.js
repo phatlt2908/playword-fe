@@ -22,11 +22,6 @@ import AnswerInput from "./answer-input";
 
 const turnTime = 60;
 
-// export const metadata = {
-//   title: 'Một mình',
-//   description: "Chơi nối từ một mình, solo với máy để đạt điểm số cao nhất có thể 🚀",
-// };
-
 export default function WordLinkSingle({ isLiteMode }) {
   const router = useRouter();
   const [isShowManual, setIsShowManual] = useState(!isLiteMode);

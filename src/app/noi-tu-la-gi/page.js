@@ -60,9 +60,9 @@ export default function Manual() {
       </p>
       <p>
         Chơi cùng bạn bè sẽ vui hơn. Tuy nhiên, nếu bạn đang FA thì cũng không
-        sao, hãy thử với chế độ chơi solo{" "}
-        <a className="text-underlined" href="/mot-minh">
-          một mình
+        sao, hãy thử với chế độ chơi{" "}
+        <a className="text-underlined" href="/trum-noi-tu">
+          trùm nối từ
         </a>{" "}
         😌
       </p>

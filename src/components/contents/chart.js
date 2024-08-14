@@ -29,7 +29,7 @@ export default function RankingChart() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    wordLinkApi.getRankingChart().then((res) => {
+    wordLinkApi.getRankingChart(20).then((res) => {
       setList(res.data);
       setMaxPoint(res.data[0].point);
 
