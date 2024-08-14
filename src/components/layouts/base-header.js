@@ -14,6 +14,7 @@ const routeLabelMap = new Map([
   ["noi-tu-la-gi", "Nối từ là gì?"],
   ["xep-hang", "Bảng xếp hạng"],
   ["gop-y", "Góp ý"],
+  ["blog", "Blog"],
 ]);
 
 const BaseHeader = () => {

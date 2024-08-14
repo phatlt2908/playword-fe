@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faBlog,
   faBook,
   faCrown,
   faPeoplePulling,
@@ -52,6 +53,12 @@ const Home = () => {
       </div>
 
       <div className="is-flex is-flex-direction-column is-align-items-center">
+        <a className="icon-text p-2" href="/blog">
+          <span>Blog</span>
+          <span className="icon">
+            <FontAwesomeIcon icon={faBlog} />
+          </span>
+        </a>
         <a className="icon-text p-2" href="/noi-tu-la-gi">
           <span>Hướng dẫn</span>
           <span className="icon">
