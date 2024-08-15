@@ -13,9 +13,9 @@ import BaseFooter from "@/components/layouts/base-footer";
 import { patrick_hand } from "@/utils/fonts";
 
 export const metadata = {
-  title: "Nối từ vui - Chơi game nối từ online",
+  title: "Chơi game nối từ online - Nối từ vui",
   description:
-    "Chơi game nối từ online trên web theo nhóm nhiều người hoặc chơi một mình. Chơi nối từ để có những phút giây giải trí, vừa vui, vừa đau đầu, lại còn nâng cao vốn từ vựng.",
+    "Chơi game nối từ online trên web. Bao gồm các chế độ chơi một mình với máy, chơi solo 1-1 và chơi theo nhóm nhiều người.",
   keywords: [
     "Chơi nối từ online",
     "Chơi game nối từ online",
