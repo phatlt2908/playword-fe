@@ -9,7 +9,6 @@ export const metadata = {
   description: "Nơi chia sẻ những tip để chơi nối từ vui và hơn thế nữa",
 };
 
-// This function can be named anything
 async function getBlogList() {
   const res = await blogApi.blogList();
   const blogList = res.data;

@@ -12,9 +12,14 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default async function BlogDetailPage({ params }) {
-  const res = await blogApi.blogDetail(params.id);
+async function getBlogDetail(id) {
+  const res = await blogApi.blogDetail(id);
   const data = res.data;
+  return data;
+}
+
+export default async function BlogDetailPage({ params }) {
+  const data = await getBlogDetail(params.id);
   const content = { __html: data.content };
 
   return (
