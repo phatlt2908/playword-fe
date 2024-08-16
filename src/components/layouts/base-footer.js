@@ -32,7 +32,7 @@ const BaseFooter = () => {
             title: "Tính năng đang được phát triển...",
             toast: true,
             icon: "info",
-            position: "bottom",
+            position: "top",
             showConfirmButton: false,
             timer: 3000,
           });

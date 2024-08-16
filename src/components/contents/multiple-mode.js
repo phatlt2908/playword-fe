@@ -107,7 +107,7 @@ export default function WordLinkMulti({ roomId }) {
     swal
       .fire({
         toast: true,
-        position: "bottom",
+        position: "top",
         icon: "error",
         text: "Lỗi không thể vào phòng 😣",
         timer: 3000,
@@ -172,7 +172,7 @@ export default function WordLinkMulti({ roomId }) {
     if (wordList.includes(answerRef.current)) {
       swal.fire({
         toast: true,
-        position: "bottom",
+        position: "top",
         text: `Từ [${answerRef.current}] đã được trả lời 😣`,
         icon: "error",
         timer: 5000,
@@ -204,7 +204,7 @@ export default function WordLinkMulti({ roomId }) {
       if (message.user.code !== user.code) {
         swal.fire({
           toast: true,
-          position: "bottom",
+          position: "top",
           icon: "info",
           text: `${message.user.name} đã vào phòng`,
           timer: 3000,
@@ -226,7 +226,7 @@ export default function WordLinkMulti({ roomId }) {
     } else if (message.type === "LEAVE") {
       swal.fire({
         toast: true,
-        position: "bottom",
+        position: "top",
         icon: "info",
         text: `${message.user.name} đã rời phòng`,
         timer: 3000,
@@ -254,7 +254,7 @@ export default function WordLinkMulti({ roomId }) {
         swal.fire({
           icon: "info",
           toast: true,
-          position: "bottom",
+          position: "top",
           text: `${message.user.name} đã bị loại`,
           timer: 3000,
           showConfirmButton: false,
@@ -308,7 +308,7 @@ export default function WordLinkMulti({ roomId }) {
         swal
           .fire({
             toast: true,
-            position: "bottom",
+            position: "top",
             text: "Không tồn tại từ [" + answerRef.current + "] 😣",
             icon: "error",
             timer: 5000,
@@ -324,7 +324,7 @@ export default function WordLinkMulti({ roomId }) {
                 .then(() => {
                   swal.fire({
                     toast: true,
-                    position: "bottom",
+                    position: "top",
                     text: "Báo cáo thành công! 🤩",
                     icon: "success",
                     timer: 3000,
@@ -370,7 +370,7 @@ export default function WordLinkMulti({ roomId }) {
     navigator.clipboard.writeText(window.location.href);
     swal.fire({
       toast: true,
-      position: "bottom",
+      position: "top",
       title: "Đã sao chép đường dẫn phòng chơi",
       text: "Hãy gửi đường dẫn này cho bạn bè mà bạn muốn chơi cùng nhé! 🥰",
       icon: "success",

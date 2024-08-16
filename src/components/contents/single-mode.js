@@ -6,7 +6,12 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBook, faHouse } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBook,
+  faHouse,
+  faQuestion,
+  faRankingStar,
+} from "@fortawesome/free-solid-svg-icons";
 import swal from "sweetalert2";
 
 import wordLinkApi from "@/services/wordLinkApi";
@@ -82,7 +87,7 @@ export default function WordLinkSingle({ isLiteMode }) {
 
       swal.fire({
         toast: true,
-        position: "bottom",
+        position: "top",
         title: "Bí rồi...",
         icon: "info",
         timer: 500,
@@ -114,7 +119,7 @@ export default function WordLinkSingle({ isLiteMode }) {
     if (answeredList.includes(answer)) {
       swal.fire({
         toast: true,
-        position: "bottom",
+        position: "top",
         text: `Từ [${answer}] đã được trả lời 😣`,
         icon: "error",
         timer: 3000,
@@ -131,7 +136,7 @@ export default function WordLinkSingle({ isLiteMode }) {
           swal
             .fire({
               toast: true,
-              position: "bottom",
+              position: "top",
               text: "Không tồn tại từ [" + answer + "] 😣",
               icon: "error",
               timer: 5000,
@@ -147,7 +152,7 @@ export default function WordLinkSingle({ isLiteMode }) {
                   .then(() => {
                     swal.fire({
                       toast: true,
-                      position: "bottom",
+                      position: "top",
                       text: "Báo cáo thành công! 🤩",
                       icon: "success",
                       timer: 3000,
@@ -273,16 +278,21 @@ export default function WordLinkSingle({ isLiteMode }) {
           )}
 
           {!isLiteMode && (
-            <div
-              className="icon-text p-2 cursor-pointer hover-underlined"
-              onClick={() => {
-                setIsShowManual(true);
-              }}
-            >
-              <span>Hướng dẫn</span>
-              <span className="icon">
-                <FontAwesomeIcon icon={faBook} />
-              </span>
+            <div>
+              <Link
+                href="/xep-hang"
+                className="button p-2 cursor-pointer hover-underlined mr-2"
+              >
+                <FontAwesomeIcon icon={faRankingStar} size="sm" />
+              </Link>
+              <div
+                className="button p-2 cursor-pointer hover-underlined"
+                onClick={() => {
+                  setIsShowManual(true);
+                }}
+              >
+                <FontAwesomeIcon icon={faQuestion} size="sm" />
+              </div>
             </div>
           )}
         </>

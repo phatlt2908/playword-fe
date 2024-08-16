@@ -140,7 +140,7 @@ const WordLinkMultiLobby = () => {
         swal.fire({
           text: "Đang tìm đối thủ...",
           toast: true,
-          position: "bottom",
+          position: "top",
           icon: "info",
           timer: 3000,
           showConfirmButton: false,

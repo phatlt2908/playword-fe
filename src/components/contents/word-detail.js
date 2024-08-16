@@ -22,7 +22,7 @@ const WordDetail = ({ word, description, styleClass }) => {
       .then(() => {
         swal.fire({
           toast: true,
-          position: "bottom",
+          position: "top",
           text: "Báo cáo thành công! 🤩",
           icon: "success",
           timer: 3000,

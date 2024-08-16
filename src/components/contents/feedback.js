@@ -23,7 +23,7 @@ const Feedback = () => {
           title: "Cảm ơn bạn 🥰",
           toast: true,
           icon: "success",
-          position: "bottom",
+          position: "top",
           showConfirmButton: false,
           timer: 3000,
         });
@@ -35,7 +35,7 @@ const Feedback = () => {
         title: "Vui lòng nhập nội dung 🥺",
         toast: true,
         icon: "warning",
-        position: "bottom",
+        position: "top",
         showConfirmButton: false,
         timer: 3000,
       });
