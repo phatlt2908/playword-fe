@@ -25,7 +25,7 @@ const Home = () => {
           className={`columns is-multiline is-mobile is-vcentered w-100 ${styles.maxContentWidth}`}
         >
           <Link className="column is-narrow" href="/mot-minh">
-            <div className="button is-text non-underlined is-flex is-justify-content-space-between is-flex-direction-column p-1">
+            <div className="button is-large is-text non-underlined is-flex is-justify-content-space-between is-flex-direction-column p-1">
               <FontAwesomeIcon icon={faCrown} size="2x" />
               <h2>Trùm nối từ</h2>
               <div className="is-size-7">(Chế độ chơi đơn)</div>
@@ -38,13 +38,13 @@ const Home = () => {
 
         <div className="columns is-mobile mt-5">
           <Link className="column" href="/nhieu-minh?isSolo=true">
-            <div className="button is-text non-underlined is-flex is-justify-content-space-between is-flex-direction-column">
+            <div className="button is-large is-text non-underlined is-flex is-justify-content-space-between is-flex-direction-column">
               <FontAwesomeIcon icon={faPeoplePulling} size="2x" />
               <h2>Solo 1 vs 1</h2>
             </div>
           </Link>
           <Link className="column" href="/nhieu-minh">
-            <div className="button is-text non-underlined is-flex is-justify-content-space-between is-flex-direction-column">
+            <div className="button is-large is-text non-underlined is-flex is-justify-content-space-between is-flex-direction-column">
               <FontAwesomeIcon icon={faUsers} size="2x" />
               <h2>Nối nhóm</h2>
             </div>

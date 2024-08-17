@@ -1,6 +1,5 @@
 :root {
   --bulma-body-font-size: 1.3em;
-  --bulma-control-size: var(--bulma-size-large);
   --bulma-border: white;
   --bulma-size-tiny: 0.3rem;
 }
@@ -120,4 +119,9 @@ textarea {
   background-color: linear-gradient(to bottom,
       transparent,
       rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+}
+
+.modal-card-head,
+.modal-card-foot {
+  background-color: rgb(var(--background-end-rgb));
 }

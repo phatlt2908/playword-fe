@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export const metadata = {
   title: "Blog | Nối từ vui",
-  description: "Nơi chia sẻ những tip để chơi nối từ vui và hơn thế nữa",
+  description: "Nơi chia sẻ những gợi ý để chơi nối từ vui và hơn thế nữa",
 };
 
 async function getBlogList() {

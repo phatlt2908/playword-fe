@@ -168,7 +168,7 @@ const WordLinkMultiLobby = () => {
           <div className="columns w-100">
             <div className="column is-narrow has-text-centered">
               <button
-                className="button"
+                className="button is-large"
                 onClick={() => setIsOpenCreateRoomPopup(true)}
               >
                 <span>Tạo phòng</span>
@@ -274,7 +274,7 @@ const WordLinkMultiLobby = () => {
               </span>
             </div>
             <div className="control">
-              <button className="button drawing-border" onClick={onCreateRoom}>
+              <button className="button is-large drawing-border" onClick={onCreateRoom}>
                 <span className="icon">
                   <FontAwesomeIcon icon={faPlay} />
                 </span>
