@@ -36,7 +36,7 @@ const AnswerInput = ({ preResponseWord, onAnswer, onSkip }) => {
 
   return (
     <>
-      <div className="field has-addons">
+      <div className="field has-addons is-justify-content-center">
         <div className="control is-large">
           <input
             onKeyDown={handleKeyDown}
