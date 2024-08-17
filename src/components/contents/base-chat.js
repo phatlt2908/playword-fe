@@ -26,6 +26,7 @@ const BaseChat = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [onlineCount, setOnlineCount] = useState(0);
+  const [isChatIconDisplayNumber, setIsChatIconDisplayNumber] = useState(false);
 
   const [stompClient, setStompClient] = useState();
   const stompClientRef = useRef();
@@ -34,6 +35,12 @@ const BaseChat = () => {
   useEffect(() => {
     connect();
     getHistoryChatList(0);
+
+    setInterval(() => {
+      setIsChatIconDisplayNumber(
+        (isChatIconDisplayNumber) => !isChatIconDisplayNumber
+      );
+    }, 2000);
 
     // On unmount
     return () => {
@@ -140,7 +147,19 @@ const BaseChat = () => {
           setIsChatOpen(true);
         }}
       >
-        <FontAwesomeIcon icon={faCommentDots} />
+        <div
+          className="trans-float-left"
+          style={{ display: isChatIconDisplayNumber ? "none" : "block" }}
+        >
+          <span className="mr-1">{onlineCount}</span>
+          <PulsatingDot />
+        </div>
+        <div
+          className="trans-float-left"
+          style={{ display: isChatIconDisplayNumber ? "block" : "none" }}
+        >
+          <FontAwesomeIcon icon={faCommentDots} />
+        </div>
       </button>
 
       {isChatOpen && (

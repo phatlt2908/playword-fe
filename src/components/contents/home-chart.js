@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RankingChartLite from "./chart-lite";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRankingStar } from "@fortawesome/free-solid-svg-icons";
@@ -8,9 +8,11 @@ import { faRankingStar } from "@fortawesome/free-solid-svg-icons";
 export default function HomeChart() {
   const [isDisplayRanking, setIsDisplayRanking] = useState(true);
 
-  setInterval(() => {
-    setIsDisplayRanking(!isDisplayRanking);
-  }, 3000);
+  useEffect(() => {
+    setInterval(() => {
+      setIsDisplayRanking((isDisplayRanking) => !isDisplayRanking);
+    }, 3000);
+  }, []);
 
   return (
     <>
