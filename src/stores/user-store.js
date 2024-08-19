@@ -46,7 +46,7 @@ export function UserProvider({ children }) {
       )
     ) {
       // Generate random code on first-time load
-      const randomCode = Math.random().toString(36).substring(2, 10);
+      const randomCode = Date.now() + "_" + Math.random().toString(36).substring(2, 10);
       const randomName = Math.random().toString(36).substring(2, 10);
       const randomAvatar =
         avatarConst.AVATAR_LIST[Math.floor(Math.random() * 4)];
