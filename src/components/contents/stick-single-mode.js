@@ -114,8 +114,8 @@ export default function StickSingle({ isLiteMode }) {
           swal.fire({
             toast: true,
             position: "bottom",
-            title: "[" + answer + "] Chính xác 😍",
-            html: `<div class="limit-2-lines">${response.data.wordDescription.word}: ${response.data.wordDescription.description}</div>`,
+            title: "[" + response.data.wordDescription.word + "] Chính xác 😍",
+            html: `<div class="limit-2-lines">${response.data.wordDescription.description}</div>`,
             icon: "success",
             timer: 5000,
             showConfirmButton: false,

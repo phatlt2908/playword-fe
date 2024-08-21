@@ -149,7 +149,7 @@ export default function WordLinkSingle({ isLiteMode }) {
               position: "top",
               text: "Không tồn tại từ [" + answer + "] 😣",
               icon: "error",
-              timer: 5000,
+              timer: 50000,
               confirmButtonText: "Yêu cầu thêm",
             })
             .then((result) => {
