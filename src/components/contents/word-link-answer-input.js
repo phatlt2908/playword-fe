@@ -5,9 +5,7 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faForward } from "@fortawesome/free-solid-svg-icons";
 
-import styles from "./answer-input.module.css";
-
-const AnswerInput = ({ preResponseWord, onAnswer, onSkip }) => {
+const WordLinkAnswerInput = ({ preResponseWord, onAnswer, onSkip }) => {
   const [answerWord, setAnswerWord] = useState("");
   const [inputValue, setInputValue] = useState("");
   const hasSkip = !!onSkip;
@@ -82,4 +80,4 @@ const AnswerInput = ({ preResponseWord, onAnswer, onSkip }) => {
   );
 };
 
-export default AnswerInput;
+export default WordLinkAnswerInput;

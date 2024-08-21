@@ -2,14 +2,17 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import wordLinkApi from "@/services/wordLinkApi";
+import stickApi from "@/services/stickApi";
 
 import { useUserStore } from "@/stores/user-store";
 
 import BrandLoading from "../utils/brand-loading";
+import Link from "next/link";
 
 const progressBarColorList = [
   "",
@@ -28,27 +31,73 @@ export default function RankingChart() {
   const [maxPoint, setMaxPoint] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
+  const searchParams = useSearchParams();
+
   useEffect(() => {
-    wordLinkApi.getRankingChart(20).then((res) => {
-      setList(res.data);
-      setMaxPoint(res.data[0].point);
-
-      const userFromStorage = localStorage.getItem("user-store");
-      const existedUser = JSON.parse(userFromStorage);
-      const userCode = existedUser?.state?.user?.code;
-
-      if (userCode && !res.data.some((item) => item.userCode == userCode)) {
-        wordLinkApi.getCurrentUserRanking(userCode).then((res) => {
-          setCurrentRank(res.data);
-        });
-      }
-
-      setIsLoading(false);
-    });
+    const game = searchParams.get("game");
+    fetchData(game);
   }, []);
+
+  useEffect(() => {
+    const game = searchParams.get("game");
+    fetchData(game);
+  }, [searchParams]);
+
+  const fetchData = async (game) => {
+    if (game == 1) {
+      wordLinkApi.getRankingChart(20).then((res) => {
+        setList(res.data);
+        setMaxPoint(res.data[0].point);
+
+        const userFromStorage = localStorage.getItem("user-store");
+        const existedUser = JSON.parse(userFromStorage);
+        const userCode = existedUser?.state?.user?.code;
+
+        if (userCode && !res.data.some((item) => item.userCode == userCode)) {
+          wordLinkApi.getCurrentUserRanking(userCode).then((res) => {
+            setCurrentRank(res.data);
+          });
+        }
+
+        setIsLoading(false);
+      });
+    } else if (game == 2) {
+      stickApi.getRankingChart(20).then((res) => {
+        setList(res.data);
+        setMaxPoint(res.data[0].point);
+
+        const userFromStorage = localStorage.getItem("user-store");
+        const existedUser = JSON.parse(userFromStorage);
+        const userCode = existedUser?.state?.user?.code;
+
+        if (userCode && !res.data.some((item) => item.userCode == userCode)) {
+          stickApi.getCurrentUserRanking(userCode).then((res) => {
+            setCurrentRank(res.data);
+          });
+        }
+
+        setIsLoading(false);
+      });
+    }
+  };
 
   return (
     <>
+      <div className="tabs is-toggle is-medium mb-5">
+        <ul>
+          <li className={searchParams.get("game") == 1 && "is-active"}>
+            <Link href="/xep-hang?game=1" className="drawing-border">
+              Nối Từ
+            </Link>
+          </li>
+          <li className={searchParams.get("game") == 2 && "is-active"}>
+            <Link href="/xep-hang?game=2" className="drawing-border">
+              Khắc Nhập Từ
+            </Link>
+          </li>
+        </ul>
+      </div>
+
       {isLoading ? (
         <BrandLoading />
       ) : (

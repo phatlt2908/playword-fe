@@ -1,54 +1,48 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faBook,
   faHouse,
   faQuestion,
   faRankingStar,
 } from "@fortawesome/free-solid-svg-icons";
 import swal from "sweetalert2";
 
-import wordLinkApi from "@/services/wordLinkApi";
-import reportApi from "@/services/reportApi";
+import stickApi from "@/services/stickApi";
+
+import { b64DecodeUnicode } from "@/utils/commonUtils";
 
 import SpinnerLoading from "@/components/utils/spinner-loading";
 import BaseTimer from "@/components/utils/base-timer";
-import WordDetail from "@/components/contents/word-detail";
 import StandardModal from "@/components/contents/standard-modal";
 import UserInput from "@/components/contents/user-input";
 import { useUserStore } from "@/stores/user-store";
-import WordLinkAnswerInput from "./word-link-answer-input";
+import StickAnswerInput from "./stick-answer-input";
 
-const turnTime = 60;
+const turnTime = 90;
 
-export default function WordLinkSingle({ isLiteMode }) {
+export default function StickSingle({ isLiteMode }) {
   const router = useRouter();
   const [isShowManual, setIsShowManual] = useState(!isLiteMode);
-  const [responseWord, setResponseWord] = useState("");
-  const [responseWordDescription, setResponseWordDescription] = useState("");
+  const [characters, setCharacters] = useState([]);
+  const [word, setWord] = useState("");
+  const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const [isFinished, setIsFinished] = useState(false); // The server can not find any word
   const [point, setPoint] = useState(0);
   const [isOver, setIsOver] = useState(false);
   const [rank, setRank] = useState();
-  const [answeredList, setAnsweredList] = useState([]);
+  const [streakNum, setStreakNum] = useState(0);
 
   const { user, setIsFirstTime } = useUserStore();
 
   const timerRef = useRef();
 
-  const preResponseWord = useMemo(() => {
-    return responseWord.split(" ").pop() + " ";
-  });
-
   useEffect(() => {
-    init();
+    getWord();
 
     const storage = localStorage.getItem("user-store");
     const storageData = JSON.parse(storage);
@@ -67,7 +61,7 @@ export default function WordLinkSingle({ isLiteMode }) {
 
   useEffect(() => {
     if (isOver) {
-      wordLinkApi
+      stickApi
         .getResult(point, user.code)
         .then((response) => {
           setRank(response.data);
@@ -78,106 +72,49 @@ export default function WordLinkSingle({ isLiteMode }) {
     }
   }, [isOver]);
 
-  useEffect(() => {
-    if (isFinished) {
-      timerRef.current.update(5);
-      setPoint(point + 5);
-      setIsFinished(false);
-      init();
-
-      swal.fire({
-        toast: true,
-        position: "top",
-        title: "Bí rồi...",
-        icon: "info",
-        timer: 500,
-        showConfirmButton: false,
-      });
-    }
-  }, [isFinished]);
-
-  const init = () => {
-    wordLinkApi
-      .init()
+  const getWord = () => {
+    stickApi
+      .getWord()
       .then((response) => {
-        setResponseWord(response.data.word);
-        setAnsweredList((prev) => [...prev, response.data.word]);
-        setResponseWordDescription(response.data.description);
+        const data = response.data;
+        setCharacters(data.characters);
+        setWord(b64DecodeUnicode(data.wordBase64Encoded));
+        setDescription(b64DecodeUnicode(data.descriptionBase64Encoded));
       })
       .catch((error) => {
         console.error(error);
       });
   };
 
-  const onAnswer = (answerWord) => {
-    if (answerWord === "") {
-      return;
-    }
-
-    const answer = preResponseWord + answerWord;
-
-    if (answeredList.includes(answer)) {
-      swal.fire({
-        toast: true,
-        position: "top",
-        text: `Từ [${answer}] đã được trả lời 😣`,
-        icon: "error",
-        timer: 3000,
-        showConfirmButton: false,
-      });
-
-      return;
-    }
-
-    wordLinkApi
-      .answer({ answer: answer, answeredList: answeredList })
+  const onAnswer = (answer) => {
+    stickApi
+      .answer(answer)
       .then((response) => {
         if (!response.data.isSuccessful) {
-          swal
-            .fire({
-              toast: true,
-              position: "top",
-              text: "Không tồn tại từ [" + answer + "] 😣",
-              icon: "error",
-              timer: 5000,
-              confirmButtonText: "Yêu cầu thêm",
-            })
-            .then((result) => {
-              if (result.isConfirmed) {
-                reportApi
-                  .create({
-                    word: answer,
-                    issueType: 1,
-                  })
-                  .then(() => {
-                    swal.fire({
-                      toast: true,
-                      position: "top",
-                      text: "Báo cáo thành công! 🤩",
-                      icon: "success",
-                      timer: 3000,
-                      showConfirmButton: false,
-                    });
-                  });
-              }
-            });
-
-          timerRef.current.update(-5);
+          swal.fire({
+            toast: true,
+            position: "bottom",
+            text: "[" + answer + "] Không chính xác 😣",
+            icon: "error",
+            timer: 3000,
+            showConfirmButton: false,
+          });
+          setStreakNum(0);
         } else {
-          timerRef.current.update(1);
-          setPoint(point + 1);
+          swal.fire({
+            toast: true,
+            position: "bottom",
+            title: "[" + answer + "] Chính xác 😍",
+            text: `${response.data.wordDescription.word}: ${response.data.wordDescription.description}`,
+            icon: "success",
+            timer: 5000,
+            showConfirmButton: false,
+          });
 
-          if (response.data.isFinished) {
-            setIsFinished(true);
-            return;
-          }
-          setResponseWord(response.data.wordDescription.word);
-          setAnsweredList((prev) => [
-            ...prev,
-            answer,
-            response.data.wordDescription.word,
-          ]);
-          setResponseWordDescription(response.data.wordDescription.description);
+          timerRef.current.update(3);
+          setPoint(point + 1 + streakNum);
+          setStreakNum(streakNum + 1);
+          getWord();
         }
       })
       .catch((error) => {
@@ -186,8 +123,19 @@ export default function WordLinkSingle({ isLiteMode }) {
   };
 
   const onSkip = () => {
+    swal.fire({
+      toast: true,
+      position: "bottom",
+      title: word,
+      text: description,
+      icon: "info",
+      timer: 5000,
+      showConfirmButton: false,
+    });
+
     timerRef.current.update(-5);
-    init();
+    setStreakNum(0);
+    getWord();
   };
 
   return (
@@ -240,10 +188,6 @@ export default function WordLinkSingle({ isLiteMode }) {
             <>
               <div className="is-flex is-flex-direction-column is-align-items-center w-100">
                 <div>
-                  {/* <span className="mr-2">User</span>
-              <span className="icon is-large circle-border mb-4">
-                <FontAwesomeIcon icon={faUser} />
-              </span> */}
                   <span className="is-size-4">Điểm: {point}</span>
                 </div>
 
@@ -258,29 +202,19 @@ export default function WordLinkSingle({ isLiteMode }) {
                 )}
               </div>
 
-              <div>
-                <p className="mb-4">
-                  <WordDetail
-                    styleClass="has-text-centered is-size-1 is-inline-block w-100"
-                    word={responseWord}
-                    description={responseWordDescription}
-                  />
-                </p>
-
-                <WordLinkAnswerInput
-                  key={responseWord}
-                  preResponseWord={preResponseWord}
-                  onAnswer={onAnswer}
-                  onSkip={onSkip}
-                />
-              </div>
+              <StickAnswerInput
+                key={characters}
+                characters={characters}
+                onAnswer={onAnswer}
+                onSkip={onSkip}
+              />
             </>
           )}
 
           {!isLiteMode && (
             <div>
               <Link
-                href="/xep-hang?game=1"
+                href="/xep-hang?game=2"
                 className="button p-2 cursor-pointer hover-underlined mr-2"
               >
                 <FontAwesomeIcon icon={faRankingStar} size="sm" />
@@ -308,29 +242,23 @@ export default function WordLinkSingle({ isLiteMode }) {
               <button className="button has-text-centered">Bắt đầu chơi</button>
             </div>
             <p>
-              Đây là chế độ chơi game nối từ giữa người với máy. Bạn hãy cố gắng
-              đạt được nhiều điểm nhất có thể.
+              <strong>Trùm Khắc Nhập Từ</strong> là trò chơi ghép các ký tự bị
+              xáo trộn thành từ có nghĩa. Bạn hãy cố gắng đạt được nhiều điểm
+              nhất có thể.
             </p>
-            <div className="has-text-centered">
-              <Image
-                src="/try.jpg"
-                alt="luat choi noi tu solo"
-                width={300}
-                height={300}
-              />
+            <div className="has-text-centered is-size-2">
+              K / H / Ắ / C / N / H / Ậ / P / T / Ừ
             </div>
-            <h2>Luật chơi game nối từ online với máy:</h2>
+            <h2>Luật chơi:</h2>
             <ul>
-              <li>Bạn có 1 phút</li>
+              <li>Bạn có 2 phút 30 giây</li>
               <li>
-                Máy sẽ đưa ra 1 từ và bạn sẽ bắt đầu nối từ lần lượt với máy
+                Máy sẽ đưa ra các từ bao gồm 2 âm tiết với vị trí các chữ cái bị
+                xáo trộn. Bạn phải chọn theo thứ tự các chữ cái để ghép thành từ
+                có nghĩa
               </li>
-              <li>Nối thành công sẽ được +1 điểm</li>
-              <li>
-                Nếu từ bạn trả lời không có từ nào để nối (máy bó tay): bạn được
-                +5 điểm và +5 giây thời gian
-              </li>
-              <li>Trả lời sai bị -5 giây</li>
+              <li>Ghép thành công sẽ được +1 điểm và 3 giây</li>
+              <li>Ghép thành công liên tiếp sẽ được cộng dồn 1 điểm</li>
               <li>
                 Bạn có thể bỏ qua nếu từ quá khó, mỗi lần bỏ qua bạn bị -5s
               </li>

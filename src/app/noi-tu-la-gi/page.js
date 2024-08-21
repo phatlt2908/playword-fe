@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 export const metadata = {
-  title: "Nối từ là gì | Nối từ vui",
+  title: "Nối từ là gì | Nối Từ Vui",
   description:
     "Nối từ là gì? Luật chơi nối từ? Nối từ là trò chơi nối các từ với nhau bằng cách sử dụng chữ cái cuối cùng của từ trước để tạo thành một từ mới hợp lệ. Chơi nối từ rất đơn giản nhưng thú vị dành cho mọi lứa tuổi.",
 };

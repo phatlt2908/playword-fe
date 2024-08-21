@@ -125,3 +125,9 @@ textarea {
 .modal-card-foot {
   background-color: rgb(var(--background-end-rgb));
 }
+
+.tabs.is-toggle li.is-active a {
+  background-color: white !important;
+  color: rgb(var(--background-end-rgb)) !important;
+  border-color: white !important;
+}

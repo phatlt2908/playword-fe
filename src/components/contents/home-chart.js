@@ -5,7 +5,7 @@ import RankingChartLite from "./chart-lite";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRankingStar } from "@fortawesome/free-solid-svg-icons";
 
-export default function HomeChart() {
+export default function HomeChart({ game }) {
   const [isDisplayRanking, setIsDisplayRanking] = useState(true);
 
   useEffect(() => {
@@ -17,7 +17,7 @@ export default function HomeChart() {
   return (
     <>
       <div style={{ display: isDisplayRanking ? "block" : "none" }}>
-        <RankingChartLite />
+        <RankingChartLite game={game} />
       </div>
 
       {!isDisplayRanking && (

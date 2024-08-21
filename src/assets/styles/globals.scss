@@ -141,6 +141,13 @@ a {
   animation-duration: 1s;
 }
 
+.limit-text-1-line {
+  overflow: hidden;
+  white-space: nowrap;
+  display: block;
+  text-overflow: ellipsis;
+}
+
 @keyframes bounce {
   0% {
     opacity: 0;
@@ -165,12 +172,13 @@ a {
 
 @keyframes floatLeft {
   0% {
-      opacity: 0;
-      transform: translateX(-10%);
+    opacity: 0;
+    transform: translateX(-10%);
   }
+
   100% {
-      opacity: 1;
-      transform: translateX(0px);
+    opacity: 1;
+    transform: translateX(0px);
   }
 }
 
@@ -181,12 +189,13 @@ a {
 
 @keyframes floatRight {
   0% {
-      opacity: 0;
-      transform: translateX(10%);
+    opacity: 0;
+    transform: translateX(10%);
   }
+
   100% {
-      opacity: 1;
-      transform: translateX(0px);
+    opacity: 1;
+    transform: translateX(0px);
   }
 }
 
@@ -197,11 +206,12 @@ a {
 
 @keyframes floatTop {
   0% {
-      opacity: 0;
-      transform: translateY(-10%);
+    opacity: 0;
+    transform: translateY(-10%);
   }
+
   100% {
-      opacity: 1;
-      transform: translateY(0px);
+    opacity: 1;
+    transform: translateY(0px);
   }
 }

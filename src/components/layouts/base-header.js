@@ -9,12 +9,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const routeLabelMap = new Map([
-  ["mot-minh", "Trùm nối từ"],
+  ["mot-minh", "Trùm Nối Từ"],
   ["nhieu-minh", "Nhiều mình"],
   ["noi-tu-la-gi", "Nối từ là gì?"],
   ["xep-hang", "Bảng xếp hạng"],
   ["gop-y", "Góp ý"],
   ["blog", "Blog"],
+  ["khac-nhap-tu", "Khắc Nhập Từ"],
+  ["trum-khac-nhap-tu", "Trùm Khắc Nhập Từ"],
 ]);
 
 const BaseHeader = () => {
@@ -48,7 +50,7 @@ const BaseHeader = () => {
                 <span className="icon">
                   <FontAwesomeIcon icon={faHouse} />
                 </span>
-                <span>Nối từ</span>
+                <span>Nối Từ Vui</span>
               </Link>
             </li>
             {pathArray.map((path, index) => {

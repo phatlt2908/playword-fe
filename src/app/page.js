@@ -7,6 +7,7 @@ import {
   faCrown,
   faPeoplePulling,
   faShare,
+  faShuffle,
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -31,12 +32,12 @@ const Home = () => {
               <div className="is-size-7">(Chế độ chơi đơn)</div>
             </div>
           </Link>
-          <Link className="column" href="/xep-hang">
-            <HomeChart />
+          <Link className="column" href="/xep-hang?game=1">
+            <HomeChart game="1" />
           </Link>
         </div>
 
-        <div className="columns is-mobile mt-5">
+        <div className="columns is-mobile">
           <Link className="column" href="/nhieu-minh?isSolo=true">
             <div className="button is-large is-text non-underlined is-flex is-justify-content-space-between is-flex-direction-column">
               <FontAwesomeIcon icon={faPeoplePulling} size="2x" />
@@ -50,6 +51,25 @@ const Home = () => {
             </div>
           </Link>
         </div>
+
+        <hr
+          style={{ width: "100%", backgroundColor: "white", margin: "0px 0px" }}
+        />
+      </div>
+
+      <div className="columns is-mobile">
+        <Link className="column" href="/khac-nhap-tu">
+          <div className="button is-large is-text non-underlined is-flex is-justify-content-space-between is-flex-direction-column">
+            <span
+              className="tag is-danger"
+              style={{ position: "absolute", left: "10px" }}
+            >
+              Mới
+            </span>
+            <FontAwesomeIcon icon={faShuffle} size="2x" />
+            <h2>Khắc Nhập Từ</h2>
+          </div>
+        </Link>
       </div>
 
       <div className="is-flex is-flex-direction-column is-align-items-center">

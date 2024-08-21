@@ -1,7 +1,7 @@
 import WordLinkSingle from "@/components/contents/single-mode";
 
 export const metadata = {
-  title: "Trùm nối từ | Nối từ vui",
+  title: "Trùm nối từ | Nối Từ Vui",
   description:
     "Trùm Nối Từ là chế độ chơi nối từ online một mình, chơi đơn, chơi solo với máy để đạt điểm số cao nhất có thể ",
   keywords: [

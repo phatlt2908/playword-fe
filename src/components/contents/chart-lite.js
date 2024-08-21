@@ -6,6 +6,7 @@ import Image from "next/image";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import wordLinkApi from "@/services/wordLinkApi";
+import stickApi from "@/services/stickApi";
 
 import { useUserStore } from "@/stores/user-store";
 
@@ -21,18 +22,26 @@ const progressBarColorList = [
   "is-info",
 ];
 
-export default function RankingChartLite() {
+export default function RankingChartLite({ game }) {
   const { user } = useUserStore();
   const [list, setList] = useState([]);
   const [maxPoint, setMaxPoint] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    wordLinkApi.getRankingChart(3).then((res) => {
-      setList(res.data);
-      setMaxPoint(res.data[0].point);
-      setIsLoading(false);
-    });
+    if (game == 1) {
+      wordLinkApi.getRankingChart(3).then((res) => {
+        setList(res.data);
+        setMaxPoint(res.data[0].point);
+        setIsLoading(false);
+      });
+    } else if (game == 2) {
+      stickApi.getRankingChart(3).then((res) => {
+        setList(res.data);
+        setMaxPoint(res.data[0].point);
+        setIsLoading(false);
+      });
+    }
   }, []);
 
   return (
@@ -64,7 +73,7 @@ export default function RankingChartLite() {
               </div>
               <div className="column is-size-6">
                 <div className="is-flex is-justify-content-space-between">
-                  <div>
+                  <div className="limit-text-1-line">
                     #{item.rank}. {item.userName}
                   </div>
                   <div className="icon-text" style={{ gap: "unset" }}>

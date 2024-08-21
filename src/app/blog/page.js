@@ -5,7 +5,7 @@ import styles from "./page.module.scss";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Blog | Nối từ vui",
+  title: "Blog | Nối Từ Vui",
   description: "Nơi chia sẻ những gợi ý để chơi nối từ vui và hơn thế nữa",
 };
 

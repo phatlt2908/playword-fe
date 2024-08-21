@@ -24,7 +24,7 @@ import WordDetail from "@/components/contents/word-detail";
 import UserIcon from "@/components/contents/user-icon";
 import BaseCountdown from "@/components/utils/base-countdown";
 import UserInput from "@/components/contents/user-input";
-import AnswerInput from "@/components/contents/answer-input";
+import WordLinkAnswerInput from "@/components/contents/word-link-answer-input";
 import DotLoading from "@/components/utils/dot-loading";
 import WordLinkSingle from "./single-mode";
 import StandardModal from "./standard-modal";
@@ -504,7 +504,7 @@ export default function WordLinkMulti({ roomId }) {
 
               {isAnswering ? (
                 <>
-                  <AnswerInput
+                  <WordLinkAnswerInput
                     key={responseWord}
                     preResponseWord={preResponseWord}
                     onAnswer={onAnswer}

@@ -1,0 +1,13 @@
+.inputZone {
+  min-height: 120px;
+}
+
+.character {
+  height: var(--bulma-control-height);
+  width: 40px;
+}
+
+.answer {
+  letter-spacing: 8px;
+  min-height: 60px;
+}

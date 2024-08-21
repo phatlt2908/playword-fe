@@ -1,0 +1,23 @@
+.maxContentWidth {
+  max-width: 500px;
+}
+
+.rank {
+  .chart {
+    display: block;
+  }
+
+  .icon {
+    display: none;
+  }
+
+  &:hover {
+    .chart {
+      display: none;
+    }
+
+    .icon {
+      display: block;
+    }
+  }
+}
