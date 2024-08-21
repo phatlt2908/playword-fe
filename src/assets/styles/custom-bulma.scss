@@ -65,6 +65,11 @@ textarea {
 textarea {
   background-color: rgba(var(--transparency-rgba)) !important;
   border-color: white !important;
+
+  &.is-danger,
+  &.is-danger:focus-visible {
+    border-color: var(--bulma-danger-base) !important;
+  }
 }
 
 .table {

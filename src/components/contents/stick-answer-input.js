@@ -6,11 +6,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faForward, faRotate } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "./stick-answer-input.module.css";
+import BrandLoading from "../utils/brand-loading";
 
-const StickAnswerInput = ({ characters, onAnswer, onSkip }) => {
+const StickAnswerInput = ({
+  characters,
+  onAnswer,
+  onSkip,
+  isLoading,
+  isError,
+}) => {
   const [inputCharacters, setInputCharacters] = useState([]);
   const [answers, setAnswers] = useState("");
+  const [isInputError, setIsInputError] = useState(false);
   const hasSkip = !!onSkip;
+
+  useEffect(() => {
+    setIsInputError(isError);
+  }, [isError]);
 
   useEffect(() => {
     setInputCharacters(characters);
@@ -50,23 +62,30 @@ const StickAnswerInput = ({ characters, onAnswer, onSkip }) => {
             {answers}
           </div>
         </div>
-        <div
-          className={`${styles.inputZone} is-flex is-align-items-center is-justify-content-center w-100 trans-float-left`}
-        >
-          <div className="has-text-centered w-100">
-            {inputCharacters.map((character, index) => (
-              <div
-                key={index}
-                className={`${styles.character} ${
-                  index != 0 ? "ml-2" : ""
-                } button p-1 cursor-pointer mb-2`}
-                onClick={onChooseCharacter(index)}
-              >
-                <div className="is-size-4">{character}</div>
-              </div>
-            ))}
+
+        {isLoading ? (
+          <BrandLoading />
+        ) : (
+          <div
+            className={`${styles.inputZone} ${
+              isInputError ? "anim-shake" : ""
+            } is-flex is-align-items-center is-justify-content-center w-100 trans-float-left`}
+          >
+            <div className="has-text-centered w-100">
+              {inputCharacters.map((character, index) => (
+                <div
+                  key={index}
+                  className={`${styles.character} ${index != 0 ? "ml-2" : ""} ${
+                    isInputError ? " anim-warning-color" : ""
+                  } button p-5 cursor-pointer mb-2`}
+                  onClick={onChooseCharacter(index)}
+                >
+                  <div className="is-size-4">{character}</div>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         <hr />
 

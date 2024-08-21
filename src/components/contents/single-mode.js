@@ -33,11 +33,14 @@ export default function WordLinkSingle({ isLiteMode }) {
   const [responseWord, setResponseWord] = useState("");
   const [responseWordDescription, setResponseWordDescription] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [isCheckingAnswer, setIsCheckingAnswer] = useState(false);
+  const [isInputError, setIsInputError] = useState(false);
   const [isFinished, setIsFinished] = useState(false); // The server can not find any word
   const [point, setPoint] = useState(0);
   const [isOver, setIsOver] = useState(false);
   const [rank, setRank] = useState();
   const [answeredList, setAnsweredList] = useState([]);
+  const [numberClickAnswer, setNumberClickAnswer] = useState(0);
 
   const { user, setIsFirstTime } = useUserStore();
 
@@ -107,12 +110,16 @@ export default function WordLinkSingle({ isLiteMode }) {
       .catch((error) => {
         console.error(error);
       });
+
+    setIsInputError(false);
   };
 
   const onAnswer = (answerWord) => {
     if (answerWord === "") {
       return;
     }
+
+    setNumberClickAnswer(numberClickAnswer + 1);
 
     const answer = preResponseWord + answerWord;
 
@@ -129,6 +136,7 @@ export default function WordLinkSingle({ isLiteMode }) {
       return;
     }
 
+    setIsCheckingAnswer(true);
     wordLinkApi
       .answer({ answer: answer, answeredList: answeredList })
       .then((response) => {
@@ -162,6 +170,7 @@ export default function WordLinkSingle({ isLiteMode }) {
               }
             });
 
+          setIsInputError(true);
           timerRef.current.update(-5);
         } else {
           timerRef.current.update(1);
@@ -178,7 +187,10 @@ export default function WordLinkSingle({ isLiteMode }) {
             response.data.wordDescription.word,
           ]);
           setResponseWordDescription(response.data.wordDescription.description);
+          setIsInputError(false);
         }
+
+        setIsCheckingAnswer(false);
       })
       .catch((error) => {
         console.error(error);
@@ -252,7 +264,15 @@ export default function WordLinkSingle({ isLiteMode }) {
                     ref={timerRef}
                     maxTime={turnTime}
                     onOver={() => {
-                      setIsOver(true);
+                      swal
+                        .fire({
+                          title: "Hết giờ!",
+                          timer: 1000,
+                          showConfirmButton: false,
+                        })
+                        .then(() => {
+                          setIsOver(true);
+                        });
                     }}
                   />
                 )}
@@ -261,17 +281,20 @@ export default function WordLinkSingle({ isLiteMode }) {
               <div>
                 <p className="mb-4">
                   <WordDetail
-                    styleClass="has-text-centered is-size-1 is-inline-block w-100"
+                    key={responseWord}
+                    styleClass="has-text-centered is-size-1 is-inline-block w-100 trans-float-left"
                     word={responseWord}
                     description={responseWordDescription}
                   />
                 </p>
 
                 <WordLinkAnswerInput
-                  key={responseWord}
+                  key={responseWord + numberClickAnswer}
                   preResponseWord={preResponseWord}
                   onAnswer={onAnswer}
                   onSkip={onSkip}
+                  isLoading={isCheckingAnswer}
+                  isError={isInputError}
                 />
               </div>
             </>

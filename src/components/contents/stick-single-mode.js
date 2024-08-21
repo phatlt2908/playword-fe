@@ -32,6 +32,8 @@ export default function StickSingle({ isLiteMode }) {
   const [word, setWord] = useState("");
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [isCheckingAnswer, setIsCheckingAnswer] = useState(false);
+  const [isIncorrectAnswer, setIsIncorrectAnswer] = useState(false);
   const [point, setPoint] = useState(0);
   const [isOver, setIsOver] = useState(false);
   const [rank, setRank] = useState();
@@ -73,6 +75,9 @@ export default function StickSingle({ isLiteMode }) {
   }, [isOver]);
 
   const getWord = () => {
+    setIsIncorrectAnswer(false);
+    setIsCheckingAnswer(true);
+
     stickApi
       .getWord()
       .then((response) => {
@@ -80,6 +85,8 @@ export default function StickSingle({ isLiteMode }) {
         setCharacters(data.characters);
         setWord(b64DecodeUnicode(data.wordBase64Encoded));
         setDescription(b64DecodeUnicode(data.descriptionBase64Encoded));
+
+        setIsCheckingAnswer(false);
       })
       .catch((error) => {
         console.error(error);
@@ -87,6 +94,7 @@ export default function StickSingle({ isLiteMode }) {
   };
 
   const onAnswer = (answer) => {
+    setIsCheckingAnswer(true);
     stickApi
       .answer(answer)
       .then((response) => {
@@ -100,12 +108,14 @@ export default function StickSingle({ isLiteMode }) {
             showConfirmButton: false,
           });
           setStreakNum(0);
+          setIsIncorrectAnswer(true);
+          setIsCheckingAnswer(false);
         } else {
           swal.fire({
             toast: true,
             position: "bottom",
             title: "[" + answer + "] Chính xác 😍",
-            text: `${response.data.wordDescription.word}: ${response.data.wordDescription.description}`,
+            html: `<div class="limit-2-lines">${response.data.wordDescription.word}: ${response.data.wordDescription.description}</div>`,
             icon: "success",
             timer: 5000,
             showConfirmButton: false,
@@ -115,6 +125,7 @@ export default function StickSingle({ isLiteMode }) {
           setPoint(point + 1 + streakNum);
           setStreakNum(streakNum + 1);
           getWord();
+          setIsIncorrectAnswer(false);
         }
       })
       .catch((error) => {
@@ -126,8 +137,7 @@ export default function StickSingle({ isLiteMode }) {
     swal.fire({
       toast: true,
       position: "bottom",
-      title: word,
-      text: description,
+      html: `<div class="limit-2-lines"><span class="has-text-weight-bold">${word}</span>: ${description}</div>`,
       icon: "info",
       timer: 5000,
       showConfirmButton: false,
@@ -196,7 +206,15 @@ export default function StickSingle({ isLiteMode }) {
                     ref={timerRef}
                     maxTime={turnTime}
                     onOver={() => {
-                      setIsOver(true);
+                      swal
+                        .fire({
+                          title: "Hết giờ!",
+                          timer: 1000,
+                          showConfirmButton: false,
+                        })
+                        .then(() => {
+                          setIsOver(true);
+                        });
                     }}
                   />
                 )}
@@ -207,6 +225,8 @@ export default function StickSingle({ isLiteMode }) {
                 characters={characters}
                 onAnswer={onAnswer}
                 onSkip={onSkip}
+                isLoading={isCheckingAnswer}
+                isError={isIncorrectAnswer}
               />
             </>
           )}

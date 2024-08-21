@@ -68,6 +68,8 @@ export default function WordLinkMulti({ roomId }) {
   turnRef.current = turn;
   const stompClientRef = useRef();
   stompClientRef.current = stompClient;
+  const isCheckingAnswer = useRef();
+  const isInputError = useRef();
 
   useEffect(() => {
     connect();
@@ -188,6 +190,7 @@ export default function WordLinkMulti({ roomId }) {
       return;
     }
 
+    isCheckingAnswer.current = true;
     stompClient.send(
       `/app/answer/${roomId}`,
       {},
@@ -248,6 +251,8 @@ export default function WordLinkMulti({ roomId }) {
             setIsRoomPreparing(false);
             updateResponseWord(message.word);
           });
+
+        isInputError.current = false;
       }
     } else if (message.type === "OVER") {
       if (message.user.code !== user.code) {
@@ -298,6 +303,7 @@ export default function WordLinkMulti({ roomId }) {
         });
 
         setTurn(3);
+        isInputError.current = false;
       }
 
       setTurnNumber((prev) => prev + 1);
@@ -339,8 +345,11 @@ export default function WordLinkMulti({ roomId }) {
         if (turnRef.current === 1) {
           onOver(1);
         }
+        isInputError.current = true;
       }
     }
+
+    isCheckingAnswer.current = false;
   };
 
   const updateRoomInfo = (room) => {
@@ -496,6 +505,7 @@ export default function WordLinkMulti({ roomId }) {
             <div>
               <p className="mb-4">
                 <WordDetail
+                  key={responseWord}
                   styleClass="has-text-centered is-size-1 is-inline-block w-100"
                   word={responseWord}
                   description={responseWordDescription}
@@ -505,9 +515,11 @@ export default function WordLinkMulti({ roomId }) {
               {isAnswering ? (
                 <>
                   <WordLinkAnswerInput
-                    key={responseWord}
+                    key={responseWord + turn}
                     preResponseWord={preResponseWord}
                     onAnswer={onAnswer}
+                    isLoading={isCheckingAnswer.current}
+                    isError={isInputError.current}
                   />
                   {turn < 3 && (
                     <p className="help is-warning is-size-6 has-text-centered has-text-weight-semibold">

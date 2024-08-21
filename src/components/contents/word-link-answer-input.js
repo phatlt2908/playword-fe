@@ -1,13 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faForward } from "@fortawesome/free-solid-svg-icons";
+import BrandLoading from "../utils/brand-loading";
 
-const WordLinkAnswerInput = ({ preResponseWord, onAnswer, onSkip }) => {
+const WordLinkAnswerInput = ({
+  preResponseWord,
+  onAnswer,
+  onSkip,
+  isLoading,
+  isError,
+}) => {
   const [answerWord, setAnswerWord] = useState("");
   const [inputValue, setInputValue] = useState("");
+  const [isInputError, setIsInputError] = useState(false);
   const hasSkip = !!onSkip;
 
   useState(() => {
@@ -15,6 +23,10 @@ const WordLinkAnswerInput = ({ preResponseWord, onAnswer, onSkip }) => {
       setInputValue(preResponseWord);
     }
   }, [preResponseWord]);
+
+  useEffect(() => {
+    setIsInputError(isError);
+  }, [isError]);
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
@@ -27,18 +39,22 @@ const WordLinkAnswerInput = ({ preResponseWord, onAnswer, onSkip }) => {
 
   const answer = () => {
     onAnswer(answerWord);
-    
+
     setInputValue(preResponseWord);
     setAnswerWord("");
   };
 
   return (
     <>
-      <div className="field has-addons is-justify-content-center">
-        <div className="control is-large">
+      <div
+        className={`field has-addons is-justify-content-center ${
+          isInputError ? "anim-shake" : ""
+        }`}
+      >
+        <div className={`control is-large ${isLoading ? "is-loading" : ""}`}>
           <input
             onKeyDown={handleKeyDown}
-            className="input is-large"
+            className={`input is-large ${isInputError ? "is-danger" : ""}`}
             type="text"
             placeholder="..."
             value={inputValue}
@@ -48,6 +64,7 @@ const WordLinkAnswerInput = ({ preResponseWord, onAnswer, onSkip }) => {
                   e.target.value.substring(preResponseWord.length)
               );
               setAnswerWord(e.target.value.substring(preResponseWord.length));
+              setIsInputError(false);
             }}
             autoFocus
           />
