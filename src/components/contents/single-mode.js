@@ -140,6 +140,8 @@ export default function WordLinkSingle({ isLiteMode }) {
     wordLinkApi
       .answer({ answer: answer, answeredList: answeredList })
       .then((response) => {
+        setIsCheckingAnswer(false);
+        
         if (!response.data.isSuccessful) {
           swal
             .fire({
@@ -189,8 +191,6 @@ export default function WordLinkSingle({ isLiteMode }) {
           setResponseWordDescription(response.data.wordDescription.description);
           setIsInputError(false);
         }
-
-        setIsCheckingAnswer(false);
       })
       .catch((error) => {
         console.error(error);
