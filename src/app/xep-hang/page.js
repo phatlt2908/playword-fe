@@ -14,7 +14,9 @@ export default function ChartPage() {
       <Link href="/" className="button mb-5 trans-float-right">
         Chơi ngay
       </Link>
-      <RankingChart />
+      <Suspense>
+        <RankingChart />
+      </Suspense>
     </div>
   );
 }
