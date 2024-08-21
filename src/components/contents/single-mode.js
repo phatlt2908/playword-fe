@@ -203,7 +203,7 @@ export default function WordLinkSingle({ isLiteMode }) {
               <span>Xếp hạng: {rank ? rank : "Không xếp hạng"}</span>
               <span
                 className="ml-2 is-size-6 hover-underlined cursor-pointer"
-                onClick={() => router.push(`/xep-hang`)}
+                onClick={() => router.push(`/xep-hang?game=1`)}
               >
                 (Xem)
               </span>
