@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 
 import {
   faPlay,
+  faQuestion,
   faRotate,
   faSearch,
   faWandMagicSparkles,
@@ -46,11 +47,6 @@ const roomNameExamples = [
   "Phòng ngủ",
   "Phòng khách",
 ];
-
-// export const metadata = {
-//   title: 'Nhiều mình',
-//   description: "Chơi nối từ cùng nhau, theo cặp hoặc theo nhóm nhiều người. Đánh bại các đối thủ và trở thành người chơi còn lại cuối cùng để giành chiến thắng 🚀",
-// };
 
 const WordLinkMultiLobby = () => {
   const router = useRouter();
@@ -154,92 +150,108 @@ const WordLinkMultiLobby = () => {
       {isCreatingRoom ? (
         <BrandLoading />
       ) : (
-        <div className="w-100">
-          <div className="w-100 columns is-vcentered">
-            <div className="column has-text-centered">
-              <button className="button" onClick={solo}>
-                <span>Solo 1 vs 1</span>
-                <span className="icon">
-                  <FontAwesomeIcon icon={faPlay} />
-                </span>
-              </button>
-            </div>
+        <>
+          <div>
+            <h1 className="title is-1">Góc Đồng Nối</h1>
+            <p className="subtitle is-6">
+              Xin chào các "Đồng Nối"! Đây là chế độ chơi nối từ cùng nhau, chơi
+              solo theo cặp hoặc theo nhóm nhiều người
+            </p>
           </div>
-          <div className="columns w-100">
-            <div className="column is-narrow has-text-centered">
-              <button
-                className="button is-large"
-                onClick={() => setIsOpenCreateRoomPopup(true)}
-              >
-                <span>Tạo phòng</span>
-                <span className="icon">
-                  <FontAwesomeIcon icon={faWandMagicSparkles} />
-                </span>
-              </button>
-            </div>
-            <div className="column">
-              <div className="field has-addons">
-                <div className="control is-expanded">
-                  <input
-                    className="input drawing-border"
-                    type="text"
-                    placeholder="Nhập mã/tên phòng"
-                    onChange={(e) => setKeyword(e.target.value)}
-                    onKeyDown={handleSearchKeyDown}
-                  />
-                </div>
-                <div className="control">
-                  <button className="button" onClick={search}>
-                    <span className="icon is-small">
-                      <FontAwesomeIcon icon={faSearch} />
-                    </span>
-                  </button>
-                </div>
-              </div>
 
-              {isLoading ? (
-                <div className="mt-2">
-                  <SpinnerLoading />
+          <div className="w-100">
+            <div className="w-100 columns is-vcentered">
+              <div className="column has-text-centered">
+                <button className="button" onClick={solo}>
+                  <span>Solo 1 vs 1</span>
+                  <span className="icon">
+                    <FontAwesomeIcon icon={faPlay} />
+                  </span>
+                </button>
+              </div>
+            </div>
+            <div className="columns w-100">
+              <div className="column is-narrow has-text-centered">
+                <button
+                  className="button is-large"
+                  onClick={() => setIsOpenCreateRoomPopup(true)}
+                >
+                  <span>Tạo phòng</span>
+                  <span className="icon">
+                    <FontAwesomeIcon icon={faWandMagicSparkles} />
+                  </span>
+                </button>
+              </div>
+              <div className="column">
+                <div className="field has-addons">
+                  <div className="control is-expanded">
+                    <input
+                      className="input drawing-border"
+                      type="text"
+                      placeholder="Nhập mã/tên phòng"
+                      onChange={(e) => setKeyword(e.target.value)}
+                      onKeyDown={handleSearchKeyDown}
+                    />
+                  </div>
+                  <div className="control">
+                    <button className="button" onClick={search}>
+                      <span className="icon is-small">
+                        <FontAwesomeIcon icon={faSearch} />
+                      </span>
+                    </button>
+                  </div>
                 </div>
-              ) : (
-                <div>
-                  {roomList && roomList.length ? (
-                    <table className="table is-fullwidth is-narrow is-hoverable">
-                      <thead>
-                        <tr>
-                          <th>Mã</th>
-                          <th>Tên</th>
-                          <th>Số người</th>
-                          <th>Trạng thái</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {roomList.map((room) => (
-                          <tr
-                            key={room.id}
-                            className="cursor-pointer"
-                            onClick={() => onJoinRoom(room.id)}
-                          >
-                            <td>{room.id}</td>
-                            <td>{room.name}</td>
-                            <td>{room.userCount}</td>
-                            <td>
-                              {room.status == "PREPARING"
-                                ? "Đang chờ"
-                                : "Đang chơi"}
-                            </td>
+
+                {isLoading ? (
+                  <div className="mt-2">
+                    <SpinnerLoading />
+                  </div>
+                ) : (
+                  <div>
+                    {roomList && roomList.length ? (
+                      <table className="table is-fullwidth is-narrow is-hoverable">
+                        <thead>
+                          <tr>
+                            <th>Mã</th>
+                            <th>Tên</th>
+                            <th>Số người</th>
+                            <th>Trạng thái</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  ) : (
-                    <p>Không tìm thấy phòng</p>
-                  )}
-                </div>
-              )}
+                        </thead>
+                        <tbody>
+                          {roomList.map((room) => (
+                            <tr
+                              key={room.id}
+                              className="cursor-pointer"
+                              onClick={() => onJoinRoom(room.id)}
+                            >
+                              <td>{room.id}</td>
+                              <td>{room.name}</td>
+                              <td>{room.userCount}</td>
+                              <td>
+                                {room.status == "PREPARING"
+                                  ? "Đang chờ"
+                                  : "Đang chơi"}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    ) : (
+                      <p>Không tìm thấy phòng</p>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
+
+          <div className="is-flex is-align-items-center">
+            <a className="button p-2 hover-underlined" href="/noi-tu-la-gi">
+              <FontAwesomeIcon icon={faQuestion} size="sm" />
+            </a>
+          </div>
+        </>
       )}
       {isOpenCreateRoomPopup && (
         <StandardModal
@@ -274,7 +286,10 @@ const WordLinkMultiLobby = () => {
               </span>
             </div>
             <div className="control">
-              <button className="button is-large drawing-border" onClick={onCreateRoom}>
+              <button
+                className="button is-large drawing-border"
+                onClick={onCreateRoom}
+              >
                 <span className="icon">
                   <FontAwesomeIcon icon={faPlay} />
                 </span>

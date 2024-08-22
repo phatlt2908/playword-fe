@@ -51,9 +51,9 @@ export default function Manual() {
       </ol>
       <p>
         Nếu xa xôi cách trở, không thể tụ họp được bạn bè, thì đây nè...
-        noitu.fun sẽ kết nối giúp bạn. Chỉ cần chọn chế độ chơi{" "}
+        noitu.fun sẽ kết nối giúp bạn. Hãy vào{" "}
         <a className="text-underlined" href="/nhieu-minh">
-          nhiều mình
+          Góc Đồng Nối
         </a>
         , tạo phòng hoặc vào phòng có sẵn và chia sẻ đến bạn bè để cùng nối từ
         nhé.
@@ -62,7 +62,7 @@ export default function Manual() {
         Chơi cùng bạn bè sẽ vui hơn. Tuy nhiên, nếu bạn đang FA thì cũng không
         sao, hãy thử với chế độ chơi{" "}
         <a className="text-underlined" href="/mot-minh">
-          trùm nối từ
+          Trùm Nối Từ
         </a>{" "}
         😌
       </p>

@@ -2,10 +2,10 @@ import Link from "next/link";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faBlog,
-  faBook,
   faCrown,
+  faNewspaper,
   faPeoplePulling,
+  faQuestion,
   faShare,
   faShuffle,
   faUsers,
@@ -47,7 +47,8 @@ const Home = () => {
           <Link className="column" href="/nhieu-minh">
             <div className="button is-large is-text non-underlined is-flex is-justify-content-space-between is-flex-direction-column">
               <FontAwesomeIcon icon={faUsers} size="2x" />
-              <h2>Nối nhóm</h2>
+              <h2>Góc Đồng Nối</h2>
+              <div className="is-size-7">(Chế độ chơi nhóm)</div>
             </div>
           </Link>
         </div>
@@ -68,29 +69,27 @@ const Home = () => {
             </span>
             <FontAwesomeIcon icon={faShuffle} size="2x" />
             <h2>Khắc Nhập Từ</h2>
+            <div className="is-size-7">(Ghép chữ thành từ)</div>
           </div>
         </Link>
       </div>
 
-      <div className="is-flex is-flex-direction-column is-align-items-center">
-        <a className="icon-text p-2" href="/blog">
-          <span>Blog</span>
+      <div className="is-flex is-align-items-center">
+        <a className="p-2" href="/blog">
           <span className="icon">
-            <FontAwesomeIcon icon={faBlog} />
+            <FontAwesomeIcon icon={faNewspaper} />
           </span>
         </a>
-        <a className="icon-text p-2" href="/noi-tu-la-gi">
-          <span>Hướng dẫn</span>
+        <a className="p-2" href="/noi-tu-la-gi">
           <span className="icon">
-            <FontAwesomeIcon icon={faBook} />
+            <FontAwesomeIcon icon={faQuestion} />
           </span>
         </a>
         <a
-          className="icon-text p-2"
+          className="p-2"
           target="_blank"
           href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fnoitu.fun%2F&amp;src=sdkpreparse"
         >
-          <span>Chia sẻ</span>
           <span className="icon">
             <FontAwesomeIcon icon={faShare} />
           </span>
