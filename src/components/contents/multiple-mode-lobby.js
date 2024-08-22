@@ -154,7 +154,7 @@ const WordLinkMultiLobby = () => {
           <div>
             <h1 className="title is-1">Góc Đồng Nối</h1>
             <p className="subtitle is-6">
-              Xin chào các "Đồng Nối"! Đây là chế độ chơi nối từ cùng nhau, chơi
+              Xin chào các &quot;Đồng Nối&quot;! Đây là chế độ chơi nối từ cùng nhau, chơi
               solo theo cặp hoặc theo nhóm nhiều người
             </p>
           </div>
