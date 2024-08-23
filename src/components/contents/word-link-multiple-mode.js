@@ -98,7 +98,7 @@ export default function WordLinkMulti({ roomId }) {
     // Waiting until user has data to do under code
     stompClient.subscribe(`/room/${roomId}`, onMessageReceived);
     stompClient.send(
-      `/app/addUser/${roomId}`,
+      `/app/word-link/add-user/${roomId}`,
       {},
       JSON.stringify({ sender: user, roomId: roomId, type: "JOIN" })
     );
@@ -116,7 +116,7 @@ export default function WordLinkMulti({ roomId }) {
         showConfirmButton: false,
       })
       .then(() => {
-        window.location.href = "/nhieu-minh";
+        window.location.href = "/dong-noi";
       });
   };
 
@@ -148,7 +148,7 @@ export default function WordLinkMulti({ roomId }) {
 
     setIsReady(false);
     stompClient.send(
-      `/app/over/${roomId}`,
+      `/app/word-link/over/${roomId}`,
       {},
       JSON.stringify({ sender: user, roomId: roomId, type: "OVER" })
     );
@@ -157,7 +157,7 @@ export default function WordLinkMulti({ roomId }) {
   const onReady = () => {
     setIsReady(true);
     stompClient.send(
-      `/app/ready/${roomId}`,
+      `/app/word-link/ready/${roomId}`,
       {},
       JSON.stringify({ sender: user, roomId: roomId, type: "READY" })
     );
@@ -192,7 +192,7 @@ export default function WordLinkMulti({ roomId }) {
 
     isCheckingAnswer.current = true;
     stompClient.send(
-      `/app/answer/${roomId}`,
+      `/app/word-link/answer/${roomId}`,
       {},
       JSON.stringify({
         sender: user,
@@ -224,7 +224,7 @@ export default function WordLinkMulti({ roomId }) {
           timer: 3000,
           showConfirmButton: false,
         });
-        router.push("/nhieu-minh");
+        router.push("/dong-noi");
       }
     } else if (message.type === "LEAVE") {
       swal.fire({
@@ -372,7 +372,7 @@ export default function WordLinkMulti({ roomId }) {
   };
 
   const onWaitingTimeout = () => {
-    window.location.href = "/nhieu-minh";
+    window.location.href = "/dong-noi";
   };
 
   const onCopyLink = () => {
@@ -417,7 +417,7 @@ export default function WordLinkMulti({ roomId }) {
           </div>
           <div className="dropdown-menu" id="dropdown-menu" role="menu">
             <div className="dropdown-content">
-              <Link href="/nhieu-minh" className="dropdown-item icon-text">
+              <Link href="/dong-noi" className="dropdown-item icon-text">
                 <span className="icon">
                   <FontAwesomeIcon icon={faChevronLeft} size="sm" />
                 </span>

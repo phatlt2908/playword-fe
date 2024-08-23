@@ -52,7 +52,7 @@ export default function Manual() {
       <p>
         Nếu xa xôi cách trở, không thể tụ họp được bạn bè, thì đây nè...
         noitu.fun sẽ kết nối giúp bạn. Hãy vào{" "}
-        <a className="text-underlined" href="/nhieu-minh">
+        <a className="text-underlined" href="/dong-noi">
           Góc Đồng Nối
         </a>
         , tạo phòng hoặc vào phòng có sẵn và chia sẻ đến bạn bè để cùng nối từ

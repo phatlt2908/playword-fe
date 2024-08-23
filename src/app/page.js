@@ -18,7 +18,7 @@ const Home = () => {
   return (
     <>
       <div>
-        <h1 className="title is-1">Nối từ vui</h1>
+        <h1 className="title is-1">Nối Từ Vui</h1>
       </div>
 
       <div className="is-flex is-flex-direction-column is-align-items-center w-100">
@@ -38,13 +38,13 @@ const Home = () => {
         </div>
 
         <div className="columns is-mobile">
-          <Link className="column" href="/nhieu-minh?isSolo=true">
+          <Link className="column" href="/dong-noi?isSolo=true">
             <div className="button is-large is-text non-underlined is-flex is-justify-content-space-between is-flex-direction-column">
               <FontAwesomeIcon icon={faPeoplePulling} size="2x" />
               <h2>Solo 1 vs 1</h2>
             </div>
           </Link>
-          <Link className="column" href="/nhieu-minh">
+          <Link className="column" href="/dong-noi">
             <div className="button is-large is-text non-underlined is-flex is-justify-content-space-between is-flex-direction-column">
               <FontAwesomeIcon icon={faUsers} size="2x" />
               <h2>Góc Đồng Nối</h2>

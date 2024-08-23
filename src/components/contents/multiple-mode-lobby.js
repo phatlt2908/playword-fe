@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 
 import {
+  faFilter,
   faPlay,
   faQuestion,
   faRotate,
@@ -14,6 +15,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useUserStore } from "@/stores/user-store";
 
 import wordLinkApi from "@/services/wordLinkApi";
+import stickApi from "@/services/stickApi";
 import StandardModal from "@/components/contents/standard-modal";
 import SpinnerLoading from "@/components/utils/spinner-loading";
 import BrandLoading from "@/components/utils/brand-loading";
@@ -30,25 +32,24 @@ const roomNameExamples = [
   "Nốt ván này thôi...",
   "Không tên",
   "Đừng vào! thua đấy...",
-  "Phòng này có quái vật",
-  "Không ai thèm vào",
   "Vùng đất cấm",
   "Vùng đất hoang",
   "Cổng thời gian",
   "Nơi ẩn náu",
-  "Góc thiền định",
   "Thiên đường",
   "Địa ngục",
-  "Cửa hàng bí mật",
   "Phòng truyền thống",
   "Phòng cổ",
   "Phòng hiện đại",
   "Phòng học",
   "Phòng ngủ",
   "Phòng khách",
+  "Hoàng Sa, Trường Sa là của Việt Nam",
+  "Phòng chống dịch",
+  "Phòng cách ly",
 ];
 
-const WordLinkMultiLobby = () => {
+const MultiModeLobby = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -58,10 +59,16 @@ const WordLinkMultiLobby = () => {
   const [roomName, setRoomName] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isCreatingRoom, setIsCreatingRoom] = useState(false);
+  const [gameMode, setGameMode] = useState(1);
+  const [gameFilter, setGameFilter] = useState(null);
+  const [gameCreateMode, setGameCreateMode] = useState(1);
 
   const { user } = useUserStore();
 
   useEffect(() => {
+    const gameMode = searchParams.get("game");
+    setGameMode(gameMode);
+
     const isSolo = searchParams.get("isSolo");
     if (isSolo) {
       solo();
@@ -90,13 +97,24 @@ const WordLinkMultiLobby = () => {
   const onCreateRoom = () => {
     setIsCreatingRoom(true);
     setIsOpenCreateRoomPopup(false);
-    const roomId = Math.random().toString(36).substring(2, 8);
-    wordLinkApi
-      .createRoom(roomId, roomName, user.code)
-      .then(() => {
-        router.push(`/nhieu-minh/${roomId}`);
-      })
-      .catch((error) => console.log("Can not create a new room ", error));
+
+    if (gameCreateMode == 1) {
+      const roomId = "noi-tu-" + Math.random().toString(36).substring(2, 8);
+      wordLinkApi
+        .createRoom(roomId, roomName, user.code)
+        .then(() => {
+          router.push(`/dong-noi/${roomId}`);
+        })
+        .catch((error) => console.log("Can not create a new room ", error));
+    } else if (gameCreateMode == 2) {
+      const roomId = "khac-nhap-" + Math.random().toString(36).substring(2, 8);
+      stickApi
+        .createRoom(roomId, roomName, user.code)
+        .then(() => {
+          router.push(`/dong-noi/${roomId}`);
+        })
+        .catch((error) => console.log("Can not create a new room ", error));
+    }
   };
 
   const onCreateSoloRoom = () => {
@@ -106,13 +124,13 @@ const WordLinkMultiLobby = () => {
     wordLinkApi
       .createRoom(roomId, commonConst.SOLO_ROOM_NAME, user.code)
       .then(() => {
-        router.push(`/nhieu-minh/${roomId}`);
+        router.push(`/dong-noi/${roomId}`);
       })
       .catch((error) => console.log("Can not create a new solo room ", error));
   };
 
   const onJoinRoom = (roomId) => {
-    router.push(`/nhieu-minh/${roomId}`);
+    router.push(`/dong-noi/${roomId}`);
   };
 
   const handleKeyDown = (e) => {
@@ -130,7 +148,7 @@ const WordLinkMultiLobby = () => {
   const solo = () => {
     wordLinkApi.findRoom().then((response) => {
       if (response.data) {
-        router.push(`/nhieu-minh/${response.data}`);
+        router.push(`/dong-noi/${response.data}`);
       } else {
         onCreateSoloRoom();
         swal.fire({
@@ -151,16 +169,16 @@ const WordLinkMultiLobby = () => {
         <BrandLoading />
       ) : (
         <>
-          <div>
+          <div className="has-text-centered">
             <h1 className="title is-1">Góc Đồng Nối</h1>
             <p className="subtitle is-6">
-              Xin chào các &quot;Đồng Nối&quot;! Đây là chế độ chơi nối từ cùng nhau, chơi
-              solo theo cặp hoặc theo nhóm nhiều người
+              Xin chào các &quot;Đồng Nối&quot;! Đây là chế độ chơi cùng nhau,
+              chơi solo theo cặp hoặc theo nhóm nhiều người
             </p>
           </div>
 
           <div className="w-100">
-            <div className="w-100 columns is-vcentered">
+            <div className="columns is-vcentered">
               <div className="column has-text-centered">
                 <button className="button" onClick={solo}>
                   <span>Solo 1 vs 1</span>
@@ -170,7 +188,7 @@ const WordLinkMultiLobby = () => {
                 </button>
               </div>
             </div>
-            <div className="columns w-100">
+            <div className="columns">
               <div className="column is-narrow has-text-centered">
                 <button
                   className="button is-large"
@@ -202,46 +220,66 @@ const WordLinkMultiLobby = () => {
                   </div>
                 </div>
 
-                {isLoading ? (
-                  <div className="mt-2">
-                    <SpinnerLoading />
+                <div className="mt-2">
+                  <div className="is-flex is-align-items-center is-justify-content-flex-end">
+                    <div className="control has-icons-left">
+                      <div className="select is-small">
+                        <select
+                          value={gameFilter}
+                          onChange={(e) => setGameFilter(e.target.value)}
+                          defaultValue={gameMode}
+                        >
+                          <option value={null}>Tất cả game</option>
+                          <option value={1}>Nối Từ</option>
+                          <option value={2}>Khắc Nhập Từ</option>
+                        </select>
+                      </div>
+                      <div className="icon is-small is-left">
+                        <FontAwesomeIcon icon={faFilter} size="sm" />
+                      </div>
+                    </div>
                   </div>
-                ) : (
-                  <div>
-                    {roomList && roomList.length ? (
-                      <table className="table is-fullwidth is-narrow is-hoverable">
-                        <thead>
-                          <tr>
-                            <th>Mã</th>
-                            <th>Tên</th>
-                            <th>Số người</th>
-                            <th>Trạng thái</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {roomList.map((room) => (
-                            <tr
-                              key={room.id}
-                              className="cursor-pointer"
-                              onClick={() => onJoinRoom(room.id)}
-                            >
-                              <td>{room.id}</td>
-                              <td>{room.name}</td>
-                              <td>{room.userCount}</td>
-                              <td>
-                                {room.status == "PREPARING"
-                                  ? "Đang chờ"
-                                  : "Đang chơi"}
-                              </td>
+                  {isLoading ? (
+                    <div className="mt-2">
+                      <SpinnerLoading />
+                    </div>
+                  ) : (
+                    <div>
+                      {roomList && roomList.length ? (
+                        <table className="table is-fullwidth is-narrow is-hoverable">
+                          <thead>
+                            <tr>
+                              <th>Mã</th>
+                              <th>Tên</th>
+                              <th>Số người</th>
+                              <th>Trạng thái</th>
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    ) : (
-                      <p>Không tìm thấy phòng</p>
-                    )}
-                  </div>
-                )}
+                          </thead>
+                          <tbody>
+                            {roomList.map((room) => (
+                              <tr
+                                key={room.id}
+                                className="cursor-pointer"
+                                onClick={() => onJoinRoom(room.id)}
+                              >
+                                <td>{room.id}</td>
+                                <td>{room.name}</td>
+                                <td>{room.userCount}</td>
+                                <td>
+                                  {room.status == "PREPARING"
+                                    ? "Đang chờ"
+                                    : "Đang chơi"}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      ) : (
+                        <p>Không tìm thấy phòng</p>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -258,8 +296,23 @@ const WordLinkMultiLobby = () => {
           id="room-creation"
           onClose={() => setIsOpenCreateRoomPopup(false)}
         >
-          <h1 className="title is-1 has-text-centered">Tạo phòng</h1>
-          <label className="label">Tên phòng</label>
+          <h1 className="title is-1 has-text-centered mb-2">Tạo phòng</h1>
+          <div className="field">
+            <div className="control">
+              <div className="select">
+                <select
+                  value={gameCreateMode}
+                  onChange={(e) => setGameCreateMode(e.target.value)}
+                  defaultValue={gameMode ? gameMode : 1}
+                >
+                  <option value={1}>Nối Từ</option>
+                  <option value={2}>Khắc Nhập Từ</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <label className="label mt-4">Tên phòng</label>
           <div className="field has-addons">
             <div className="control has-icons-right is-expanded">
               <input
@@ -302,4 +355,4 @@ const WordLinkMultiLobby = () => {
   );
 };
 
-export default WordLinkMultiLobby;
+export default MultiModeLobby;

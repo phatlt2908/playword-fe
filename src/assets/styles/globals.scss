@@ -148,9 +148,6 @@ a {
 .swal2-popup.swal2-toast {
   background-color: rgba(var(--little-transparency-rgba)) !important;
 }
-div:where(.swal2-container) .swal2-html-container {
-  color: white !important;
-}
 
 // Transition
 .trans-bounce {

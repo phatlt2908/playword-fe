@@ -20,6 +20,10 @@ class stickApi {
   getCurrentUserRanking(userCode) {
     return axios.get(`/stick/user-ranking?userCode=${userCode}`);
   }
+
+  createRoom(id, name, userCode) {
+    return axios.get(`/stick/create-room?id=${id}&name=${name}&userCode=${userCode}`);
+  }
 }
 
 export default new stickApi();

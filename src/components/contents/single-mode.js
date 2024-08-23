@@ -342,7 +342,7 @@ export default function WordLinkSingle({ isLiteMode }) {
                 height={300}
               />
             </div>
-            <h2>Luật chơi game nối từ online với máy:</h2>
+            <h2>Luật chơi Trùm Nối Từ:</h2>
             <ul>
               <li>Bạn có 1 phút</li>
               <li>

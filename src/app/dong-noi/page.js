@@ -1,4 +1,4 @@
-import WordLinkMultiLobby from "@/components/contents/multiple-mode-lobby";
+import MultiModeLobby from "@/components/contents/multiple-mode-lobby";
 import { Suspense } from "react";
 
 export const metadata = {
@@ -18,7 +18,7 @@ export const metadata = {
 export default function MultipleModeLobbyPage() {
   return (
     <Suspense>
-      <WordLinkMultiLobby />
+      <MultiModeLobby />
     </Suspense>
   );
 }

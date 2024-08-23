@@ -62,6 +62,8 @@ textarea {
 }
 
 .input,
+select,
+.select,
 textarea {
   background-color: rgba(var(--transparency-rgba)) !important;
   border-color: white !important;
@@ -69,6 +71,11 @@ textarea {
   &.is-danger,
   &.is-danger:focus-visible {
     border-color: var(--bulma-danger-base) !important;
+  }
+
+  option {
+    background-color: rgba(var(--background-end-rgb)) !important;
+    border-color: white !important;
   }
 }
 
@@ -135,4 +142,9 @@ textarea {
   background-color: white !important;
   color: rgb(var(--background-end-rgb)) !important;
   border-color: white !important;
+}
+
+.navbar-link:not(.is-arrowless)::after,
+.select:not(.is-multiple):not(.is-loading)::after {
+  border-color: white;
 }

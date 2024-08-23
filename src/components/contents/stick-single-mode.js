@@ -104,7 +104,7 @@ export default function StickSingle({ isLiteMode }) {
             position: "bottom",
             text: "[" + answer + "] Không chính xác 😣",
             icon: "error",
-            timer: 3000,
+            timer: 2000,
             showConfirmButton: false,
           });
           setStreakNum(0);
@@ -122,7 +122,7 @@ export default function StickSingle({ isLiteMode }) {
           });
 
           timerRef.current.update(3);
-          setPoint(point + 1 + streakNum);
+          setPoint(point + characters.length + streakNum);
           setStreakNum(streakNum + 1);
           getWord();
           setIsIncorrectAnswer(false);
@@ -277,7 +277,8 @@ export default function StickSingle({ isLiteMode }) {
                 xáo trộn. Bạn phải chọn theo thứ tự các chữ cái để ghép thành từ
                 có nghĩa
               </li>
-              <li>Ghép thành công sẽ được +1 điểm và 3 giây</li>
+              <li>Ghép thành công sẽ được cộng điểm và thêm 3 giây thời gian</li>
+              <li>Số điểm được cộng sẽ tương ứng với số lượng chữ cái của từ ghép</li>
               <li>Ghép thành công liên tiếp sẽ được cộng dồn 1 điểm</li>
               <li>
                 Bạn có thể bỏ qua nếu từ quá khó, mỗi lần bỏ qua bạn bị -5s
