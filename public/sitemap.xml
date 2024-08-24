@@ -1,27 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset
-  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
 
-  <url>
-    <loc>https://noitu.fun/</loc>
-    <lastmod>2024-07-03T08:31:06+00:00</lastmod>
-    <priority>1.00</priority>
-  </url>
-  <url>
-    <loc>https://noitu.fun/mot-minh</loc>
-    <lastmod>2024-07-03T08:31:06+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://noitu.fun/dong-noi</loc>
-    <lastmod>2024-07-03T08:31:06+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://noitu.fun/noi-tu-la-gi</loc>
-    <lastmod>2024-07-03T08:31:06+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
+
+<url>
+  <loc>https://noitu.fun/</loc>
+  <lastmod>2024-08-24T17:21:06+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://noitu.fun/mot-minh</loc>
+  <lastmod>2024-08-24T17:21:06+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://noitu.fun/xep-hang?game=1</loc>
+  <lastmod>2024-08-24T17:21:06+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://noitu.fun/dong-noi?isSolo=true</loc>
+  <lastmod>2024-08-24T17:21:06+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://noitu.fun/dong-noi</loc>
+  <lastmod>2024-08-24T17:21:06+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://noitu.fun/khac-nhap-tu</loc>
+  <lastmod>2024-08-24T17:21:06+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://noitu.fun/blog</loc>
+  <lastmod>2024-08-24T17:21:06+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://noitu.fun/noi-tu-la-gi</loc>
+  <lastmod>2024-08-24T17:21:06+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://noitu.fun/xep-hang</loc>
+  <lastmod>2024-08-24T17:21:06+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://noitu.fun/trum-khac-nhap-tu</loc>
+  <lastmod>2024-08-24T17:21:06+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://noitu.fun/xep-hang?game=2</loc>
+  <lastmod>2024-08-24T17:21:06+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://noitu.fun/dong-noi?isSolo=true&amp;game=2</loc>
+  <lastmod>2024-08-24T17:21:06+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://noitu.fun/dong-noi?game=2</loc>
+  <lastmod>2024-08-24T17:21:06+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://noitu.fun/blog/nhung-chu-kho-noi-tu-nhat</loc>
+  <lastmod>2024-08-24T17:21:06+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://noitu.fun/blog/noi-tu-la-gi</loc>
+  <lastmod>2024-08-24T17:21:06+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+
+
 </urlset>
