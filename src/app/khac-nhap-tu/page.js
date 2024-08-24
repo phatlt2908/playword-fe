@@ -43,7 +43,7 @@ export default async function StickLobbyPage() {
         <div className="columns is-mobile mt-5">
           <Link
             className="column"
-            href="/khac-nhap-tu/khac-nhap-tu-nhom?isSolo=true"
+            href="/dong-noi?isSolo=true&game=2"
           >
             <div className="button is-large is-text non-underlined is-flex is-justify-content-space-between is-flex-direction-column">
               <FontAwesomeIcon icon={faPeoplePulling} size="2x" />
