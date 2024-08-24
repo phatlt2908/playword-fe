@@ -2,7 +2,12 @@ import styles from "./page.module.scss";
 import Link from "next/link";
 import HomeChart from "@/components/contents/home-chart";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBook, faCrown, faQuestion } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCrown,
+  faPeoplePulling,
+  faQuestion,
+  faUsers,
+} from "@fortawesome/free-solid-svg-icons";
 
 export const metadata = {
   title: "Khắc Nhập Từ | Nối Từ Vui",
@@ -35,20 +40,23 @@ export default async function StickLobbyPage() {
           </Link>
         </div>
 
-        {/* <div className="columns is-mobile mt-5">
-          <Link className="column" href="/khac-nhap-tu/khac-nhap-tu-nhom?isSolo=true">
+        <div className="columns is-mobile mt-5">
+          <Link
+            className="column"
+            href="/khac-nhap-tu/khac-nhap-tu-nhom?isSolo=true"
+          >
             <div className="button is-large is-text non-underlined is-flex is-justify-content-space-between is-flex-direction-column">
               <FontAwesomeIcon icon={faPeoplePulling} size="2x" />
               <h2>Solo 1 vs 1</h2>
             </div>
           </Link>
-          <Link className="column" href="/khac-nhap-tu/khac-nhap-tu-nhom">
+          <Link className="column" href="/dong-noi?game=2">
             <div className="button is-large is-text non-underlined is-flex is-justify-content-space-between is-flex-direction-column">
               <FontAwesomeIcon icon={faUsers} size="2x" />
               <h2>Chơi nhóm</h2>
             </div>
           </Link>
-        </div> */}
+        </div>
       </div>
 
       <div className="is-flex is-align-items-center">

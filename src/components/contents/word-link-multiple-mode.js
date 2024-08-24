@@ -538,18 +538,18 @@ export default function WordLinkMulti({ roomId }) {
       )}
 
       <div className="columns is-multiline is-centered is-vcentered is-mobile w-100">
-        {roomUserList.map((user, index) => (
+        {roomUserList.map((roomUser, index) => (
           <div
             key={index}
             className="column is-flex is-flex-direction-column is-align-items-center"
           >
             <UserIcon
-              username={user.name}
-              avatarUrl={user.avatar}
-              isSelf={user.code == user.code}
-              isReady={isRoomPreparing && user.isReady}
-              isAnswer={user.isAnswering}
-              isBlur={!isRoomPreparing && !user.isReady}
+              username={roomUser.name}
+              avatarUrl={roomUser.avatar}
+              isSelf={user.code == roomUser.code}
+              isReady={isRoomPreparing && roomUser.isReady}
+              isAnswer={roomUser.isAnswering}
+              isBlur={!isRoomPreparing && !roomUser.isReady}
             />
           </div>
         ))}

@@ -41,6 +41,7 @@ export default function StickMulti({ roomId }) {
   const [isLoadingInit, setIsLoadingInit] = useState(true);
   const [isDisplayDropdown, setIsDisplayDropdown] = useState(false);
   const [isSingleModeWaiting, setIsSingleModeWaiting] = useState(false);
+  const [isWatingNewQuestion, setIsWatingNewQuestion] = useState(false);
 
   // User state
   const { user } = useUserStore();
@@ -144,7 +145,7 @@ export default function StickMulti({ roomId }) {
 
     swal.fire({
       icon: "info",
-      title: "Hết thời gian 😢",
+      title: "Hết thời gian",
       text: word + ": " + description,
       timer: 2000,
       showConfirmButton: false,
@@ -214,7 +215,9 @@ export default function StickMulti({ roomId }) {
     } else if (message.type === "OVER") {
       updateQuestion(message.stickWord);
     } else if (message.type === "END") {
-      const resultList = message.room.userList.map((user) => {
+      // Sort user list by score
+      const sortedList = roomUserList.sort((a, b) => b.score - a.score);
+      const resultList = sortedList.map((user) => {
         return `<p>${user.name}: ${user.score}</p>`;
       });
 
@@ -242,13 +245,15 @@ export default function StickMulti({ roomId }) {
     if (message.room) {
       updateRoomInfo(message.room);
     }
-    
+
     setIsLoadingInit(false);
     isCheckingAnswer.current = false;
   };
 
   const handleReceiveAnswer = (message) => {
     if (message.isAnswerCorrect) {
+      setIsWatingNewQuestion(true);
+
       if (message.user.code === user.code) {
         swal
           .fire({
@@ -265,7 +270,7 @@ export default function StickMulti({ roomId }) {
         swal
           .fire({
             icon: "info",
-            title: `${message.user.name} đã trả lời đúng 🤩`,
+            title: `${message.user.name} đã trả lời đúng`,
             text: message.message,
             timer: 2000,
             showConfirmButton: false,
@@ -334,6 +339,7 @@ export default function StickMulti({ roomId }) {
   };
 
   const nextTurn = (message) => {
+    setIsWatingNewQuestion(false);
     updateRoomInfo(message.room);
     updateQuestion(message.stickWord);
   };
@@ -374,7 +380,7 @@ export default function StickMulti({ roomId }) {
       </div>
       <div className="w-100">
         <div>
-          {!isRoomPreparing && (
+          {!isRoomPreparing && !isWatingNewQuestion && (
             <BaseTimer
               key={characters}
               maxTime={turnTime}
@@ -456,29 +462,32 @@ export default function StickMulti({ roomId }) {
         </>
       )}
 
-      <div className="columns is-multiline is-centered is-vcentered is-mobile w-100">
-        {roomUserList.map((user, index) => (
-          <div
-            key={index}
-            className="column is-flex is-flex-direction-column is-align-items-center"
-          >
-            <UserIcon
-              username={user.name}
-              avatarUrl={user.avatar}
-              isSelf={user.code == user.code}
-              isReady={isRoomPreparing && user.isReady}
-              isBlur={!isRoomPreparing && !user.isReady}
-              score={user.score}
-            />
-          </div>
-        ))}
+      <div className="w-100">
+        <div className="has-text-centered is-size-3">5</div>
+        <div className="columns is-multiline is-centered is-vcentered is-mobile w-100">
+          {roomUserList.map((roomUser, index) => (
+            <div
+              key={index}
+              className="column is-flex is-flex-direction-column is-align-items-center"
+            >
+              <UserIcon
+                username={roomUser.name}
+                avatarUrl={roomUser.avatar}
+                isSelf={user.code == roomUser.code}
+                isReady={isRoomPreparing && roomUser.isReady}
+                isBlur={!isRoomPreparing && !roomUser.isReady}
+                score={isRoomPreparing ? null : roomUser.score}
+              />
+            </div>
+          ))}
 
-        {roomUserList.length <= 1 && (
-          <div className="column is-flex is-flex-direction-column is-align-items-center">
-            <div>Đợi đối thủ</div>
-            <DotLoading />
-          </div>
-        )}
+          {roomUserList.length <= 1 && (
+            <div className="column is-flex is-flex-direction-column is-align-items-center">
+              <div>Đợi đối thủ</div>
+              <DotLoading />
+            </div>
+          )}
+        </div>
       </div>
 
       {isSingleModeWaiting && roomUserList.length <= 1 && (

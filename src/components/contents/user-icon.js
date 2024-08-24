@@ -11,11 +11,15 @@ const UserIcon = ({
   isReady,
   isAnswer,
   isBlur,
+  score,
 }) => {
   return (
     <>
       <div className={`${styles.icon} ${isBlur && styles.opacityImage}`}>
         {isReady && <div className={styles.ready}>Sẵn sàng</div>}
+        {score != undefined && score != null && (
+          <div className={styles.score}>{score}</div>
+        )}
         <div className="image is-64x64">
           {avatarUrl && (
             <Image

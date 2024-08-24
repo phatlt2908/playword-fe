@@ -9,16 +9,8 @@ class wordLinkApi {
     return axios.post("/word-link/answer", data);
   }
 
-  getRoomList(keyword) {
-    return axios.get(`/multi-word-link/room-list?keyword=${keyword}`);
-  }
-
   createRoom(id, name, userCode) {
     return axios.get(`/multi-word-link/create-room?id=${id}&name=${name}&userCode=${userCode}`);
-  }
-
-  findRoom() {
-    return axios.get(`/multi-word-link/find-room`);
   }
 
   getResult(point, userCode) {

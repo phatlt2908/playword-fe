@@ -149,6 +149,10 @@ a {
   background-color: rgba(var(--little-transparency-rgba)) !important;
 }
 
+.swal2-toast {
+  color: white !important;
+}
+
 // Transition
 .trans-bounce {
   animation-name: bounce;

@@ -16,6 +16,7 @@ import { useUserStore } from "@/stores/user-store";
 
 import wordLinkApi from "@/services/wordLinkApi";
 import stickApi from "@/services/stickApi";
+import roomApi from "@/services/roomApi";
 import StandardModal from "@/components/contents/standard-modal";
 import SpinnerLoading from "@/components/utils/spinner-loading";
 import BrandLoading from "@/components/utils/brand-loading";
@@ -59,23 +60,27 @@ const MultiModeLobby = () => {
   const [roomName, setRoomName] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isCreatingRoom, setIsCreatingRoom] = useState(false);
-  const [gameMode, setGameMode] = useState(1);
+  const [gameMode, setGameMode] = useState(null);
   const [gameFilter, setGameFilter] = useState(null);
-  const [gameCreateMode, setGameCreateMode] = useState(1);
+  const [gameCreateMode, setGameCreateMode] = useState(null);
 
   const { user } = useUserStore();
 
   useEffect(() => {
-    const gameMode = searchParams.get("game");
-    setGameMode(gameMode);
+    const initGameMode = searchParams.get("game");
+    setGameMode(initGameMode);
+    setGameFilter(initGameMode);
+    setGameCreateMode(initGameMode ? initGameMode : 1);
 
     const isSolo = searchParams.get("isSolo");
     if (isSolo) {
-      solo();
-    } else {
-      search();
+      solo(initGameMode);
     }
   }, []);
+
+  useEffect(() => {
+    search();
+  }, [gameFilter]);
 
   useEffect(() => {
     setRoomName(
@@ -85,8 +90,8 @@ const MultiModeLobby = () => {
 
   const search = () => {
     setIsLoading(true);
-    wordLinkApi
-      .getRoomList(keyword)
+    roomApi
+      .getRoomList(gameFilter, keyword)
       .then((response) => {
         setRoomList(response.data);
       })
@@ -97,36 +102,33 @@ const MultiModeLobby = () => {
   const onCreateRoom = () => {
     setIsCreatingRoom(true);
     setIsOpenCreateRoomPopup(false);
+    generateRoomAndJoin(gameCreateMode, roomName);
+  };
 
-    if (gameCreateMode == 1) {
+  const onCreateSoloRoom = (gameMode) => {
+    setIsCreatingRoom(true);
+    setIsOpenCreateRoomPopup(false);
+    generateRoomAndJoin(gameMode, commonConst.SOLO_ROOM_NAME);
+  };
+
+  const generateRoomAndJoin = (gameMode, name) => {
+    if (gameMode == 1) {
       const roomId = "noi-tu-" + Math.random().toString(36).substring(2, 8);
-      wordLinkApi
-        .createRoom(roomId, roomName, user.code)
+      roomApi
+        .createRoom(roomId, name, user.code, 1)
         .then(() => {
           router.push(`/dong-noi/${roomId}`);
         })
         .catch((error) => console.log("Can not create a new room ", error));
-    } else if (gameCreateMode == 2) {
+    } else if (gameMode == 2) {
       const roomId = "khac-nhap-" + Math.random().toString(36).substring(2, 8);
-      stickApi
-        .createRoom(roomId, roomName, user.code)
+      roomApi
+        .createRoom(roomId, name, user.code, 2)
         .then(() => {
           router.push(`/dong-noi/${roomId}`);
         })
         .catch((error) => console.log("Can not create a new room ", error));
     }
-  };
-
-  const onCreateSoloRoom = () => {
-    setIsCreatingRoom(true);
-    setIsOpenCreateRoomPopup(false);
-    const roomId = Math.random().toString(36).substring(2, 8);
-    wordLinkApi
-      .createRoom(roomId, commonConst.SOLO_ROOM_NAME, user.code)
-      .then(() => {
-        router.push(`/dong-noi/${roomId}`);
-      })
-      .catch((error) => console.log("Can not create a new solo room ", error));
   };
 
   const onJoinRoom = (roomId) => {
@@ -145,18 +147,18 @@ const MultiModeLobby = () => {
     }
   };
 
-  const solo = () => {
-    wordLinkApi.findRoom().then((response) => {
+  const solo = (gameMode) => {
+    roomApi.findRoomSolo(gameMode ? gameMode : 1).then((response) => {
       if (response.data) {
         router.push(`/dong-noi/${response.data}`);
       } else {
-        onCreateSoloRoom();
+        onCreateSoloRoom(gameMode ? gameMode : 1);
         swal.fire({
           text: "Đang tìm đối thủ...",
           toast: true,
           position: "top",
           icon: "info",
-          timer: 3000,
+          timer: 30000,
           showConfirmButton: false,
         });
       }
@@ -180,7 +182,7 @@ const MultiModeLobby = () => {
           <div className="w-100">
             <div className="columns is-vcentered">
               <div className="column has-text-centered">
-                <button className="button" onClick={solo}>
+                <button className="button" onClick={() => solo(gameMode)}>
                   <span>Solo 1 vs 1</span>
                   <span className="icon">
                     <FontAwesomeIcon icon={faPlay} />
@@ -225,9 +227,9 @@ const MultiModeLobby = () => {
                     <div className="control has-icons-left">
                       <div className="select is-small">
                         <select
+                          className="drawing-border"
                           value={gameFilter}
                           onChange={(e) => setGameFilter(e.target.value)}
-                          defaultValue={gameMode}
                         >
                           <option value={null}>Tất cả game</option>
                           <option value={1}>Nối Từ</option>
@@ -301,9 +303,9 @@ const MultiModeLobby = () => {
             <div className="control">
               <div className="select">
                 <select
+                  className="drawing-border"
                   value={gameCreateMode}
                   onChange={(e) => setGameCreateMode(e.target.value)}
-                  defaultValue={gameMode ? gameMode : 1}
                 >
                   <option value={1}>Nối Từ</option>
                   <option value={2}>Khắc Nhập Từ</option>
