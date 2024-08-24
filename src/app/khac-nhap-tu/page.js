@@ -10,7 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 export const metadata = {
-  title: "Khắc Nhập Từ | Nối Từ Vui",
+  title: "Khắc Nhập Từ - Chơi ghép chữ | Nối Từ Vui",
   description:
     "Khắc Nhập Từ là trò chơi ghép các chữ cái bị xáo trộn thành từ có nghĩa. Tương tự trò chơi Vua Tiếng Việt.",
 };

@@ -44,6 +44,8 @@ export default function RankingChart() {
   }, [searchParams]);
 
   const fetchData = async (game) => {
+    setCurrentRank(null);
+
     if (game == 1) {
       wordLinkApi.getRankingChart(20).then((res) => {
         setList(res.data);

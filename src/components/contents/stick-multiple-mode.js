@@ -149,6 +149,8 @@ export default function StickMulti({ roomId }) {
       text: word + ": " + description,
       timer: 2000,
       showConfirmButton: false,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
     });
 
     const currentUser = roomUserList.find((user) => user.code === user.code);
@@ -216,7 +218,9 @@ export default function StickMulti({ roomId }) {
       updateQuestion(message.stickWord);
     } else if (message.type === "END") {
       // Sort user list by score
-      const sortedList = roomUserList.sort((a, b) => b.score - a.score);
+      const sortedList = message.room.userList.sort(
+        (a, b) => b.score - a.score
+      );
       const resultList = sortedList.map((user) => {
         return `<p>${user.name}: ${user.score}</p>`;
       });
@@ -235,6 +239,7 @@ export default function StickMulti({ roomId }) {
       swal.fire({
         icon: message.user.code === user.code ? "success" : "info",
         html: resultHtml,
+        showConfirmButton: false,
         showCancelButton: true,
         cancelButtonText: "Đóng",
       });
@@ -262,6 +267,8 @@ export default function StickMulti({ roomId }) {
             text: message.message,
             timer: 2000,
             showConfirmButton: false,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
           })
           .then(() => {
             nextTurn(message);
@@ -274,6 +281,8 @@ export default function StickMulti({ roomId }) {
             text: message.message,
             timer: 2000,
             showConfirmButton: false,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
           })
           .then(() => {
             nextTurn(message);
@@ -464,7 +473,7 @@ export default function StickMulti({ roomId }) {
 
       <div className="w-100">
         <div className="has-text-centered is-size-3">5</div>
-        <div className="columns is-multiline is-centered is-vcentered is-mobile w-100">
+        <div className="columns is-multiline is-centered is-vcentered is-mobile">
           {roomUserList.map((roomUser, index) => (
             <div
               key={index}
