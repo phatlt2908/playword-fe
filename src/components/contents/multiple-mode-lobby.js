@@ -158,7 +158,7 @@ const MultiModeLobby = () => {
           toast: true,
           position: "top",
           icon: "info",
-          timer: 30000,
+          timer: 3000,
           showConfirmButton: false,
         });
       }
