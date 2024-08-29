@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { unstable_cache } from "next/cache";
 
 import blogApi from "@/services/blogApi";
 import styles from "./page.module.scss";
@@ -9,12 +10,15 @@ export const metadata = {
   description: "Nơi chia sẻ những gợi ý để chơi nối từ vui và hơn thế nữa",
 };
 
-async function getBlogList() {
-  const res = await blogApi.blogList();
-  const blogList = res.data;
-
-  return blogList;
-}
+const getBlogList = unstable_cache(
+  async () => {
+    const res = await blogApi.blogList();
+    const blogList = res.data;
+    return blogList;
+  },
+  ["blogs"],
+  { revalidate: 60, tags: ["blogs"] }
+);
 
 export default async function BlogListPage() {
   const blogList = await getBlogList();

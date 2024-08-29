@@ -1,6 +1,7 @@
 import Image from "next/image";
 import blogApi from "@/services/blogApi";
 import Link from "next/link";
+import { unstable_cache } from "next/cache";
 
 export async function generateMetadata({ params }) {
   const res = await blogApi.blogDetail(params.id);
@@ -12,11 +13,15 @@ export async function generateMetadata({ params }) {
   };
 }
 
-async function getBlogDetail(id) {
-  const res = await blogApi.blogDetail(id);
-  const data = res.data;
-  return data;
-}
+const getBlogDetail = unstable_cache(
+  async (id) => {
+    const res = await blogApi.blogDetail(id);
+    const data = res.data;
+    return data;
+  },
+  ["blog"],
+  { revalidate: 60, tags: ["blog"] }
+);
 
 export default async function BlogDetailPage({ params }) {
   const data = await getBlogDetail(params.id);
