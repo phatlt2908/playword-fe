@@ -101,7 +101,7 @@ export default function StickMulti({ roomId }) {
         showConfirmButton: false,
       })
       .then(() => {
-        window.location.href = "/dong-noi";
+        window.location.href = "/online";
       });
   };
 
@@ -185,7 +185,7 @@ export default function StickMulti({ roomId }) {
           timer: 3000,
           showConfirmButton: false,
         });
-        router.push("/dong-noi");
+        router.push("/online");
       }
     } else if (message.type === "LEAVE") {
       swal.fire({
@@ -326,7 +326,7 @@ export default function StickMulti({ roomId }) {
   };
 
   const onWaitingTimeout = () => {
-    window.location.href = "/dong-noi";
+    window.location.href = "/online";
   };
 
   const onCopyLink = () => {
@@ -377,7 +377,7 @@ export default function StickMulti({ roomId }) {
           </div>
           <div className="dropdown-menu" id="dropdown-menu" role="menu">
             <div className="dropdown-content">
-              <Link href="/dong-noi" className="dropdown-item icon-text">
+              <Link href="/online" className="dropdown-item icon-text">
                 <span className="icon">
                   <FontAwesomeIcon icon={faChevronLeft} size="sm" />
                 </span>

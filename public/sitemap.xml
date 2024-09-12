@@ -23,12 +23,12 @@
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://noitu.fun/dong-noi?isSolo=true</loc>
+  <loc>https://noitu.fun/online?isSolo=true</loc>
   <lastmod>2024-08-24T17:21:06+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://noitu.fun/dong-noi</loc>
+  <loc>https://noitu.fun/online</loc>
   <lastmod>2024-08-24T17:21:06+00:00</lastmod>
   <priority>0.80</priority>
 </url>
@@ -63,12 +63,12 @@
   <priority>0.64</priority>
 </url>
 <url>
-  <loc>https://noitu.fun/dong-noi?isSolo=true&amp;game=2</loc>
+  <loc>https://noitu.fun/online?isSolo=true&amp;game=2</loc>
   <lastmod>2024-08-24T17:21:06+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
-  <loc>https://noitu.fun/dong-noi?game=2</loc>
+  <loc>https://noitu.fun/online?game=2</loc>
   <lastmod>2024-08-24T17:21:06+00:00</lastmod>
   <priority>0.64</priority>
 </url>

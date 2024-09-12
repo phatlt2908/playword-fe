@@ -38,16 +38,16 @@ const Home = () => {
         </div>
 
         <div className="columns is-mobile">
-          <Link className="column" href="/dong-noi?isSolo=true">
+          <Link className="column" href="/online?isSolo=true">
             <div className="button is-large is-text non-underlined is-flex is-justify-content-space-between is-flex-direction-column">
               <FontAwesomeIcon icon={faPeoplePulling} size="2x" />
               <h2>Solo 1 vs 1</h2>
             </div>
           </Link>
-          <Link className="column" href="/dong-noi">
+          <Link className="column" href="/online">
             <div className="button is-large is-text non-underlined is-flex is-justify-content-space-between is-flex-direction-column">
               <FontAwesomeIcon icon={faUsers} size="2x" />
-              <h2>Góc Đồng Nối</h2>
+              <h2>Cùng Nối Từ</h2>
               <div className="is-size-7">(Chế độ chơi nhóm)</div>
             </div>
           </Link>

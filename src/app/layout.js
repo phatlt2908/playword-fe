@@ -15,7 +15,7 @@ import { patrick_hand } from "@/utils/fonts";
 export const metadata = {
   title: "Chơi game nối từ online - Nối từ vui",
   description:
-    "Chơi game nối từ online trên web. Bao gồm các chế độ chơi một mình với máy, chơi solo 1-1 và chơi theo nhóm nhiều người.",
+    "Chơi game nối từ online trên web. Bao gồm các chế độ chơi một mình với máy, chơi solo 1vs1 và chơi theo nhóm nhiều người.",
   keywords: [
     "Chơi nối từ online",
     "Chơi game nối từ online",

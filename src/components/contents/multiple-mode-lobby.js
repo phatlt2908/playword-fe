@@ -117,7 +117,7 @@ const MultiModeLobby = () => {
       roomApi
         .createRoom(roomId, name, user.code, 1)
         .then(() => {
-          router.push(`/dong-noi/${roomId}`);
+          router.push(`/online/${roomId}`);
         })
         .catch((error) => console.log("Can not create a new room ", error));
     } else if (gameMode == 2) {
@@ -125,14 +125,14 @@ const MultiModeLobby = () => {
       roomApi
         .createRoom(roomId, name, user.code, 2)
         .then(() => {
-          router.push(`/dong-noi/${roomId}`);
+          router.push(`/online/${roomId}`);
         })
         .catch((error) => console.log("Can not create a new room ", error));
     }
   };
 
   const onJoinRoom = (roomId) => {
-    router.push(`/dong-noi/${roomId}`);
+    router.push(`/online/${roomId}`);
   };
 
   const handleKeyDown = (e) => {
@@ -150,7 +150,7 @@ const MultiModeLobby = () => {
   const solo = (gameMode) => {
     roomApi.findRoomSolo(gameMode ? gameMode : 1).then((response) => {
       if (response.data) {
-        router.push(`/dong-noi/${response.data}`);
+        router.push(`/online/${response.data}`);
       } else {
         onCreateSoloRoom(gameMode ? gameMode : 1);
         swal.fire({
@@ -171,14 +171,6 @@ const MultiModeLobby = () => {
         <BrandLoading />
       ) : (
         <>
-          <div className="has-text-centered">
-            <h1 className="title is-1">Góc Đồng Nối</h1>
-            <p className="subtitle is-6">
-              Xin chào các &quot;Đồng Nối&quot;! Đây là chế độ chơi cùng nhau,
-              chơi solo theo cặp hoặc theo nhóm nhiều người
-            </p>
-          </div>
-
           <div className="w-100">
             <div className="columns is-vcentered">
               <div className="column has-text-centered">

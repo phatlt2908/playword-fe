@@ -51,9 +51,9 @@ export default function Manual() {
       </ol>
       <p>
         Nếu xa xôi cách trở, không thể tụ họp được bạn bè, thì đây nè...
-        noitu.fun sẽ kết nối giúp bạn. Hãy vào{" "}
-        <a className="text-underlined" href="/dong-noi">
-          Góc Đồng Nối
+        noitu.fun sẽ kết nối giúp bạn. Hãy vào chế độ chơi{" "}
+        <a className="text-underlined" href="/online">
+          Cùng Nối Từ
         </a>
         , tạo phòng hoặc vào phòng có sẵn và chia sẻ đến bạn bè để cùng nối từ
         nhé.
@@ -73,7 +73,7 @@ export default function Manual() {
       <h2>Luật chơi</h2>
       <ul>
         <li>
-          Từ nối phải là một từ tiếng Việt hợp lệ, có nghĩa và được ghi chép
+          Từ nối phải là một từ Tiếng Việt hợp lệ, có nghĩa và được ghi chép
           trong từ điển.
         </li>
         <li>

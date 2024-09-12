@@ -10,7 +10,7 @@ import { usePathname } from "next/navigation";
 
 const routeLabelMap = new Map([
   ["mot-minh", "Trùm Nối Từ"],
-  ["dong-noi", "Góc Đồng Nối"],
+  ["online", "Cùng Nối Từ"],
   ["noi-tu-la-gi", "Nối từ là gì?"],
   ["xep-hang", "Bảng xếp hạng"],
   ["gop-y", "Góp ý"],
