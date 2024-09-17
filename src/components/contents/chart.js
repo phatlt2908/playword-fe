@@ -94,7 +94,7 @@ export default function RankingChart() {
           </li>
           <li className={searchParams.get("game") == 2 && "is-active"}>
             <Link href="/xep-hang?game=2" className="drawing-border">
-              Khắc Nhập Từ
+              Ghép Chữ
             </Link>
           </li>
         </ul>

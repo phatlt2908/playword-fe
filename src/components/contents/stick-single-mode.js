@@ -262,12 +262,12 @@ export default function StickSingle({ isLiteMode }) {
               <button className="button has-text-centered">Bắt đầu chơi</button>
             </div>
             <p>
-              <strong>Trùm Khắc Nhập Từ</strong> là trò chơi ghép các ký tự bị
+              <strong>Trùm Ghép Chữ</strong> là trò chơi ghép các ký tự bị
               xáo trộn thành từ có nghĩa. Bạn hãy cố gắng đạt được nhiều điểm
               nhất có thể.
             </p>
             <div className="has-text-centered is-size-2">
-              K / H / Ắ / C / N / H / Ậ / P / T / Ừ
+              G / H / É / P / C / H / Ữ
             </div>
             <h2>Luật chơi:</h2>
             <ul>

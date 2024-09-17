@@ -121,7 +121,7 @@ const MultiModeLobby = () => {
         })
         .catch((error) => console.log("Can not create a new room ", error));
     } else if (gameMode == 2) {
-      const roomId = "khac-nhap-" + Math.random().toString(36).substring(2, 8);
+      const roomId = "ghep-chu-" + Math.random().toString(36).substring(2, 8);
       roomApi
         .createRoom(roomId, name, user.code, 2)
         .then(() => {
@@ -225,7 +225,7 @@ const MultiModeLobby = () => {
                         >
                           <option value={null}>Tất cả game</option>
                           <option value={1}>Nối Từ</option>
-                          <option value={2}>Khắc Nhập Từ</option>
+                          <option value={2}>Ghép Chữ</option>
                         </select>
                       </div>
                       <div className="icon is-small is-left">
@@ -291,18 +291,30 @@ const MultiModeLobby = () => {
           onClose={() => setIsOpenCreateRoomPopup(false)}
         >
           <h1 className="title is-1 has-text-centered mb-2">Tạo phòng</h1>
+
+          <label className="label">Thể loại</label>
           <div className="field">
-            <div className="control">
-              <div className="select">
-                <select
-                  className="drawing-border"
-                  value={gameCreateMode}
+            <div className="control is-large">
+              <label className="radio mr-4">
+                <input
+                  type="radio"
+                  name="gameMode"
+                  value={1}
                   onChange={(e) => setGameCreateMode(e.target.value)}
-                >
-                  <option value={1}>Nối Từ</option>
-                  <option value={2}>Khắc Nhập Từ</option>
-                </select>
-              </div>
+                  checked={gameCreateMode == 1}
+                />
+                <span className="is-size-5 ml-1">Nối Từ</span>
+              </label>
+              <label className="radio">
+                <input
+                  type="radio"
+                  name="gameMode"
+                  value={2}
+                  onChange={(e) => setGameCreateMode(e.target.value)}
+                  checked={gameCreateMode == 2}
+                />
+                <span className="is-size-5 ml-1">Ghép Chữ</span>
+              </label>
             </div>
           </div>
 

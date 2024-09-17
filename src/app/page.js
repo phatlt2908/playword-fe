@@ -59,7 +59,7 @@ const Home = () => {
       </div>
 
       <div className="columns is-mobile">
-        <Link className="column" href="/khac-nhap-tu">
+        <Link className="column" href="/ghep-chu">
           <div className="button is-large is-text non-underlined is-flex is-justify-content-space-between is-flex-direction-column">
             <span
               className="tag is-danger"
@@ -68,7 +68,7 @@ const Home = () => {
               Mới
             </span>
             <FontAwesomeIcon icon={faShuffle} size="2x" />
-            <h2>Khắc Nhập Từ</h2>
+            <h2>Ghép Chữ</h2>
             <div className="is-size-7">(Ghép chữ thành từ)</div>
           </div>
         </Link>

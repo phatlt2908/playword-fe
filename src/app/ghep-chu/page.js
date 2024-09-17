@@ -10,16 +10,16 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 export const metadata = {
-  title: "Khắc Nhập Từ - Chơi ghép chữ | Nối Từ Vui",
+  title: "Ghép Chữ online | Nối Từ Vui",
   description:
-    "Khắc Nhập Từ là trò chơi ghép các chữ cái bị xáo trộn thành từ có nghĩa. Tương tự trò chơi Vua Tiếng Việt.",
+    "Ghép Chữ online là trò chơi ghép các chữ cái bị xáo trộn thành từ có nghĩa. Tương tự trò chơi Vua Tiếng Việt.",
 };
 
 export default async function StickLobbyPage() {
   return (
     <>
       <div className="has-text-centered">
-        <h1 className="title is-1">Khắc Nhập Từ</h1>
+        <h1 className="title is-1">Ghép Chữ</h1>
         <p className="subtitle is-4">
           Trò chơi ghép các chữ cái bị xáo trộn thành từ có nghĩa
         </p>
@@ -28,10 +28,10 @@ export default async function StickLobbyPage() {
         <div
           className={`columns is-multiline is-mobile is-centered is-vcentered w-100 ${styles.maxContentWidth}`}
         >
-          <Link className="column is-narrow" href="/trum-khac-nhap-tu">
+          <Link className="column is-narrow" href="/trum-ghep-chu">
             <div className="button is-large is-text non-underlined is-flex is-justify-content-space-between is-flex-direction-column p-1">
               <FontAwesomeIcon icon={faCrown} size="2x" />
-              <h2>Trùm Khắc Nhập Từ</h2>
+              <h2>Trùm Ghép Chữ</h2>
               <div className="is-size-7">(Chế độ chơi đơn)</div>
             </div>
           </Link>
