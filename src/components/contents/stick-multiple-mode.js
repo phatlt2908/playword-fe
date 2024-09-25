@@ -12,7 +12,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronLeft,
   faEllipsis,
+  faHourglassHalf,
   faLink,
+  faShare,
 } from "@fortawesome/free-solid-svg-icons";
 import swal from "sweetalert2";
 
@@ -353,6 +355,22 @@ export default function StickMulti({ roomId }) {
     updateQuestion(message.stickWord);
   };
 
+  const onLeaveRoom = () => {
+    swal
+      .fire({
+        text: "Bạn có chắc chắn muốn rời khỏi phòng?",
+        icon: "question",
+        confirmButtonText: "Rời khỏi phòng",
+        showCancelButton: true,
+        cancelButtonText: "Không",
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          router.push("/online");
+        }
+      });
+  }
+
   return (
     <>
       <div className="is-flex is-flex-direction-column is-align-items-center">
@@ -363,28 +381,11 @@ export default function StickMulti({ roomId }) {
           </span>
         </p>
 
-        <div className={`dropdown ${isDisplayDropdown && "is-active"}`}>
-          <div className="dropdown-trigger">
-            <button
-              className="button is-text"
-              aria-controls="dropdown-menu3"
-              onClick={() => {
-                setIsDisplayDropdown(!isDisplayDropdown);
-              }}
-            >
-              <FontAwesomeIcon icon={faEllipsis} />
-            </button>
-          </div>
-          <div className="dropdown-menu" id="dropdown-menu" role="menu">
-            <div className="dropdown-content">
-              <Link href="/online" className="dropdown-item icon-text">
-                <span className="icon">
-                  <FontAwesomeIcon icon={faChevronLeft} size="sm" />
-                </span>
-                <span>Rời phòng</span>
-              </Link>
-            </div>
-          </div>
+        <div className="button is-text is-size-6" onClick={onLeaveRoom}>
+          <span className="icon">
+            <FontAwesomeIcon icon={faChevronLeft} size="sm" />
+          </span>
+          <span className="text-underlined">Rời khỏi phòng</span>
         </div>
       </div>
       <div className="w-100">
@@ -407,28 +408,21 @@ export default function StickMulti({ roomId }) {
             <>
               {roomUserList.length <= 1 && (
                 <div className="content is-flex is-flex-direction-column is-align-items-center">
-                  <div className="is-size-6 mb-2">
-                    <p className="has-text-centered">
-                      Xin lỗi vì đã để bạn đợi lâu 😟
-                    </p>
-                    <ul>
-                      <li>
-                        <a className="text-underlined" onClick={onCopyLink}>
-                          Sao chép link
-                        </a>{" "}
-                        để mời bạn bè chơi cùng
-                      </li>
-                      <li>
-                        Hoặc thử{" "}
-                        <a
-                          className="text-underlined is-size-6"
-                          onClick={onSingleModeWaiting}
-                        >
-                          chơi đơn
-                        </a>{" "}
-                        trong lúc đợi nhé
-                      </li>
-                    </ul>
+                  <div className="button is-text" onClick={onCopyLink}>
+                    <span className="icon">
+                      <FontAwesomeIcon icon={faShare} size="sm" />
+                    </span>
+                    <span className="text-underlined">
+                      Chia sẻ link chơi cùng
+                    </span>
+                  </div>
+                  <div className="button is-text" onClick={onSingleModeWaiting}>
+                    <span className="icon">
+                      <FontAwesomeIcon icon={faHourglassHalf} size="sm" />
+                    </span>
+                    <span className="text-underlined">
+                      Chơi với máy trong lúc đợi
+                    </span>
                   </div>
                 </div>
               )}

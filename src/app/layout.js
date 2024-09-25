@@ -13,7 +13,7 @@ import BaseFooter from "@/components/layouts/base-footer";
 import { patrick_hand } from "@/utils/fonts";
 
 export const metadata = {
-  title: "Chơi game nối từ online solo với nhóm bạn",
+  title: "Nối từ online - Solo hoặc tạo phòng chơi nhóm",
   description:
     "Chơi game nối từ online trên web. Bao gồm các chế độ chơi một mình với máy, chơi solo 1vs1 và chơi theo nhóm nhiều người với bạn.",
   keywords: [
