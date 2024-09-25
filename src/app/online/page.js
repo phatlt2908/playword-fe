@@ -2,7 +2,7 @@ import MultiModeLobby from "@/components/contents/multiple-mode-lobby";
 import { Suspense } from "react";
 
 export const metadata = {
-  title: "Chơi game nối từ solo - Nối từ online nhóm nhiều người | Nối Từ Vui",
+  title: "Chơi game nối từ online - Solo 1 vs 1 - Nhóm nhiều người",
   description:
     "Chơi game nối từ online cùng nhau, chơi ghép chữ cùng nhau, chơi solo 1 vs 1 hoặc theo nhóm nhiều người. Đánh bại các đối thủ và trở thành người chơi còn lại cuối cùng để giành chiến thắng",
   keywords: [
